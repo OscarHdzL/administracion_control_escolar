@@ -1,0 +1,287 @@
+<form #fPregunta="ngForm" (ngSubmit)="save(fPregunta)" novalidate>
+  <div class="flex items-center" mat-dialog-title>
+    <h2 *ngIf="this.objeto.objet == 0" class="headline m-0 flex-auto">
+      Agregar Pregunta
+    </h2>
+    <h2 *ngIf="this.objeto.objet != 0" class="headline m-0 flex-auto">
+      Editar Pregunta
+    </h2>
+    <button
+      class="text-secondary"
+      mat-dialog-close
+      mat-icon-button
+      type="button"
+    >
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <div class="mt-4 ml-4 mr-4 flex flex-col md:flex-row gap-2">
+    <mat-form-field class="basis-1/2">
+      <mat-label>Pregunta</mat-label>
+      <input
+        name="nombre"
+        type="text"
+        id="nombre"
+        aria-describedby="emailHelp"
+        placeholder="Nombre Formulario"
+        style="width: 100%"
+        [(ngModel)]="pregunta.pregunta"
+        name="inputNombre"
+        ngModel
+        #inputNombre="ngModel"
+        required
+        matInput
+      />
+      <mat-icon class="mr-3" matPrefix svgIcon="mat:help"></mat-icon>
+      <div class="row d-flex justify-content-center">
+        <small
+          *ngIf="
+            inputNombre.invalid &&
+            inputNombre.errors?.required &&
+            inputNombre.touched
+          "
+          >Campo Requerido</small
+        >
+      </div>
+    </mat-form-field>
+
+    <div class="basis-1/2">
+      <mat-label class="m-2 ml-16">Respuesta obligatoria</mat-label>
+      <mat-radio-group
+        class="flex-auto m-2"
+        id="opciones"
+        name="opciones"
+        ngModel
+        #inputRespObligatoria="ngModel"
+        [(ngModel)]="pregunta.respuestaObligatoria"
+        required
+      >
+        <mat-radio-button class="m-2" [value]="true" color="primary">
+          Si
+        </mat-radio-button>
+        <mat-radio-button class="m-2" [value]="false" color="warn">
+          No
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+
+    <div class="mt-4 ml-4 mr-4 flex flex-col md:flex-row gap-2">
+
+    <mat-form-field class="flex-auto">
+      <mat-label>Tipo de Respuesta</mat-label>
+      <mat-select
+        name="oferta"
+        id="oferta"
+        placeholder="Oferta Educativa"
+        style="width: 100%"
+        (ngModelChange)="onChangeTipoRespuesta($event)"
+        [(ngModel)]="pregunta.tblTipoRespuestaId"
+        name="inputOpcion"
+        ngModel
+        #inputOferta="ngModel"
+        required
+        matInput
+      >
+        <mat-option
+          *ngFor="let oferta of listaTiposRespuesta"
+          [value]="oferta.id"
+        >
+          {{ oferta.tipoRespuesta }}
+        </mat-option>
+      </mat-select>
+      <div class="row d-flex justify-content-center">
+        <small
+          *ngIf="
+            inputOferta.invalid &&
+            inputOferta.errors?.required &&
+            inputOferta.touched
+          "
+          >Campo Requerido</small
+        >
+      </div>
+    </mat-form-field>
+</div>
+<div *ngIf="pregunta.tblTipoRespuestaId == 2 || pregunta.tblTipoRespuestaId == 3 || pregunta.tblTipoRespuestaId == 5">
+<div class="mt-4 ml-4 mr-4 flex flex-col md:flex-row gap-2">
+    <mat-form-field class="flex-auto">
+      <mat-label>Grupo de Opciones</mat-label>
+      <mat-select
+        name="grupo"
+        id="grupo"
+        placeholder="Grupo Opciones"
+        style="width: 100%"
+        [(ngModel)]="this.pregunta.tblGrupoOpcionesId"
+        (selectionChange)="consultarListaOpciones($event)"
+        name="inputGrupo"
+        ngModel
+        #inputOferta="ngModel"
+        matInput
+        required
+      >
+        <mat-option *ngFor="let grupo of gruposOpciones" [value]="grupo.id">
+          {{ grupo.grupo }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="this.pregunta.tblGrupoOpcionesId">
+
+  <div class="mt-4 ml-4 mr-4 flex flex-col md:flex-row gap-2">
+    <mat-label>Lista de opciones <span style="font-style: italic; font-size: x-small;">*Solo lectura</span></mat-label>
+  </div>
+
+  <mat-chip-list  aria-label="Fish selection"  class=" grid grid-cols-1 gap-4 bordes-div m-6">
+    <mat-chip *ngFor="let chip of listaOpciones" selected color="accent" class="m-6">
+      {{chip}}
+    </mat-chip>
+  </mat-chip-list>
+</div>
+</div>
+
+<div class="mt-8 ml-4 mr-4 flex flex-col md:flex-row gap-2" *ngIf="this.mostrarComplemento">
+  <mat-form-field class="basis-1/2">
+    <mat-label>Pregunta complementaria</mat-label>
+    <input name="complemento" type="text" id="complemento" aria-describedby="emailHelp" placeholder="Nombre Formulario" style="width: 100%;"
+    [(ngModel)]=" pregunta.preguntaComplemento" name="inputComplemento" ngModel #inputComplemento="ngModel" matInput>
+    <mat-icon class="mr-3" matPrefix svgIcon="mat:help"></mat-icon>
+    <div class="row d-flex justify-content-center">
+      <small  *ngIf="inputComplemento.invalid && inputComplemento.errors?.required && inputComplemento.touched">Campo Requerido</small>
+    </div>
+  </mat-form-field>
+
+  <div class="basis-1/2">
+    <mat-label class="m-2 ml-16">Respuesta obligatoria</mat-label>
+    <mat-radio-group class="flex-auto m-2" name="complemento" [(ngModel)]="pregunta.respuestaComplementoObligatoria">
+        <mat-radio-button class="m-2" [value]="true" color="primary">
+            Si
+        </mat-radio-button>
+        <mat-radio-button class="m-2" [value]="false" color="warn">
+            No
+        </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+
+</div>
+
+
+
+
+
+
+  <!--    <mat-grid-list class="mt-5" cols="2" rowHeight="70px"  >
+        <mat-grid-tile>
+            <mat-form-field class="flex-auto">
+                <mat-label>Pregunta</mat-label>
+                <input name="nombre" type="text" id="nombre" aria-describedby="emailHelp" placeholder="Nombre Formulario" style="width: 100%;"
+                [(ngModel)]=" pregunta.pregunta" name="inputNombre" ngModel #inputNombre="ngModel" required  matInput >
+                <mat-icon class="mr-3" matPrefix svgIcon="mat:help"></mat-icon>
+                <div class="row d-flex justify-content-center">
+                  <small  *ngIf="inputNombre.invalid && inputNombre.errors?.required && inputNombre.touched">Campo Requerido</small>
+                </div>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="items-center">
+          <mat-label class="m-2 ml-16">Obligatorio</mat-label>
+          <mat-radio-group class="flex-auto m-2" id="opciones" name="opciones" ngModel #inputRespObligatoria="ngModel"  [(ngModel)]="pregunta.respuestaObligatoria" required>
+              <mat-radio-button class="m-2"  [value]="true" color="primary">
+                  Si
+              </mat-radio-button>
+              <mat-radio-button class="m-2" [value]="false" color="warn">
+                  No
+              </mat-radio-button>
+          </mat-radio-group>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list class="mt-5" cols="3" rowHeight="70px"  >
+      <mat-grid-tile>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="flex-auto">
+          <mat-label >Tipo de Respuesta</mat-label>
+          <mat-select name="oferta" id="oferta" placeholder="Oferta Educativa" style="width: 100%;" (ngModelChange)="onChangeTipoRespuesta($event)"
+          [(ngModel)]="pregunta.tblTipoRespuestaId" name="inputOpcion" ngModel #inputOferta="ngModel" required matInput >
+              <mat-option *ngFor="let oferta of listaTiposRespuesta" [value]="oferta.id">
+                  {{oferta.tipoRespuesta}}
+              </mat-option>
+          </mat-select>
+          <div class="row d-flex justify-content-center">
+              <small  *ngIf="inputOferta.invalid && inputOferta.errors?.required && inputOferta.touched">Campo Requerido</small>
+          </div>
+      </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+
+      </mat-grid-tile>
+  </mat-grid-list>
+    <mat-grid-list class="mt-5" cols="2" rowHeight="70px" *ngIf="pregunta.tblTipoRespuestaId == 2 || pregunta.tblTipoRespuestaId == 3 || pregunta.tblTipoRespuestaId == 5" >
+        <mat-grid-tile>
+            <mat-form-field class="flex-auto">
+                <mat-label >Grupo de Opciones</mat-label>
+                <mat-select name="grupo" id="grupo" placeholder="Grupo Opciones" style="width: 100%;" [(ngModel)]="this.pregunta.tblGrupoOpcionesId"
+                (selectionChange)="consultarListaOpciones($event)" name="inputGrupo" ngModel #inputOferta="ngModel" matInput required>
+                    <mat-option *ngFor="let grupo of gruposOpciones" [value]="grupo.id">
+                        {{grupo.grupo}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field class="flex-auto">
+            <mat-label >Lista de Opciones</mat-label>
+            <textarea name="descripcion" type="text" id="descripcion" placeholder="Lista de opciones" style="width: 100%;"
+            [(ngModel)]="opciones" [disabled]="true" name="inputDescripcion" ngModel #inputDescripcion="ngModel" matInput></textarea>
+          </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list class="mt-5" cols="3" rowHeight="70px" *ngIf="this.mostrarComplemento">
+        <mat-grid-tile>
+            <mat-form-field class="flex-auto">
+                <mat-label>Complemento</mat-label>
+                <input name="complemento" type="text" id="complemento" aria-describedby="emailHelp" placeholder="Nombre Formulario" style="width: 100%;"
+                [(ngModel)]=" pregunta.preguntaComplemento" name="inputComplemento" ngModel #inputComplemento="ngModel" matInput>
+                <mat-icon class="mr-3" matPrefix svgIcon="mat:help"></mat-icon>
+                <div class="row d-flex justify-content-center">
+                  <small  *ngIf="inputComplemento.invalid && inputComplemento.errors?.required && inputComplemento.touched">Campo Requerido</small>
+                </div>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-label class="m-2">Obligatorio</mat-label>
+            <mat-radio-group class="flex-auto m-2" name="complemento" [(ngModel)]="pregunta.respuestaComplementoObligatoria">
+                <mat-radio-button class="m-2" [value]="true" color="primary">
+                    Si
+                </mat-radio-button>
+                <mat-radio-button class="m-2" [value]="false" color="warn">
+                    No
+                </mat-radio-button>
+            </mat-radio-group>
+        </mat-grid-tile>
+    </mat-grid-list> -->
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button
+      *ngIf="this.objeto.objet == 0"
+      color="primary"
+      mat-flat-button
+      type="submit"
+      [disabled]="fPregunta.invalid"
+    >
+      Agregar
+    </button>
+    <button
+      *ngIf="this.objeto.objet != 0"
+      color="primary"
+      mat-flat-button
+      type="submit"
+      [disabled]="fPregunta.invalid"
+    >
+      Actualizar
+    </button>
+  </mat-dialog-actions>
+</form>

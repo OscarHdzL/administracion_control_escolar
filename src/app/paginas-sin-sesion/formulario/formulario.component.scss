@@ -1,0 +1,66 @@
+table {
+  width: 100%;
+}
+
+.green-icon {
+  color: green;
+}
+
+
+.example-container {
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+}
+
+.example-sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  background: rgba(255, 0, 0, 0.5);
+}
+
+.example-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+re-captcha.is-invalid > div {
+  border: 1px solid #dc3545 !important;
+  border-radius: 0.2rem;
+}
+
+.upper{
+  text-transform: uppercase;
+}
+
+.estilos-pregunta{
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 10px;
+}
+
+
+.bordes-div{
+  border-radius: 8px;
+  border: 0.1px solid rgba(203, 186, 186, 0.6);
+
+}
+
+.text-danger{
+  color: red;
+  font-style: italic;
+  font-size: 9px;
+}

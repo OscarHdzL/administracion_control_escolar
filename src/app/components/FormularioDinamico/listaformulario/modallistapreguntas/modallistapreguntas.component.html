@@ -1,0 +1,91 @@
+<div class="flex items-center" mat-dialog-title>
+    <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto title">Preguntas del formulario <b>{{objeto.formulario}}</b></h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+
+<div class="card overflow-auto mt-3">
+    <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+            Lista de Preguntas
+        </h2>
+       <!--  <div class="bg-foreground rounded-full border px-4 max-w-[300px] flex-auto flex items-center border border-gray-300">
+            <mat-icon class="icon-sm text-secondary" svgIcon="mat:search"></mat-icon>
+            <input
+                class="px-4 py-2 border-0 outline-none w-full bg-transparent"
+                placeholder="Buscar..."
+                type="search">
+        </div> -->
+        <span class="flex-1"></span>
+        <button (click)="openModalCreate()"
+                class="ml-4 flex-none"
+                color="primary"
+                mat-mini-fab
+                matTooltip="Agregar Pregunta"
+                type="button">
+            <mat-icon svgIcon="mat:add"></mat-icon>
+        </button>
+    </div>
+
+    <!-- <div *ngIf="this.preguntas.length == 0">
+        <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto title">No hay preguntas en este formulario</h2>
+    </div> -->
+
+    <div *ngIf="this.preguntas.length != 0">
+        <table [dataSource]="this.dataSource" class="w-full" mat-table>
+            <!-- Text Columns -->
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property== 'name'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.pregunta }}</td>
+                </ng-container>
+            </ng-container>
+            <!-- Text Columns -->
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property === 'obligatorio'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ (row.respuestaObligatoria) ? 'SI': 'NO' }}</td>
+                </ng-container>
+            </ng-container>
+            <!-- Action Column -->
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
+                <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
+                    <div class="flex items-center justify-center">
+                        <a (click)="openModalUpdate(element)"
+                        matTooltip="Editar Pregunta"
+                        class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10"
+                        mat-icon-button>
+                        <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+                        </a>
+
+                       <!--  <a (click)="deleteGrupo(row)"
+                        matTooltip="Eliminar Pregunta"
+                        class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                        mat-icon-button>
+                        <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                        </a> -->
+                        <mat-slide-toggle class="ml-3"  color="primary" [checked]="element.activo" (change)="deleteGrupo(element, $event)">{{element.activo ? 'Activo' : 'Inactivo'}}</mat-slide-toggle>
+                    </div>
+                </td>
+                </ng-container>
+            </ng-container>
+
+            <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: visibleColumns;"
+                class="hover:bg-hover trans-ease-out cursor-pointer"
+                mat-row></tr>
+        </table>
+
+
+
+        <mat-paginator #paginator [length]="this.preguntas.length" [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
+    </div>
+    <div *ngIf="this.preguntas.length == 0" class=" flex-auto items-center justify-center">
+      <h3 class=" m-10 headline" style="text-align: center;">No se encontraron preguntas en este formulario.</h3>
+  </div>
+
+</div>

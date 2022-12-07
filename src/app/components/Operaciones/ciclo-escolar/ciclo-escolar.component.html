@@ -1,0 +1,108 @@
+<vex-page-layout>
+  <!--     <vex-page-layout-header class="pb-16 flex flex-col items-start justify-center">
+            <div class="w-full flex flex-col sm:flex-row justify-between">
+                <h1 class="title mt-0 mb-1">Administrador de Formularios</h1>
+            </div>
+            <div class="w-full flex flex-col sm:flex-row justify-between">
+                <vex-breadcrumbs [crumbs]="['Administrador de Formularios', 'Lista de Opciones']"></vex-breadcrumbs>
+            </div>
+        </vex-page-layout-header> -->
+  <div class="p-gutter m-2">
+    <div class="card overflow-auto mt-2">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+          Lista de Ciclos Escolares
+        </h2>
+        <!--  <div class="bg-foreground rounded-full border px-4 max-w-[300px] flex-auto flex items-center border border-gray-300">
+                    <mat-icon class="icon-sm text-secondary" svgIcon="mat:search"></mat-icon>
+                    <input
+                        class="px-4 py-2 border-0 outline-none w-full bg-transparent"
+                        placeholder="Buscar..."
+                        type="search">
+                </div> -->
+        <span class="flex-1"></span>
+        <button (click)="openModalCreate()" class="ml-4 flex-none" color="primary" mat-mini-fab
+          matTooltip="Agregar Ciclo" type="button">
+          <mat-icon svgIcon="mat:add"></mat-icon>
+        </button>
+      </div>
+      <table [dataSource]="this.dataSource" class="w-full" mat-table matSort>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property== 'fechaI'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.inicio | date: 'dd/MM/yyyy' }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property== 'fechaF'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fin | date: 'dd/MM/yyyy' }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property== 'estatus'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.estatus }}</td>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              <div class="flex" *ngIf="row.estatus == 'Finalizado'">
+
+                <a (click)="deleteCiclo(row)" matTooltip="Eliminar   Ciclo"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                </a>
+              </div>
+              <div class="flex" *ngIf="row.estatus == 'Vigente'">
+                <a (click)="vigente(row)" matTooltip="Finalizar Ciclo"
+                  class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:lock_open"></mat-icon>
+                </a>
+                <a (click)="openModalSettings(row)" matTooltip="Configurar Periodos Escolares"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:settings"></mat-icon>
+                </a>
+
+                <a (click)="deleteCiclo(row)" matTooltip="Eliminar   Ciclo"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                </a>
+              </div>
+              <div class="flex" *ngIf="row.estatus == 'Programado'">
+                <a (click)="programado(row)" matTooltip="Hacer Ciclo Vigente"
+                  class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:lock"></mat-icon>
+                </a>
+                <a (click)="openModalSettings(row)" matTooltip="Configurar Periodos Escolares"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:settings"></mat-icon>
+                </a>
+
+                <a (click)="deleteCiclo(row)" matTooltip="Eliminar   Ciclo"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+        </ng-container>
+
+        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: visibleColumns;" class="hover:bg-hover trans-ease-out cursor-pointer" mat-row>
+        </tr>
+      </table>
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
+    </div>
+  </div>
+</vex-page-layout>

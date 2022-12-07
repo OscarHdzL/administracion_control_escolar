@@ -1,0 +1,27 @@
+<div class="flex items-center" mat-dialog-title>
+  <h2 class="headline m-0 flex-auto title">Estatus del documento</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon svgIcon="mat:close"></mat-icon>
+  </button>
+</div>
+<!-- <mat-divider class="-mx-6 text-border"></mat-divider> -->
+
+<div class="card overflow-auto mt-3">
+
+<div class="body">
+<p-timeline [value]="listaObservacionesDocumento" align="alternate" styleClass="customized-timeline">
+  <ng-template pTemplate="marker" let-event>
+      <span class="custom-marker shadow-2" [style.backgroundColor]="event.color">
+          <i [ngClass]="event.icon"></i>
+      </span>
+  </ng-template>
+  <ng-template pTemplate="content" let-event>
+      <p-card [header]="event.estatusDocApirante" [subheader]="event.inclusion | date: 'short'">
+          <p>{{event.observacion}}</p>
+          <!-- <button pButton label="Ver documento subido" (click)="abrirDocumento(event.archivoHistorico)" class="p-button-text"></button> -->
+          <button pTooltip="Ver documento" icon="pi pi-eye" (click)="abrirDocumento(event.archivoHistorico)" pButton pRipple type="button" class="p-button-rounded p-button-info p-button-text"></button>
+      </p-card>
+  </ng-template>
+</p-timeline>
+</div>
+</div>

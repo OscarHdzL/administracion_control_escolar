@@ -1,0 +1,177 @@
+<div class="flex items-center" mat-dialog-title>
+  <h2 class="headline m-0 flex-auto title">Proceso de admisión - {{this.escalafon.nombre + ' ' + this.escalafon.paterno + ' ' + this.escalafon.materno  | uppercase}}</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon svgIcon="mat:close"></mat-icon>
+  </button>
+</div>
+<!-- <mat-divider class="-mx-6 text-border"></mat-divider> -->
+
+<div class="card overflow-auto mt-3">
+
+<div class="body">
+
+
+
+  <form [formGroup]="formularioEscalafon">
+    <div class="body" *ngIf="this.escalafon">
+      <div class="timeline">
+        <div class="inicio ">
+          <p><strong>Inicio</strong></p>
+        </div>
+        <div class="contenedor left">
+          <div class="date"></div>
+          <i class="icon" [ngClass]="formularioEscalafon.get('tecnicoMet').valid ? 'valido' : 'invalido' "></i>
+          <div class="contenido">
+            <h2>Presentación de exámen técnico metodológico</h2>
+            <div class="mt-4 flex flex-col lg:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto"  *ngIf="this.accion != 'Visualizacion'">
+                <mat-label>Calificación</mat-label>
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  formControlName="tecnicoMet"
+                  matInput
+                  style="text-transform: uppercase"
+                />
+                <!-- <mat-error *ngIf="this.formValidacion.get('estatus').hasError('required')"> El campo es requerido</mat-error> -->
+                <button
+                  [disabled]="this.formularioEscalafon.get('tecnicoMet').invalid"
+                  (click)="guardarEscalafon()"
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Guardar Calificación"
+                  type="button"
+                >
+                  <mat-icon svgIcon="mat:save"></mat-icon>
+                </button>
+                <mat-error *ngIf="this.formularioEscalafon.get('tecnicoMet').hasError('required')"> El campo es requerido</mat-error>
+              </mat-form-field>
+              <mat-label *ngIf="this.accion == 'Visualizacion'"> Calificacion: <strong> {{(escalafon.tecnicoMet == 0 || !escalafon.tecnicoMet) ? 'No se ha registrado calificación': escalafon.tecnicoMet}} </strong> </mat-label>
+            </div>
+          </div>
+        </div>
+        <div class="contenedor right">
+          <div class="date"></div>
+
+          <i class="icon" [ngClass]="formularioEscalafon.get('conocimientosBd').valid ? 'valido' : 'invalido'"></i>
+          <div class="contenido">
+            <h2>Presentación de exámen conocimientos básicos del deporte</h2>
+            <div class="mt-4 flex flex-col lg:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto" *ngIf="this.accion != 'Visualizacion'">
+                <mat-label>Calificación</mat-label>
+                <input
+                type="number"
+                min="1"
+                  max="100"
+                  formControlName="conocimientosBd"
+                  matInput
+                  style="text-transform: uppercase"
+                />
+                <button
+                [disabled]="this.formularioEscalafon.get('conocimientosBd').invalid"
+                (click)="guardarEscalafon()"
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Guardar Calificación"
+                  type="button"
+                >
+                  <mat-icon svgIcon="mat:save"></mat-icon>
+                </button>
+                <mat-error *ngIf="this.formularioEscalafon.get('conocimientosBd').hasError('required')"> El campo es requerido</mat-error>
+              </mat-form-field>
+              <mat-label *ngIf="this.accion == 'Visualizacion'"> Calificacion: <strong> {{(escalafon.conocimientosBd == 0 || !escalafon.conocimientosBd) ? 'No se ha registrado calificación': escalafon.conocimientosBd}} </strong> </mat-label>
+            </div>
+          </div>
+        </div>
+        <div class="contenedor left">
+          <div class="date"></div>
+          <i class="icon" [ngClass]="formularioEscalafon.get('ceneval').valid ? 'valido' : 'invalido' "></i>
+          <div class="contenido">
+            <h2>Presentación de exámen CENEVAL</h2>
+            <div class="mt-4 flex flex-col lg:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto" *ngIf="this.accion != 'Visualizacion'" >
+                <mat-label>Calificación</mat-label>
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  formControlName="ceneval"
+                  matInput
+                  style="text-transform: uppercase"
+                />
+                <button
+                  [disabled]="this.formularioEscalafon.get('ceneval').invalid"
+                  (click)="guardarEscalafon()"
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Guardar Calificación"
+                  type="button"
+                >
+                  <mat-icon svgIcon="mat:save"></mat-icon>
+                </button>
+                <mat-error *ngIf="this.formularioEscalafon.get('ceneval').hasError('required')"> El campo es requerido</mat-error>
+              </mat-form-field>
+              <mat-label *ngIf="this.accion == 'Visualizacion'"> Calificacion: <strong> {{(escalafon.ceneval == 0 || !escalafon.ceneval) ? 'No se ha registrado calificación': escalafon.ceneval}} </strong> </mat-label>
+            </div>
+          </div>
+        </div>
+        <div class="contenedor right">
+          <div class="date"></div>
+          <i class="icon" [ngClass]="formularioEscalafon.get('examenMedico').valid ? 'valido' : 'invalido' "></i>
+          <div class="contenido">
+            <h2>Exámen médico aprobado</h2>
+            <div class="mt-4 flex flex-col lg:flex-row sm:gap-4" *ngIf="this.accion != 'Visualizacion'">
+              No <mat-slide-toggle formControlName="examenMedico" [aria-label]=""> </mat-slide-toggle> Si
+            </div>
+            <div class="mt-4 flex flex-col lg:flex-row sm:gap-4" *ngIf="this.accion != 'Visualizacion'">
+              <mat-form-field class="flex-auto">
+                <mat-label>Descripción</mat-label>
+                <textarea
+                  formControlName="examenMedicoDescripcion"
+                  matInput
+                  style="text-transform: uppercase"
+                ></textarea>
+              </mat-form-field>
+              <button
+              [disabled]="this.formularioEscalafon.get('examenMedico').invalid"
+              (click)="guardarEscalafon()"
+              mat-button color="primary">Guardar</button>
+            </div>
+            <mat-label *ngIf="this.accion == 'Visualizacion'"> <strong> {{escalafon.examenMedico == true ? 'Aprobado': 'No aprobado'}} </strong> </mat-label>
+            <br>
+            <mat-label *ngIf="this.accion == 'Visualizacion'">  {{escalafon.examenMedicoDescripcion}} </mat-label>
+          </div>
+        </div>
+        <div class="contenedor left">
+          <div class="date"></div>
+          <!-- <i class="icon fa fa-user"></i> -->
+          <i class="icon" [ngClass]="formularioEscalafon.get('cursoInduccion').valid ? 'valido' : 'invalido' "></i>
+          <div class="contenido">
+            <h2>Realizó curso de inducción</h2>
+            <div class="mt-4 flex flex-col lg:flex-row sm:gap-4" *ngIf="this.accion != 'Visualizacion'">
+              No <mat-slide-toggle  formControlName="cursoInduccion" [aria-label]=""> </mat-slide-toggle> Si
+              <button
+              [disabled]="this.formularioEscalafon.get('cursoInduccion').invalid"
+              (click)="guardarEscalafon()"
+              mat-button color="primary">Guardar</button>
+            </div>
+            <mat-label *ngIf="this.accion == 'Visualizacion'"> <strong> {{escalafon.cursoInduccion == true ? 'Si': 'No'}} </strong> </mat-label>
+          </div>
+        </div>
+        <div class="fin valido" *ngIf="this.mostrarAprobacion()">
+          <p style="color:white"><strong>Aprobado</strong></p>
+        </div>
+        <div class="fin invalido" *ngIf="!this.mostrarAprobacion()">
+          <p style="color:white"><strong>No aprobado</strong></p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+<!--  -->
+{{this.formularioEscalafon.getRawValue() | json }}
+
+</div>
+</div>

@@ -1,0 +1,233 @@
+<vex-page-layout>
+
+  <div class="p-gutter">
+    <div class="card overflow-hidden">
+      <div class="px-6 py-4 border-b flex items-center">
+        <h2 class="title m-0">Grupos del docente</h2>
+      </div>
+      <div class="card-body">
+        <div class="mt-16 mb-16 py-4 px-gutter">
+
+          <h2 class="display-2 mt-0 mb-4 text-center">
+            <strong>BIENVENIDO</strong>, <br>
+            </h2>
+            <h2 class="display-2 mt-0 mb-4 text-center">
+               <strong>{{this.datosSesion.nombre}}</strong>, a continuación se muestran los grupos que tiene asignados, correspondientes  al periodo <strong>{{ gruposDocenteModel.periodo.periodo }}, {{ (gruposDocenteModel.periodo.inicio  | date: 'dd/MM/yyyy') + ' - ' + (gruposDocenteModel.periodo.fin | date: 'dd/MM/yyyy')}}</strong> del ciclo escolar <strong>{{ gruposDocenteModel.periodo.cicloEscolar}}</strong>
+            </h2>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <div class="card overflow-hidden">
+      <!-- <div class="px-6 py-4 border-b flex items-center">
+        <h2 class="title m-0">Llene el siguiente formulario</h2>
+      </div> -->
+      <div class="card-body">
+        <div class="mt-16 mb-16 py-4 px-gutter">
+
+          <!-- <div class="example-action-buttons">
+            <button mat-button (click)="accordion.openAll()"><strong>Ver todos los semestres</strong></button>
+            <button mat-button (click)="accordion.closeAll()"><strong>Minimizar todo</strong></button>
+          </div> -->
+          <br>
+
+          <mat-accordion class="example-headers-align" multi #miAcordeon>
+            <!-- <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Personal data
+                </mat-panel-title>
+                <mat-panel-description>
+                  Type your name and age
+                  <mat-icon>account_circle</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <mat-form-field appearance="fill">
+                <mat-label>First name</mat-label>
+                <input matInput>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Age</mat-label>
+                <input matInput type="number" min="1">
+              </mat-form-field>
+
+            </mat-expansion-panel> -->
+
+            <mat-expansion-panel *ngFor="let semestre of gruposDocenteModel.semestresDocente ">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <strong>{{semestre.semestre}}</strong>
+                </mat-panel-title>
+                <!-- <mat-panel-description>
+                  Type your name and age
+                  <mat-icon>account_circle</mat-icon>
+                </mat-panel-description> -->
+              </mat-expansion-panel-header>
+              <div>
+                <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                  <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                    <table class="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            GRUPO
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            MATERIA
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            SEMESTRE
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            ACCIONES
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let grupo of semestre.grupos">
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                                <div class="ml-3">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{grupo.grupo}}
+                                  </p>
+                                </div>
+                              </div>
+                          </td>
+
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                              {{grupo.materia}}
+                            </p>
+                          </td>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                              {{grupo.semestre}}
+                            </p>
+                          </td>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <!-- <span
+                                                  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                  <span aria-hidden
+                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                            <span class="relative">Activo</span>
+                            </span> -->
+                            <div class="flex">
+                              <a (click)="abrirModalCalificacionesAlumnos(grupo)"
+                              matTooltip="Cargar calificaciones"
+                              class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10"
+                              mat-icon-button>
+                              <mat-icon class="icon-sm" svgIcon="mat:control_point"></mat-icon>
+                              </a>
+                          </div>
+
+                          </td>
+                        </tr>
+                        <!-- <tr>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                              <div class="flex-shrink-0 w-10 h-10">
+                                <img class="w-full h-full rounded-full"
+                                                          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                          alt="" />
+                                                  </div>
+                                <div class="ml-3">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    Blake Bowman
+                                  </p>
+                                </div>
+                              </div>
+                          </td>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                              Jan 01, 2020
+                            </p>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                              77
+                            </p>
+                          </td>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <span
+                                                  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                  <span aria-hidden
+                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                            <span class="relative">Activo</span>
+                            </span>
+                          </td>
+                        </tr> -->
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- <table class="table w-full mt-10">
+                <thead>
+                <tr>
+                  <td class="body-2 text-secondary">SERVICE</td>
+                  <td class="body-2 text-secondary">PRICE PER</td>
+                  <td class="body-2 text-secondary">UNIT</td>
+                  <td class="body-2 text-secondary">QUANTITY</td>
+                  <td class="body-2 text-secondary text-right">TOTAL</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="py-6 border-b">New Dashboard Prototype, Design & Code</td>
+                  <td class="py-6 border-b">$35.00</td>
+                  <td class="py-6 border-b">Hour</td>
+                  <td class="py-6 border-b">40</td>
+                  <td class="py-6 border-b font-medium text-right">$1,400.00</td>
+                </tr>
+
+                <tr>
+                  <td class="py-6 border-b">Graphic Pack - Monthly Subscription (includes Updates)</td>
+                  <td class="py-6 border-b">$49.99</td>
+                  <td class="py-6 border-b">User</td>
+                  <td class="py-6 border-b">5</td>
+                  <td class="py-6 border-b font-medium text-right">$249.95</td>
+                </tr>
+
+                <tr>
+                  <td class="py-6 border-b">Logo & Branding Pack</td>
+                  <td class="py-6 border-b">$499.99</td>
+                  <td class="py-6 border-b">Piece</td>
+                  <td class="py-6 border-b">1</td>
+                  <td class="py-6 border-b font-medium text-right">$499.99</td>
+                </tr>
+
+                <tr>
+                  <td class="py-6 border-b">Bug Fixes</td>
+                  <td class="py-6 border-b">$15.00</td>
+                  <td class="py-6 border-b">Hour</td>
+                  <td class="py-6 border-b">10</td>
+                  <td class="py-6 border-b font-medium text-right">$150.00</td>
+                </tr>
+                </tbody>
+              </table> -->
+
+            </mat-expansion-panel>
+          </mat-accordion>
+
+
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</vex-page-layout>
+

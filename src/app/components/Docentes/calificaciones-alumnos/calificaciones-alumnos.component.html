@@ -1,0 +1,141 @@
+<div mat-dialog-title class="flex items-center justify-between">
+  <div>Calificaciones Alumnos</div>
+  <button type="button" mat-icon-button (click)="close(false)" tabindex="-1">
+    <mat-icon svgIcon="mat:close"></mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <form [formGroup]="FormularioCalificaciones2">
+
+    <div>
+      <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+        <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+          <table class="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  ALUMNO
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  MATERIA
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  PRIMER PARCIAL
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  SEGUNDO PARCIAL
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  TERCER PARCIAL
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  ACCIONES
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngIf="Calificaciones_.value.length == 0" >
+                <td colspan="6">NO SE ENCONTRARON ALUMNOS</td>
+              </tr>
+              <ng-container formArrayName="Calificaciones">
+                <ng-container
+                *ngFor="let Calificacion of Calificaciones_.controls; let i= index"
+                >
+                <tr [formGroupName]="i">
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    {{Calificacion.get('alumno').value}}
+                  </td>
+
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    {{Calificacion.get('materia').value}}
+                  </td>
+
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <div class="flex items-center">
+                      <div class="ml-3">
+                        <mat-form-field  class="flex-auto mt-5">
+                          <mat-label>Calificación</mat-label>
+                          <input currencyMask [options]="{ prefix: '', thousands: '', decimal: '.', precision: 2 }"  [min]="0.00" [max]="10.00"  matInput formControlName="primer_parcial">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <div class="flex items-center">
+                      <div class="ml-3">
+                        <mat-form-field  class="flex-auto mt-5">
+                          <mat-label>Calificación</mat-label>
+                          <input currencyMask [options]="{ prefix: '', thousands: '', decimal: '.', precision: 2 }"  [min]="0.00" [max]="10.00"  matInput formControlName="segundo_parcial">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <div class="flex items-center">
+                      <div class="ml-3">
+                        <mat-form-field  class="flex-auto mt-5">
+                          <mat-label>Calificación</mat-label>
+                          <input currencyMask [options]="{ prefix: '', thousands: '', decimal: '.', precision: 2 }"  [min]="0.00" [max]="10.00"  matInput formControlName="tercer_parcial">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <div class="flex items-center">
+                      <!-- <div class="ml-3"> -->
+                        <button (click)="guardarCalificacion(Calificacion.value)" matTooltip="Guardar calificación" [disabled]="Calificacion.invalid" color="primary"
+                        mat-button>
+                          <mat-icon class="icon-sm mt-2 mb-2" svgIcon="mat:save"></mat-icon>
+                        </button>
+                        <!-- <a (click)="guardarCalificacion(Calificacion.value)" [disabled]="Calificacion.invalid" matTooltip="Guardar calificación"
+                        class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
+                        mat-icon-button>
+                        <mat-icon class="icon-sm" svgIcon="mat:save"></mat-icon>
+                      </a> -->
+                     <!--  </div> -->
+                    </div>
+                  </td>
+                </tr>
+                </ng-container>
+              </ng-container>
+
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+
+
+<!--     <div class="actions flex items-center justify-end gap-2">
+      <button
+
+      color="primary"
+      mat-raised-button
+      matStepperNext
+      [disabled]="this.FormularioCalificaciones2.invalid"
+
+    >
+      Enviar Calificaciones
+    </button>
+    </div> -->
+    </form>
+
+<!--     <div>
+      {{this.FormularioCalificaciones2.getRawValue() | json}}
+      </div> -->
+
+</mat-dialog-content>
+
+
+
+
+

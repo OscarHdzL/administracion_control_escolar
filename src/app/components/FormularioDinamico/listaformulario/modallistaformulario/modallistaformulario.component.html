@@ -1,0 +1,53 @@
+<form #f="ngForm" (ngSubmit)="save(f)" novalidate>
+    <div class="flex items-center" mat-dialog-title>
+      <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Agregar Formulario</h2>
+      <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto">Editar Formulario</h2>
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon svgIcon="mat:close"></mat-icon>
+      </button>
+    </div>
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+    <mat-dialog-content class="flex flex-col">
+      <mat-form-field class="flex-auto">
+        <mat-label>Nombre del formulario</mat-label>
+        <input name="nombre" type="text" id="nombre" aria-describedby="emailHelp" placeholder="Nombre Formulario" style="width: 100%;"
+        [(ngModel)]="formulario.formulario" pattern="{{ex.numerosYLetras}}"
+        name="inputNombre" ngModel #inputNombre="ngModel" required  matInput>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:list_alt"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputNombre.invalid && inputNombre.errors?.required && inputNombre.touched">Campo Requerido</small>
+          <small *ngIf="inputNombre.invalid && inputNombre.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="flex-auto">
+            <mat-label >Oferta Academica</mat-label>
+            <mat-select name="oferta" id="oferta" placeholder="Oferta Educativa" style="width: 100%;"
+            [(ngModel)]="this.formulario.catOfertaeducativaId" name="inputOpcion" ngModel #inputOferta="ngModel" required matInput>
+                <mat-option *ngFor="let oferta of listaOfertaEducativa" [value]="oferta.id">
+                    {{oferta.ofertaEducativa}}
+                </mat-option>
+            </mat-select>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputOferta.invalid && inputOferta.errors?.required && inputOferta.touched">Campo Requerido</small>
+            </div>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="flex-auto">
+            <mat-label>Descripción</mat-label>
+            <textarea  name="descripcion" type="text" id="descripcion" placeholder="Ingresa una descripción" style="width: 100%;"
+            [(ngModel)]="this.formulario.descripcion"
+            name="inputDescripcion" ngModel #inputDescripcion="ngModel" required matInput></textarea>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputDescripcion.invalid && inputDescripcion.errors?.required && inputDescripcion.touched">Campo Requerido</small>
+            </div>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">Cancelar</button>
+      <button *ngIf="this.objeto == 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid">Agregar</button>
+      <button *ngIf="this.objeto != 0" color="primary" mat-flat-button type="submit">Actualizar</button>
+    </mat-dialog-actions>
+  </form>

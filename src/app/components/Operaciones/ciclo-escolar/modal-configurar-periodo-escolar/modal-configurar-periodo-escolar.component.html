@@ -1,0 +1,131 @@
+<form #f="ngForm" (ngSubmit)="save(f)" novalidate>
+    <div class="flex items-center" mat-dialog-title>
+        <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Configurar Periodos</h2>
+
+      <button></button>
+      <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon svgIcon="mat:close"></mat-icon>
+      </button>
+    </div>
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+        <mat-form-field class="flex-auto">
+          <mat-label>Fecha Inicio</mat-label>
+          <input matInput [matDatepicker]="picker1" placeholder="Ej. 10/10/2000"
+                    [(ngModel)]="modalFormulario.inicio" name="inputNombre" ngModel #inputNombre="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputNombre.invalid && inputNombre.errors?.required && inputNombre.touched">Campo Requerido</small>
+            </div>
+        </mat-form-field>
+        <mat-form-field class="flex-auto">
+          <mat-label>Fecha Fin</mat-label>
+          <input matInput [matDatepicker]="picker2" placeholder="Ej. 10/10/2000"
+                    [(ngModel)]="modalFormulario.fin" name="inputNombre2" ngModel #inputNombre2="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputNombre2.invalid && inputNombre2.errors?.required && inputNombre2.touched">Campo Requerido</small>
+            </div>
+        </mat-form-field>
+        <div class="flex-auto">
+          <mat-slide-toggle color="primary" [checked]="modalFormulario.vigente" (change)="onToggle($event,1)" >Estatus</mat-slide-toggle>
+          <div class="row d-flex justify-content-center">
+            <p >{{modalFormulario.vigente==true?"Vigente":"Programado"}}</p>
+          </div>
+        </div>
+        <div class="flex-auto">
+          <mat-slide-toggle color="primary" [checked]="modalFormulario.periodo" (change)="onToggle($event,2)" >Periodo</mat-slide-toggle>
+          <div class="row d-flex justify-content-center">
+            <p >{{modalFormulario.periodo==true?"Par":"Non"}}</p>
+          </div>
+        </div>
+        <button *ngIf="tFormulario==false" class="mt-3" (click)="agregarOpcion(false)"  color="primary" mat-icon-button type="button" matTooltip="Agregar Periodo"><mat-icon svgIcon="mat:add"></mat-icon></button>
+        <button *ngIf="tFormulario==true" class="mt-3" (click)="agregarOpcion(true)"  color="primary" mat-icon-button type="button" matTooltip="Editar Periodo"><mat-icon svgIcon="mat:edit"></mat-icon></button>
+
+        <!-- <mat-form-field class="flex-auto ml-3">
+            <mat-label>Espacio Academico</mat-label>
+            <mat-select ame="espacio" type="text" id="espacio" placeholder="Ej. Salon" style="width: 50%;"
+            [(ngModel)]="modalFormulario.espacio" name="inputEspacio" ngModel #inputEspacio="ngModel" required  matInput            >
+              <mat-option
+                *ngFor="let oferta of listaTiposRespuesta"
+                [value]="oferta.id"
+              >
+                {{ oferta.espacio }}
+              </mat-option>
+            </mat-select>
+            <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputEspacio.invalid && inputEspacio.errors?.required && inputEspacio.touched">Campo Requerido</small>
+                <small *ngIf="inputEspacio.invalid && inputEspacio.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+            </div>
+          </mat-form-field> -->
+          
+    </mat-dialog-content>
+    <table [dataSource]="this.dataSource" class="w-full" mat-table matSort>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property== 'fechaI'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.inicio }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property== 'fechaF'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fin }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property== 'estatus'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.vigente==true?"Vigente":"Finalizado" }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              <!--*ngIf="row.estatus == 'Vigente'"-->
+              <div class="flex" *ngIf="row.vigente == true">
+                <!--{{row.vigente}}-->
+                <a (click)="openParcialModalCreate(row)" matTooltip="Cambiar estatus"
+                  class="w-10 h-10 leading-none flex items-center justify-center  hover:bg-hover text-teal bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:lock"></mat-icon>
+                </a>
+                <a (click)="openCicliModalCreate(1,row)" matTooltip="Editar Periodo"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2  hover:bg-hover text-primary bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+                </a>
+              </div>
+              <div class="flex" *ngIf="row.vigente == false">
+                <a *ngIf="row.vigente == true" (click)="openParcialModalCreate(row)" matTooltip="Cambiar estatus"
+                  class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:lock_open"></mat-icon>
+                </a>
+                <a (click)="openCicliModalCreate(2,row)" matTooltip="Editar Periodo"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+                </a>
+                
+              </div>
+            </td>
+          </ng-container>
+        </ng-container>
+
+        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: visibleColumns;" class="hover:bg-hover trans-ease-out cursor-pointer" mat-row>
+        </tr>
+      </table>
+      <mat-paginator #paginator [pageSizeOptions]="[5,20,40,80,100]"></mat-paginator>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">Cancelar</button>
+    </mat-dialog-actions>
+  </form>
+

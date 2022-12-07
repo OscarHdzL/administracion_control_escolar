@@ -1,0 +1,539 @@
+<vex-page-layout>
+  <div class="p-gutter m-2">
+    <div class="card overflow-auto mt-2">
+      <div
+        class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center"
+      >
+        <h2
+          class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none"
+        >
+          Registro de Docentes
+        </h2>
+        <span class="flex-1"></span>
+        <button
+          (click)="irAdocentes()"
+          class="ml-4 flex-none"
+          color="primary"
+          mat-mini-fab
+          matTooltip="Regresar"
+          type="button"
+        >
+          <mat-icon svgIcon="mat:keyboard_arrow_left"></mat-icon>
+        </button>
+      </div>
+    </div>
+    <form
+      role="form"
+      [formGroup]="formDocente"
+      (ngSubmit)="enviar()"
+      novalidate
+    >
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Datos Personales </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="mt-4 flex flex-col gap-2">
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>CURP</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="curp"
+                  maxlength="18" (focusout)="onFocusOutEvent($event)"
+                />
+                <mat-error *ngIf="this.curp.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+                <mat-error *ngIf="this.curp.hasError('pattern')"
+                  >Ingrese un curp válido</mat-error
+                >
+              </mat-form-field>
+              <div class="flex-auto">
+                <button
+                *ngIf="!this.param"
+                  type="button"
+                  mat-mini-fab
+                  color="primary"
+                  [disabled]="this.curp.invalid"
+                  (click)="validarCURP()"
+                >
+                  <mat-icon>search</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>Apellido Paterno</mat-label>
+                <input type="text" matInput formControlName="apPaterno" />
+                <mat-error *ngIf="this.apPaterno.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Apellido Materno</mat-label>
+                <input type="text" matInput formControlName="apMaterno" />
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput formControlName="nombre" />
+                <mat-error *ngIf="this.nombre.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>País</mat-label>
+                <mat-select formControlName="pais">
+                  <mat-option
+                    [value]="pais.id"
+                    *ngFor="let pais of listaPaises"
+                    >{{ pais.nombre }}</mat-option
+                  >
+                </mat-select>
+                <mat-error *ngIf="this.pais.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>C.P</mat-label>
+                <input type="text" matInput formControlName="cp" />
+                <button
+                  *ngIf="this.datosGeneralesHabilitados"
+                  [disabled]="this.param || this.cp.invalid"
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Buscar código postal"
+                  type="button"
+                  (click)="buscarCP()"
+                >
+                  <mat-icon svgIcon="mat:search"></mat-icon>
+                </button>
+                <mat-error *ngIf="this.cp.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+                <mat-error *ngIf="this.cp.hasError('pattern')"
+                  >Introduzca un código postal válido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Estado</mat-label>
+                <!-- <mat-select formControlName="estado">
+                  <mat-option [value]="1">New York</mat-option>
+                  <mat-option [value]="2">Washington</mat-option>
+                  <mat-option [value]="3">Florida</mat-option>
+                </mat-select> -->
+                <input type="text" matInput formControlName="estado" />
+                <mat-error *ngIf="this.estado.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Municipio/Delegación</mat-label>
+                <!-- <mat-select formControlName="municipio">
+                  <mat-option [value]="1">New York</mat-option>
+                  <mat-option [value]="2">Washington</mat-option>
+                  <mat-option [value]="3">Florida</mat-option>
+                </mat-select> -->
+                <input type="text" matInput formControlName="municipio" />
+                <mat-error *ngIf="this.municipio.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Colonia</mat-label>
+                <!-- <input type="text" matInput formControlName="colonia"> -->
+                <mat-select formControlName="colonia">
+                  <mat-option
+                    [value]="ubicacion.id"
+                    *ngFor="let ubicacion of listaUbicaciones"
+                    >{{ ubicacion.colonia }}</mat-option
+                  >
+                </mat-select>
+                <mat-error *ngIf="this.colonia.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>Calle</mat-label>
+                <input type="text" matInput formControlName="calle" />
+                <mat-error *ngIf="this.calle.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <div class="flex-auto flex gap-2">
+                <mat-form-field class="vex-flex-form-field flex-auto">
+                  <mat-label>No. Exterior</mat-label>
+                  <input type="text" matInput formControlName="numExterior" />
+                  <mat-error *ngIf="this.numExterior.hasError('required')"
+                    >El campo es requerido</mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field class="vex-flex-form-field flex-auto">
+                  <mat-label>No. Interior</mat-label>
+                  <input type="text" matInput formControlName="numInterior" />
+                  <mat-error *ngIf="this.numInterior.hasError('required')"
+                    >El campo es requerido</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <label>Correo institucional/usuario acceso*</label>
+            </div>
+            <div class="flex flex-col sm:flex-row ">
+              <mat-form-field class="flex-auto">
+                <mat-label>nota :EL correo solo podrá ser modificado por mesa de servicio</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="emailInstitucional"
+                  
+                />
+                
+                <mat-error *ngIf="this.emailInstitucional.hasError('required')"
+                  >El campo es requerido</mat-error>
+                <mat-error
+                  *ngIf="this.emailInstitucional.hasError('email')"
+                  >Ingrese una dirección de correo válida, ya que se le enviará
+                  su acceso a la plataforma.</mat-error
+                >
+                
+              </mat-form-field>
+           
+            </div>
+
+            <!-- <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>Tipo Telefono</mat-label>
+                <mat-select formControlName="tipoTelefono">
+                  <mat-option [value]="tipo.id" *ngFor="let tipo of listaTipoContacto">{{tipo.tipoContacto}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="this.tipoTelefono.hasError('required')">El campo es requerido</mat-error>
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Número</mat-label>
+                <input type="number" matInput formControlName="numero">
+                <mat-error *ngIf="this.numero.hasError('required')">El campo es requerido</mat-error>
+              </mat-form-field>
+              <div class="flex-auto">
+                <button type="button" mat-icon-button matTooltip="Agregar contacto">
+                  <mat-icon>save_alt</mat-icon>
+                </button>
+              </div>
+              <mat-form-field class="flex-auto">
+                <mat-label>Turno</mat-label>
+                <input type="text" matInput formControlName="turno">
+                <mat-error *ngIf="this.turno.hasError('required')">El campo es requerido</mat-error>
+              </mat-form-field>
+            </div> -->
+          </div>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Contactos </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <form [formGroup]="FormularioContacto">
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="vex-flex-form-field flex-auto">
+                <mat-label>Tipo de contacto</mat-label>
+                <mat-select formControlName="tipoContacto">
+                  <mat-option
+                    [value]="tipo.id"
+                    *ngFor="let tipo of listaTipoContacto"
+                    >{{ tipo.tipo }}</mat-option
+                  >
+                </mat-select>
+                <mat-error
+                  *ngIf="
+                    FormularioContacto.get('tipoContacto').hasError('required')
+                  "
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+
+              <mat-form-field class="vex-flex-form-field flex-auto">
+                <mat-label>Contacto</mat-label>
+                <input formControlName="contacto" matInput />
+                <mat-error
+                  *ngIf="
+                    FormularioContacto.get('contacto').hasError('required')
+                  "
+                  >El campo es requerido</mat-error
+                >
+                <mat-error
+                  *ngIf="FormularioContacto.get('contacto').hasError('email')"
+                  >Ingrese una dirección de correo válida, ya que se le enviará
+                  su acceso a la plataforma.</mat-error
+                >
+              </mat-form-field>
+
+              <button
+                mat-icon-button
+                matTooltip="Agregar contacto"
+                [disabled]="FormularioContacto.invalid"
+                (click)="agregarContacto()"
+              >
+                <mat-icon class="green-icon">add_circle</mat-icon>
+              </button>
+            </div>
+          </form>
+
+          <div class="flex flex-col">
+            <table
+              mat-table
+              [dataSource]="dataSource"
+              class="mat-elevation-z8"
+              #tablaContacto
+            >
+            <ng-container matColumnDef="tipoContacto">
+              <th mat-header-cell *matHeaderCellDef>
+                Tipo Contacto.
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [ngClass]="['font-medium']"
+              >
+                {{ element.tipo }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="contacto">
+              <th mat-header-cell *matHeaderCellDef>Contacto</th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [ngClass]="['font-medium']"
+              >
+                {{ element.contacto }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [ngClass]="['text-secondary', 'font-medium']"
+              >
+              <div class="flex">
+                <a
+                  (click)="eliminarContacto(element)"
+                  matTooltip="Eliminar contacto"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                  mat-icon-button
+                >
+                  <mat-icon
+                    class="icon-sm"
+                    svgIcon="mat:delete"
+                  ></mat-icon>
+                </a>
+              </div>
+              </td>
+            </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Datos Académicos </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="mt-4 flex flex-col gap-2">
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>Categoría</mat-label>
+                <mat-select formControlName="categoria">
+                  <mat-option
+                    [value]="categoria.id"
+                    *ngFor="let categoria of listaCategoriasAcademico"
+                    >{{ categoria.categoriaAcademico }}</mat-option
+                  >
+                </mat-select>
+                <mat-error *ngIf="this.categoria.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Tipo Contratación</mat-label>
+                <mat-select formControlName="tipoContratacion">
+                  <mat-option
+                    [value]="tipo.id"
+                    *ngFor="let tipo of listaTipoContratacion"
+                    >{{ tipo.tipoContratacion }}</mat-option
+                  >
+                </mat-select>
+                <mat-error *ngIf="this.tipoContratacion.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Nivel Academico</mat-label>
+                <mat-select formControlName="nivelAcademico">
+                  <mat-option
+                    [value]="nivel.id"
+                    *ngFor="let nivel of listaNivelAcademico"
+                    >{{ nivel.nivelAcademico }}</mat-option
+                  >
+                </mat-select>
+                <mat-error *ngIf="this.nivelAcademico.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <div class="flex-auto">
+                <p class="mt-0 mb-4 text-secondary">Tiene ASignación</p>
+                <div class="flex flex-col gap-4">
+                  <mat-radio-group
+                    class="flex gap-4"
+                    formControlName="tieneAsignacion"
+                  >
+                    <mat-radio-button [value]="true" color="primary"
+                      >Si</mat-radio-button
+                    >
+                    <mat-radio-button [value]="false" color="warn"
+                      >No</mat-radio-button
+                    >
+                  </mat-radio-group>
+                </div>
+              </div>
+              <mat-form-field class="flex-auto">
+                <mat-label>Pefil Académico</mat-label>
+                <mat-select formControlName="perfilAcademico">
+                  <mat-option
+                    [value]="perfil.id"
+                    *ngFor="let perfil of listaPerfilAcademico"
+                    >{{ perfil.perfilAcademico }}</mat-option
+                  >
+                </mat-select>
+                <mat-error *ngIf="this.perfilAcademico.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Departamento</mat-label>
+                <mat-select formControlName="departamento">
+                  <mat-option
+                    [value]="departamento.id"
+                    *ngFor="let departamento of listaDepartamentoEned"
+                    >{{ departamento.departamento }}</mat-option
+                  >
+                </mat-select>
+                <mat-error *ngIf="this.departamento.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Disponibilidad de Docente </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="mt-4 flex flex-col gap-2">
+            <div class="row">
+              <label>Horario Laboral *</label>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>De: </mat-label>
+                <input
+                  matInput
+                  formControlName="horaInicio"
+                  type="time"
+                  step="1"
+                />
+                <mat-error *ngIf="this.horaInicio.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>A: </mat-label>
+                <input
+                  matInput
+                  formControlName="horaFin"
+                  type="time"
+                  step="1"
+                />
+                <mat-error *ngIf="this.horaFin.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <mat-form-field class="flex-auto">
+                <mat-label>Horas Nombramiento</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="horasNombramiento"
+                />
+                <mat-error *ngIf="this.horasNombramiento.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Horas Frente al Grupo</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="horasFrenteGrupo"
+                />
+                <mat-error *ngIf="this.horasFrenteGrupo.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="flex-auto">
+                <mat-label>Horas de Descarga Academica</mat-label>
+                <input type="text" matInput formControlName="horasDescarga" />
+                <mat-error *ngIf="this.horasDescarga.hasError('required')"
+                  >El campo es requerido</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+
+        </mat-expansion-panel>
+        <div class="row" style="margin-top: 15px">
+          <button type="button" mat-stroked-button color="warn" (click)="irAdocentes()">Cancelar</button>
+          <button
+            type="submit"
+            mat-stroked-button
+            color="primary"
+            *ngIf="this.param"
+            [disabled]="formDocente.invalid"
+            (click)="actualizarDocente()"
+          >
+            Actualizar
+          </button>
+          <button
+            type="submit"
+            mat-stroked-button
+            color="primary"
+            *ngIf="!this.param"
+            [disabled]="formDocente.invalid"
+            (click)="altaDocente()"
+          >
+            Enviar
+          </button>
+        </div>
+      </mat-accordion>
+
+    </form>
+  </div>
+</vex-page-layout>

@@ -1,0 +1,75 @@
+<form #f="ngForm" (ngSubmit)="save(f)" novalidate>
+    <div class="flex items-center " mat-dialog-title>
+        <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Agregar Ciclo Escolar</h2>
+        <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto">Editar Ciclo Escolar</h2>
+
+      <button></button>
+      <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon svgIcon="mat:close"></mat-icon>
+      </button>
+    </div>
+    <mat-divider class="-mx-6 text-border mb-4"></mat-divider>
+
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+        <mat-form-field class="flex-auto">
+          <mat-label>Fecha Inicio</mat-label>
+          <input matInput [matDatepicker]="picker1" 
+                    [(ngModel)]="modalFormulario2.inicio" name="inputNombre" ngModel #inputNombre="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputNombre.invalid && inputNombre.errors?.required && inputNombre.touched">Campo Requerido</small>
+            </div>
+          </mat-form-field>
+        
+        <mat-form-field class="flex-auto">
+          <mat-label>Fecha Fin</mat-label>
+          <input matInput [matDatepicker]="picker2" 
+                    [(ngModel)]="modalFormulario2.fin" name="inputNombre2" ngModel #inputNombre2="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputNombre2.invalid && inputNombre2.errors?.required && inputNombre2.touched">Campo Requerido</small>
+            </div>
+        </mat-form-field>
+        <div class="flex-auto">
+          <mat-slide-toggle color="primary" [checked]="modalFormulario2.vigente" (change)="onToggle($event)" >Estatus</mat-slide-toggle>
+          <div class="row d-flex justify-content-center">
+            <p >{{modalFormulario2.vigente==true?"Vigente":"Programado"}}</p>
+          </div>
+        </div>
+        <div class="flex-auto">
+          <mat-slide-toggle color="primary" [checked]="modalFormulario2.periodo" (change)="onToggle($event)" >Periodo</mat-slide-toggle>
+          <div class="row d-flex justify-content-center">
+            <p >{{modalFormulario2.periodo==true?"Par":"Non"}}</p>
+          </div>
+        </div>
+
+        <!-- <mat-form-field class="flex-auto ml-3">
+            <mat-label>Espacio Academico</mat-label>
+            <mat-select ame="espacio" type="text" id="espacio" placeholder="Ej. Salon" style="width: 50%;"
+            [(ngModel)]="modalFormulario2.espacio" name="inputEspacio" ngModel #inputEspacio="ngModel" required  matInput            >
+              <mat-option
+                *ngFor="let oferta of listaTiposRespuesta"
+                [value]="oferta.id"
+              >
+                {{ oferta.espacio }}
+              </mat-option>
+            </mat-select>
+            <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+            <div class="row d-flex justify-content-center">
+                <small  *ngIf="inputEspacio.invalid && inputEspacio.errors?.required && inputEspacio.touched">Campo Requerido</small>
+                <small *ngIf="inputEspacio.invalid && inputEspacio.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+            </div>
+          </mat-form-field> -->
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">Cancelar</button>
+      <button *ngIf="this.objeto == 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Guardar</button>
+      <button *ngIf="this.objeto != 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Actualizar</button>
+    </mat-dialog-actions>
+  </form>
+
+
+

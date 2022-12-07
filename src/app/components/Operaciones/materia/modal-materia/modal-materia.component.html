@@ -1,0 +1,140 @@
+<form #f="ngForm" (ngSubmit)="save(f)" novalidate>
+    <div class="flex items-center" mat-dialog-title>
+      <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Agregar Asignatura Base</h2>
+      <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto">Editar Asignatura Base</h2>
+
+      <button></button>
+      <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon svgIcon="mat:close"></mat-icon>
+      </button>
+    </div>
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4" *ngIf="this.objeto == 0">
+      <mat-form-field class="flex-auto">
+        <mat-label>Plan de Estudios</mat-label>
+        <mat-select name="plan" type="text" id="plan" placeholder="Seleccione una opcion" (valueChange)="changePlan($event)"
+        [(ngModel)]="modalFormulario.idPlanEstudio" name="inputPlan" ngModel #inputPlan="ngModel" required  matInput>
+          <mat-option *ngFor="let plan of catPlanes" [value]="plan.id">{{ plan.inicio | date: 'dd/MM/yyyy'  }} - {{plan.carrera}}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputPlan.invalid && inputPlan.errors?.required && inputPlan.touched">Campo Requerido</small>
+          <small *ngIf="inputPlan.invalid && inputPlan.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="flex-auto">
+        <mat-label>Semestre</mat-label>
+        <mat-select ame="semestre" type="text" id="semestre" placeholder="Seleccione una opcion"
+        [(ngModel)]="modalFormulario.idSemestre" name="inputSemestre" ngModel #inputSemestre="ngModel" required  matInput>
+          <mat-option *ngFor="let semestre of semestres" [value]="semestre.semestre">{{ semestre.semestre }}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputSemestre.invalid && inputSemestre.errors?.required && inputSemestre.touched">Campo Requerido</small>
+          <small *ngIf="inputSemestre.invalid && inputSemestre.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>      
+    </mat-dialog-content>
+
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4" *ngIf="this.objeto != 0">
+      <mat-form-field class="flex-auto">
+        <mat-label>Plan de Estudios</mat-label>
+        <mat-select name="plan" type="text" id="plan" placeholder="Seleccione una opcion" (valueChange)="changePlan($event)"
+        [(ngModel)]="modalFormulario.idPlanEstudio" name="inputPlan" ngModel #inputPlan="ngModel" required  matInput [disabled]="true">
+          <mat-option *ngFor="let plan of catPlanes" [value]="plan.id">{{ plan.inicio | date: 'dd/MM/yyyy' }} - {{plan.carrera}}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputPlan.invalid && inputPlan.errors?.required && inputPlan.touched">Campo Requerido</small>
+          <small *ngIf="inputPlan.invalid && inputPlan.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="flex-auto">
+        <mat-label>Semestre</mat-label>
+        <mat-select ame="semestre" type="text" id="semestre" placeholder="Seleccione una opcion"
+        [(ngModel)]="modalFormulario.idSemestre" name="inputSemestre" ngModel #inputSemestre="ngModel" required  matInput [disabled]="true">
+          <mat-option *ngFor="let semestre of semestres" [value]="semestre.semestre">{{ semestre.semestre }}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputSemestre.invalid && inputSemestre.errors?.required && inputSemestre.touched">Campo Requerido</small>
+          <small *ngIf="inputSemestre.invalid && inputSemestre.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>      
+    </mat-dialog-content>
+
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+      <mat-form-field class="flex-auto">
+        <mat-label>Materia</mat-label>
+        <input name="materia" type="text" id="materia" aria-describedby="emailHelp" placeholder="Ej. Español"
+        [(ngModel)]="modalFormulario.materia" name="inputMateria" ngModel #inputMateria="ngModel" required  matInput pattern="{{ex.numerosYLetras}}">
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputMateria.invalid && inputMateria.errors?.required && inputMateria.touched">Campo Requerido</small>
+          <small *ngIf="inputMateria.invalid && inputMateria.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="flex-auto  ">
+        <mat-label>Abreviatura</mat-label>
+        <input name="abreviatura" type="text" id="opcion" placeholder="Ej. ES"
+        [(ngModel)]="modalFormulario.abreviatura" pattern="{{ex.numerosYLetras}}"
+        name="inputAbreviatura" ngModel #inputAbreviatura="ngModel" required matInput>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputAbreviatura.invalid && inputAbreviatura.errors?.required && inputAbreviatura.touched">Campo Requerido</small>
+          <small *ngIf="inputAbreviatura.invalid && inputAbreviatura.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+      <mat-form-field class="flex-auto">
+        <mat-label>Rama</mat-label>
+        <mat-select ame="rama" type="text" id="rama" placeholder="Seleccione una opcion"
+        [(ngModel)]="modalFormulario.catRamaId" name="inputRama" ngModel #inputRama="ngModel" required  matInput>
+          <mat-option *ngFor="let rama of catRamas" [value]="rama.id">{{ rama.rama }}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputRama.invalid && inputRama.errors?.required && inputRama.touched">Campo Requerido</small>
+          <small *ngIf="inputRama.invalid && inputRama.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="flex-auto">
+        <mat-label>Espacio Academico</mat-label>
+        <mat-select ame="espacio" type="text" id="espacio" placeholder="Seleccione una opcion"
+        [(ngModel)]="modalFormulario.catEspaciosAcademicosId" name="inputEspacio" ngModel #inputEspacio="ngModel" required  matInput>
+          <mat-option *ngFor="let espacio of catEspacios" [value]="espacio.id">{{ espacio.espacio }}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputEspacio.invalid && inputEspacio.errors?.required && inputEspacio.touched">Campo Requerido</small>
+          <small *ngIf="inputEspacio.invalid && inputEspacio.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>      
+    </mat-dialog-content>
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+      <mat-form-field class="flex-auto  ">
+        <mat-label>Creditos</mat-label>
+        <input name="creditos" type="number" id="creditos" placeholder="Ej. 10"
+        [(ngModel)]="modalFormulario.creditos" pattern="{{ex.numeros}}"
+        name="inputCreditos" ngModel #inputCreditos="ngModel" required matInput>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputCreditos.invalid && inputCreditos.errors?.required && inputCreditos.touched">Campo Requerido</small>
+          <small *ngIf="inputCreditos.invalid && inputCreditos.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+      <div class="flex-auto">
+        <mat-slide-toggle color="primary" [checked]="this.modalFormulario.base" (change)="onToggle($event)" >Base</mat-slide-toggle>
+        <div class="row d-flex justify-content-center">
+          <p >{{modalFormulario.estatus}}</p>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">Cancelar</button>
+      <button *ngIf="this.objeto == 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid">Guardar</button>
+      <button *ngIf="this.objeto != 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid">Actualizar</button>
+    </mat-dialog-actions>
+  </form>

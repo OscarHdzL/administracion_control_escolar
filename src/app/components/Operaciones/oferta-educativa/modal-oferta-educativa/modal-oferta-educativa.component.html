@@ -1,0 +1,44 @@
+<form #f="ngForm" (ngSubmit)="save(f)" novalidate>
+    <div class="flex items-center" mat-dialog-title>
+        <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Agregar Oferta Educativa</h2>
+        <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto">Editar Oferta Educativa</h2>
+
+      <button></button>
+      <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon svgIcon="mat:close"></mat-icon>
+      </button>
+    </div>
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+      <mat-form-field class="flex-auto">
+        <mat-label>Semestre</mat-label>
+        <input name="semestre" type="text" id="semestre" aria-describedby="emailHelp" placeholder="Ej. 6to"
+        [(ngModel)]="modalFormulario.semestre" name="inputSemestre" ngModel #inputSemestre="ngModel" required  matInput pattern="{{ex.numerosYLetras}}">
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputSemestre.invalid && inputSemestre.errors?.required && inputSemestre.touched">Campo Requerido</small>
+          <small *ngIf="inputSemestre.invalid && inputSemestre.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="flex-auto ml-3">
+        <mat-label>Sigla</mat-label>
+        <input name="sigla" type="text" id="sigla" placeholder="Ej. A"
+        [(ngModel)]="modalFormulario.sigla" pattern="{{ex.numerosYLetras}}"
+        name="inputSigla" ngModel #inputSigla="ngModel" required matInput>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputSigla.invalid && inputSigla.errors?.required && inputSigla.touched">Campo Requerido</small>
+          <small *ngIf="inputSigla.invalid && inputSigla.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">Cancelar</button>
+      <button *ngIf="this.objeto == 0" color="primary" mat-flat-button type="submit" [disabled]="inputSemestre.valid ">Guardar</button>
+      <button *ngIf="this.objeto != 0" color="primary" mat-flat-button type="submit" [disabled]="!inputSemestre.valid ">Actualizar</button>
+    </mat-dialog-actions>
+  </form>
+
+

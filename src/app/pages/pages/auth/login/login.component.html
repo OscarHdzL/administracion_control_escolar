@@ -1,0 +1,42 @@
+<div class="w-full h-full bg-pattern flex flex-col items-center justify-center">
+  <div @fadeInUp class="card overflow-hidden w-full max-w-sm">
+    <div class="p-6 pb-0 flex flex-col items-center justify-center">
+      <div class="fill-current text-center">
+       <!--  <img class="w-16" src="assets/img/demo/logo.svg"> -->
+       <img class="w-auto"  src="../../../assets/img/bannerENED_2.png"  >
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <h2 class="title m-0">Iniciar sesión</h2>
+      <h4 class="body-3 text-secondary m-3">Ingrese con su usuario y contraseña</h4>
+    </div>
+
+    <form [formGroup]="FormularioSesion">
+    <div class="p-6 flex flex-col gap-4">
+      <div class="flex flex-col">
+        <mat-form-field class="flex-1">
+          <mat-label>Usuario</mat-label>
+          <input formControlName="usuario" matInput required>
+          <mat-error *ngIf="FormularioSesion.get('usuario').hasError('required')">El campo es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="flex-1">
+          <mat-label>Contraseña</mat-label>
+          <input [type]="inputType" formControlName="contrasena" matInput required>
+          <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Ver contraseña" type="button">
+            <mat-icon *ngIf="visible" svgIcon="mat:visibility"></mat-icon>
+            <mat-icon *ngIf="!visible" svgIcon="mat:visibility_off"></mat-icon>
+          </button>
+
+          <mat-error *ngIf="FormularioSesion.get('contrasena').hasError('required')">El campo es requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <button (click)="send()" color="primary" mat-raised-button type="button">
+        Autenticar
+      </button>
+
+    </div>
+  </form>
+  </div>
+</div>

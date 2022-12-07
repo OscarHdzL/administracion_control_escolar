@@ -1,0 +1,75 @@
+<section>
+  <div class="flex items-center " mat-dialog-title>
+    <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Parciales de periodo</h2>
+
+    <button></button>
+    <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border mb-4"></mat-divider>
+  <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4 justify-center">
+    <div class="flex flex-col">
+      <div class="overflow-x-auto sm:-mx-6 lg:-mx-8" *ngIf="finalizado==false" [@enterAnimation]>
+        <div class="py-4 inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="overflow-hidden">
+            <table class="min-w-full text-center">
+              <thead class="border-b bg-gray-400">
+                <tr>
+                  <th scope="col" class="text-sm font-medium text-contrast-black px-6 py-4">
+                    Parcial
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-contrast-black px-6 py-4">
+                    Abierto
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-contrast-black px-6 py-4">
+                    Finalizado
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="bg-white border-b" *ngFor="let item of listado; index as i; first as isFirst">
+                  <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap" >
+                    <label for="">
+                      {{item.parcial}}
+                    </label>
+                  </td>
+                  <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                    <label for="" >
+                      <div class="flex-auto">
+                        <mat-slide-toggle *ngIf="item.finalizado ==false" color="primary" [checked]="item.abierto" (change)="onToggle(1,$event,item)" ></mat-slide-toggle>
+                        <!--
+                        <div class="row d-flex justify-content-center">
+                          <p >{{modalFormulario2.periodo==true?"Par":"Non"}}</p>
+                        </div>
+                        -->
+                      </div>
+                    </label>
+                  </td>
+                  <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                    <label for=""  [@enterAnimation]>
+                        <a *ngIf="item.finalizado ==false"  (click)="finalizar(item)" matTooltip="Cambiar estatus"
+                            class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
+                            mat-icon-button>
+                            <mat-icon mat-icon class="icon-sm" svgIcon="mat:lock_open"></mat-icon>
+                        </a>
+                    </label>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="finalizado==true" [@enterAnimation]
+                      class="mb-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                      <!--
+                      <strong class="font-bold">Tabla vacia !</strong>
+                      -->
+                      <span class="block sm:inline">El Proceso ha finalizado.</span>
+                    </div>
+    </div>
+  </mat-dialog-content>
+</section>

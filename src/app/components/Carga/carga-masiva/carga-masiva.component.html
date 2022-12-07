@@ -1,0 +1,78 @@
+<!-- <form [formGroup]="FormularioDocumentos"> -->
+    
+  <!-- </form> -->
+  <vex-page-layout>
+    <!--     <vex-page-layout-header class="pb-16 flex flex-col items-start justify-center">
+            <div class="w-full flex flex-col sm:flex-row justify-between">
+                <h1 class="title mt-0 mb-1">Administrador de Formularios</h1>
+            </div>
+            <div class="w-full flex flex-col sm:flex-row justify-between">
+                <vex-breadcrumbs [crumbs]="['Administrador de Formularios', 'Lista de Opciones']"></vex-breadcrumbs>
+            </div>
+        </vex-page-layout-header> -->
+      <div class="p-gutter m-2">
+        <div class="card overflow-auto mt-2">
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+                <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+                    Carga Masiva
+                </h2>
+            </div>  
+            <div class="m-4 flex lg:flex-row">
+                <div class="dropzone flex-auto" fileDragDrop (filesChangeEmiter)="onFileChangeDrop($event)" >
+                  <div class="text-wrapper">
+                    <div class="centered">
+                      <input type="file" name="file" id="file" (change)="onFileChange($any($event.target).files)"/>
+                      <label for="file"><span class="textLink">Selecciona tu archivo</span>o arrastralo aqui!</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <table [dataSource]="this.dataSource" class="w-full" mat-table matSort>
+    
+                <ng-container *ngFor="let column of columns;">
+                    <ng-container *ngIf="column.property== 'curp'" [matColumnDef]="column.property">
+                    <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.curp }}</td>
+                    </ng-container>
+                </ng-container>
+    
+                <ng-container *ngFor="let column of columns;">
+                    <ng-container *ngIf="column.property === 'problema'" [matColumnDef]="column.property">
+                    <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.problema }}</td>
+                    </ng-container>
+                </ng-container>
+    
+                <!-- <ng-container *ngFor="let column of columns;">
+                    <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+                    <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                        <div class="flex">
+                            <a (click)="openModalUpdate(row)"
+                            matTooltip="Editar Grupo"
+                            class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10"
+                            mat-icon-button>
+                            <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+                            </a>
+    
+                            <a (click)="deleteGrupo(row)"
+                            matTooltip="Eliminar Grupo"
+                            class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                            mat-icon-button>
+                            <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                            </a>
+                        </div>
+                    </td>
+                    </ng-container>
+                </ng-container> -->
+    
+                <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: visibleColumns;"
+                    class="hover:bg-hover trans-ease-out cursor-pointer"
+                    mat-row></tr>
+            </table>
+            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
+        </div>
+      </div>
+    </vex-page-layout>
+    

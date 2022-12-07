@@ -1,0 +1,135 @@
+
+<div mat-dialog-title class="flex items-center justify-between">
+  <div>Documentos del aspirante</div>
+  <button type="button" mat-icon-button (click)="close(false)" tabindex="-1">
+    <mat-icon svgIcon="mat:close"></mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <table mat-table [dataSource]="this.dataSource" class="w-full" matSort>
+    <ng-container *ngFor="let column of columns;">
+      <ng-container *ngIf="column.property == 'documento'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.documento }}</td>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngFor="let column of columns;">
+      <ng-container *ngIf="column.property == 'estatus'" [matColumnDef]="column.property">
+      <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+      <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.estatus }}</td>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngFor="let column of columns;">
+      <ng-container *ngIf="column.property == 'inclusion'" [matColumnDef]="column.property">
+      <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+      <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.inclusion | date: 'short'}}</td>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngFor="let column of columns;">
+      <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
+        <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
+          <div class="flex items-center justify-center">
+            <a (click)="abrirDocumento(element.archivo)"
+              matTooltip="Visualizar"
+              class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 mr-2"
+              mat-icon-button>
+              <mat-icon class="icon-sm" svgIcon="mat:visibility"></mat-icon>
+              </a>
+
+            <a *ngIf="element.estatus != 'Aceptado'" (click)="openModalValidacion(element)"
+              matTooltip="Actualizar estatus documento"
+              class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 mr-2"
+              mat-icon-button>
+              <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+              </a>
+
+              <a (click)="openModalHistorial(element)"
+              matTooltip="Ver historial documento"
+              class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10"
+              mat-icon-button>
+              <mat-icon class="icon-sm" svgIcon="mat:history"></mat-icon>
+              </a>
+
+
+          </div>
+        </td>
+      </ng-container>
+    </ng-container>
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: visibleColumns;"class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+  </table>
+  <div *ngIf="this.listaDocumentos.length == 0" class=" flex-auto items-center justify-center">
+    <h1 class=" m-10 headline2" style="text-align: center;">No se encontraron resultados</h1>
+</div>
+
+</mat-dialog-content>
+
+<!-- <mat-dialog-actions align="end">
+  <button type="button" mat-button (click)="close(false)">Cancelar</button>
+  <button type="submit" mat-flat-button color="primary" >Agregar</button>
+</mat-dialog-actions> -->
+
+
+<!--
+<table mat-table [dataSource]="this.dataSource" class="w-full" matSort>
+  <ng-container *ngFor="let column of columns;">
+    <ng-container *ngIf="column.property == 'fechaInicio'" [matColumnDef]="column.property">
+      <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+      <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.inicio }}</td>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngFor="let column of columns;">
+    <ng-container *ngIf="column.property == 'fechaFin'" [matColumnDef]="column.property">
+    <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fin }}</td>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngFor="let column of columns;">
+    <ng-container *ngIf="column.property == 'creditos'" [matColumnDef]="column.property">
+    <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.creditos }}</td>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngFor="let column of columns;">
+    <ng-container *ngIf="column.property == 'oferta'" [matColumnDef]="column.property">
+    <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.oferta }}</td>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngFor="let column of columns;">
+    <ng-container *ngIf="column.property == 'semestres'" [matColumnDef]="column.property">
+    <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.semestres }}</td>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngFor="let column of columns;">
+    <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+      <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
+      <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
+        <div class="flex items-center justify-center">
+            <a (click)="openModalPlanEstudios(element)"
+            matTooltip="Editar  Espacio"
+            class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10"
+            mat-icon-button>
+            <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+            </a>
+
+            <a
+            matTooltip="Eliminar  Espacio"
+            class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+            mat-icon-button>
+            <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+            </a>
+        </div>
+      </td>
+    </ng-container>
+  </ng-container>
+  <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: visibleColumns;"class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+</table>
+<mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+
+ -->

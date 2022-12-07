@@ -1,0 +1,86 @@
+<vex-page-layout>
+  <div class="p-gutter m-2">
+    <div class="card overflow-auto mt-2">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+          Grupos
+        </h2>
+        <span class="flex-1"></span>
+        <button (click)="openModalGrupo(null)"
+          class="ml-4 flex-none"
+          color="primary"
+          mat-mini-fab
+          matTooltip="Agregar Plan de Estudios"
+          type="button">
+          <mat-icon svgIcon="mat:add"></mat-icon>
+        </button>
+      </div>
+      <div>
+        <table mat-table [dataSource]="this.dataSource" class="w-full" matSort>
+          <ng-container *ngFor="let column of columns;">
+          </ng-container>
+          <ng-container *ngFor="let column of columns;">
+            <ng-container *ngIf="column.property == 'grupo'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.grupo }}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns;">
+            <ng-container *ngIf="column.property == 'deporte'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.deporte }}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns;">
+            <ng-container *ngIf="column.property == 'aforomax'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.aforomax }}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns;">
+            <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+              <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
+              <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
+                <div class="flex items-center justify-center">
+                <!--     <a (click)="openModalGrupo(element)"
+                      matTooltip="Editar  grupo"
+                      class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 ml-4"
+                      mat-icon-button>
+                      <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+                    </a> -->
+                    <a (click)="openModalMaterias(element)"
+                    matTooltip="Materias base y no base"
+                    class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 ml-4"
+                    mat-icon-button>
+                    <mat-icon class="icon-sm" svgIcon="mat:collections_bookmark"></mat-icon>
+                  </a>
+                  <a [routerLink]="['../calendario-grupo', element.id]"
+                  matTooltip="Calendario"
+                  class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 ml-4"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:calendar_today"></mat-icon>
+                </a>
+                    <a
+                    (click)="eliminarGrupo(element.id)"
+                      matTooltip="Eliminar grupo"
+                      class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-warn bg-primary/10 ml-4"
+                      mat-icon-button>
+                      <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                    </a>
+                </div>
+              </td>
+            </ng-container>
+          </ng-container>
+          <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: visibleColumns;"class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+        </table>
+        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</vex-page-layout>
+
+
+
+

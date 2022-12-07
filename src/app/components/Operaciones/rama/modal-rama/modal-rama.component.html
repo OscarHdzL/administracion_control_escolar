@@ -1,0 +1,31 @@
+<form #f="ngForm" (ngSubmit)="save(f)" novalidate>
+    <div class="flex items-center" mat-dialog-title>
+        <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Agregar Rama Academico</h2>
+        <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto">Editar Rama Academico</h2>
+
+      <button></button>
+      <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon svgIcon="mat:close"></mat-icon>
+      </button>
+    </div>
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+      <mat-form-field class="flex-auto">
+        <mat-label>Rama</mat-label>
+        <input name="rama" type="text" id="rama" aria-describedby="emailHelp" placeholder="Ej. Salon"
+        [(ngModel)]="modalFormulario.rama" name="inputRama" ngModel #inputRama="ngModel" required  matInput pattern="{{ex.numerosYLetras}}">
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputRama.invalid && inputRama.errors?.required && inputRama.touched">Campo Requerido</small>
+          <small *ngIf="inputRama.invalid && inputRama.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">Cancelar</button>
+      <button *ngIf="this.objeto == 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Guardar</button>
+      <button *ngIf="this.objeto != 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Actualizar</button>
+    </mat-dialog-actions>
+  </form>

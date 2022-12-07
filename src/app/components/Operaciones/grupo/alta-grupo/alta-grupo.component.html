@@ -1,0 +1,70 @@
+<form role="form" autocomplete="off" [formGroup]="formGrupo" novalidate>
+  <div mat-dialog-title class="flex items-center justify-between">
+    <div>{{ alta ? 'Alta Grupo' : 'Editar Grupo' }}</div>
+    <button type="button" mat-icon-button (click)="close(false)" tabindex="-1">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <div class="mt-4 flex flex-col gap-2">
+      <div class="flex flex-col sm:flex-row sm:gap-4">
+        <mat-form-field class="flex-auto">
+          <mat-label>Plan estudios</mat-label>
+          <mat-select formControlName="planEstudio">
+            <mat-option *ngFor="let plan of listaPlanesEstudio" [value]="plan.id">{{plan.inicio | date: 'y'}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="flex-auto">
+          <mat-label>Ciclo escolar</mat-label>
+          <mat-select formControlName="cicloEscolar" placeholder="Seleccione plan de estudios">
+            <!-- <mat-option *ngFor="let ciclo of listaCicloEscolar" [value]="ciclo.id">{{ciclo.inicio + ' - ' + ciclo.fin}}</mat-option> -->
+            <mat-option *ngFor="let ciclo of listaCicloEscolar" [value]="ciclo">{{ciclo.ciclo}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="flex-auto">
+          <mat-label>Periodo</mat-label>
+          <mat-select formControlName="periodo" placeholder="Seleccione periodo">
+            <mat-option *ngFor="let periodo of listaPeriodos" [value]="periodo">{{periodo.periodo}}</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="flex-auto">
+          <mat-label>Semestre</mat-label>
+          <mat-select formControlName="semestre" placeholder="Seleccione semestre">
+            <mat-option *ngFor="let semestre of listaSemestres" [value]="semestre">{{semestre.semestre}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:gap-4">
+
+        <mat-form-field class="vex-flex-form-field flex-auto">
+          <mat-label>Grupo</mat-label>
+          <input type="text" matInput formControlName="grupo">
+          <mat-error *ngIf="this.grupo.hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="flex-auto">
+          <mat-label>Especialidad</mat-label>
+          <mat-select formControlName="catDeporteId">
+            <mat-option *ngFor="let deporte of listaDeportes" [value]="deporte.id">{{ deporte.deporte }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="this.catDeporteId.hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="vex-flex-form-field flex-auto">
+          <mat-label>Aforo Máximo</mat-label>
+          <input type="number" matInput formControlName="aforomax" [min]="1">
+          <mat-error *ngIf="this.aforomax.hasError('required')"> El campo es requerido</mat-error>
+          <mat-error *ngIf="this.aforomax.hasError('min')"> El aforo debe ser mayor a 0</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+<!--     <div>
+      {{this.formGrupo.getRawValue() | json  }}
+    </div> -->
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <!-- <button type="button" mat-button (click)="close(false)">Cancelar</button> -->
+    <button type="button" mat-button (click)="validarMateriasPlantilla()">Cancelar</button>
+    <button type="submit" mat-flat-button color="primary" (click)="guardarGrupo()" [disabled]=" (formGrupo.invalid || this.ID_PLANTILLA == 0) && this.alta">Agregar</button>
+  </mat-dialog-actions>
+</form>

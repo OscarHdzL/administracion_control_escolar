@@ -1,0 +1,72 @@
+<vex-page-layout>
+    <div class="p-gutter m-2">
+      <div class="card overflow-auto mt-2">
+        <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+          <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+            Listado de Aspirantes de Licenciatura a Seleccionar
+          </h2>
+          <span class="flex-1"></span>
+        </div>
+        <table [dataSource]="this.dataSource" class="w-full" mat-table matSort>
+    
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property== 'nombre'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.nombre }}</td>
+                </ng-container>
+            </ng-container>
+            <!-- <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property== 'oferta'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.oferta }}</td>
+                </ng-container>
+            </ng-container> -->
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property== 'tecnico'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.tecnicoMet }}</td>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property== 'conocimiento'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.conocimientosBd }}</td>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property== 'ceneval'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.ceneval }}</td>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.property== 'promedio'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.promedio }}</td>
+                </ng-container>
+            </ng-container>
+
+            <ng-container *ngFor="let column of columns;">
+                <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                    <div class="flex">
+                        <mat-checkbox class="example-margin" color="primary" [(ngModel)]="row.seleccionado">Seleccionar</mat-checkbox>
+                    </div>
+                </td>
+                </ng-container>
+            </ng-container>
+
+            <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: visibleColumns;"
+                class="hover:bg-hover trans-ease-out cursor-pointer"
+                mat-row></tr>
+        </table>
+        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
+        <div class="flex justify-end">
+            <button class="mr-10 mb-5" color="primary" mat-flat-button type="button" (click)="seleccionar()">Enviar</button>
+        </div>
+      </div>
+      
+    </div>
+  </vex-page-layout>

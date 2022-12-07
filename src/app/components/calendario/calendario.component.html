@@ -1,0 +1,48 @@
+<p-toast></p-toast>
+<!-- <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog> -->
+<p-confirmPopup></p-confirmPopup>
+
+
+
+
+
+
+<vex-page-layout>
+  <div class="p-gutter m-2">
+    <div class="card overflow-auto mt-2">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+          Aspirantes
+        </h2>
+        <span class="flex-1"></span>
+        <!-- <button (click)="openModalPlanEstudios(true)"
+          class="ml-4 flex-none"
+          color="primary"
+          mat-mini-fab
+          matTooltip="Agregar Plan de Estudios"
+          type="button">
+          <mat-icon svgIcon="mat:add"></mat-icon>
+        </button> -->
+      </div>
+
+
+      <div class="mt-5 mb-5 ml-5 mr-5">
+        <p-listbox [options]="listaEvento" [(ngModel)]="selectedCountries" [group]="true">
+            <ng-template let-item pTemplate="item">
+                    <div id='mydraggable{{item.id}}' class="drag" [ngStyle]="{'background-color': item.fondo}">&nbsp; {{ item.label}}</div>
+            </ng-template>
+        </p-listbox>
+    </div>
+
+
+      <div class="mt-5 mb-5 ml-5 mr-5">
+        <full-calendar #mycalendar_ [options]="options" id="mycalendar"></full-calendar>
+      </div>
+      <div class="flex justify-end">
+          <button class="mt-5 mr-2" (click)="obtenerEventos(false)" mat-button type="button" >Cancelar</button>
+          <button class="mt-5 mr-2" (click)="obtenerEventos(true)" color="primary" mat-flat-button type="button" >Guardar Horario</button>
+      </div>
+
+    </div>
+  </div>
+</vex-page-layout>

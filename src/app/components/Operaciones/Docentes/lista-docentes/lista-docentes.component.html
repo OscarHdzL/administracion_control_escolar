@@ -1,0 +1,81 @@
+<vex-page-layout>
+  <div class="p-gutter m-2">
+    <div class="card overflow-auto mt-2">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+          Docentes
+        </h2>
+        <span class="flex-1"></span>
+        <button (click)="irAltaDocente()"
+          class="ml-4 flex-none"
+          color="primary"
+          mat-mini-fab
+          matTooltip="Agregar Docente"
+          type="button">
+          <mat-icon svgIcon="mat:add"></mat-icon>
+        </button>
+      </div>
+      <table mat-table [dataSource]="this.dataSource" class="w-full" matSort>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property == 'nombre'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.nombreDocente }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property == 'departamento'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.departamento }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property == 'descripcionPerfil'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.descripcionPerfil }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.property == 'categoriaAcademico'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.categoriaAcademico }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns;">
+          <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
+            <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
+              <div class="flex items-center justify-center">
+                <a (click)="openModalMateriasDocente(element)"
+                    matTooltip="Materias asignadas"
+                    class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10"
+                    mat-icon-button>
+                    <mat-icon class="icon-sm" svgIcon="mat:book"></mat-icon>
+                  </a>
+                <a (click)="irEditarDocente(element)"
+                    matTooltip="Editar docente"
+                    class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                    mat-icon-button>
+                    <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+                  </a>
+                  <a
+                    matTooltip="Eliminar docente"
+                    (click)="eliminarDocente(element.id)"
+                    class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                    mat-icon-button>
+                    <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                  </a>
+              </div>
+            </td>
+          </ng-container>
+        </ng-container>
+        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: visibleColumns;"class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+      </table>
+      <div *ngIf="this.listaDocentes.length == 0" class=" flex-auto items-center justify-center">
+        <h1 class=" m-10 headline2" style="text-align: center;">No se encontraron docentes registradas</h1>
+    </div>
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+    </div>
+  </div>
+</vex-page-layout>
+

@@ -1,0 +1,28 @@
+<p-toast></p-toast>
+<!-- <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog> -->
+<p-confirmPopup></p-confirmPopup>
+<vex-page-layout>
+  <div class="p-gutter m-2">
+    <div class="card overflow-auto mt-2">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+          Horarios
+        </h2>
+        <span class="flex-1"></span>
+      </div>
+      <div class="mt-5 mb-5 ml-5 mr-5">
+        <mat-form-field class="flex-auto">
+        <mat-label>Selecciona un Grupo</mat-label>
+        <mat-select [disabled]="verCalendario" name="grupo" type="text" id="grupo" [(ngModel)]="grupoSeleccionado"
+            name="inputGrupo" ngModel #inputGrupo="ngModel" matInput (valueChange)="seleccionarGrupo($event)">
+            <mat-option *ngFor="let grupo of catGrupos" [value]="grupo.id">{{ grupo.grupo }}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        </mat-form-field>
+        <div *ngIf="verCalendario">
+            <vex-calendario-horario [listaEvento]="listaEvento" (limpiarCalendario)="clear($event)"></vex-calendario-horario>
+        </div>
+      </div>
+    </div>
+  </div>
+</vex-page-layout>

@@ -1,0 +1,199 @@
+<form role="form" autocomplete="off" [formGroup]="formGrupo" (ngSubmit)="enviar()" novalidate>
+  <div mat-dialog-title class="flex items-center justify-between">
+    <div>{{ alta ? 'Alta materias' : 'Editar materias' }}</div>
+    <button type="button" mat-icon-button (click)="close(false)" tabindex="-1">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <div class="mt-4 flex flex-col gap-2">
+      <div class="flex flex-col sm:flex-row sm:gap-4">
+        <mat-form-field class="flex-auto">
+          <mat-label>Materias</mat-label>
+          <input type="text"
+                 [placeholder]="this.PLACEHOLDER"
+                 aria-label="Materia"
+                 matInput
+                 formControlName="materia"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.materia}}
+            </mat-option>
+          </mat-autocomplete>
+          <button
+                  [disabled]="this.formGrupo.get('materia').invalid"
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Agregar materia"
+                  type="button"
+                  (click)="agregarMateria()"
+                >
+                  <mat-icon svgIcon="mat:add"></mat-icon>
+                </button>
+                <mat-error *ngIf="this.formGrupo.get('materia').hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+    <hr>
+    <div class="flex-auto">
+      <h3 style="text-align: center;"> <strong>Materias base</strong></h3>
+    </div>
+    <div class="container">
+      <table mat-table [dataSource]="this.dataSource" class="w-full" matSort #mitabla>
+        <ng-container *ngFor="let column of columns1;">
+          <ng-container *ngIf="column.property == 'materia'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.materia }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns1;">
+          <ng-container *ngIf="column.property == 'rama'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.rama }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns1;">
+          <ng-container *ngIf="column.property == 'creditos'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.creditos }}</td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let column of columns1;">
+          <ng-container *ngIf="column.property == 'base'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.base ? 'Si' : 'No'  }}</td>
+          </ng-container>
+        </ng-container>
+     <!--    <ng-container *ngFor="let column of columns1;">
+          <ng-container *ngIf="column.property == 'nombreDocente'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.nombreDocente }}</td>
+          </ng-container>
+        </ng-container> -->
+        <!-- DEFINIR SI SE PUEDEN ELIMINAR LAS MATERIAS BASE -->
+        <!-- <ng-container *ngFor="let column of columns1;">
+          <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
+            <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
+              <div class="flex items-center justify-center">
+                <a *ngIf="!element.relGrupoMateriaPlantillaDocenteId"
+                (click)="openModalDocenteMateriaGrupo(element)"
+                  matTooltip="Asignación de docente"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:person"></mat-icon>
+                </a>
+                <a *ngIf="element.relGrupoMateriaPlantillaDocenteId"
+                (click)="eliminarDocenteGrupo(element.relGrupoMateriaPlantillaDocenteId)"
+                  matTooltip="Eliminar docente"
+                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                  mat-icon-button>
+                  <mat-icon class="icon-sm" svgIcon="mat:remove_circle_outline"></mat-icon>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+        </ng-container> -->
+        <tr *matHeaderRowDef="visibleColumns1" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: visibleColumns1;"class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+      </table>
+      <div *ngIf="this.materiasgrupoBase.length == 0" class=" flex-auto items-center justify-center">
+        <h1 class=" m-10 headline2" style="text-align: center;">No se encontraron materias registradas</h1>
+    </div>
+
+
+      <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator> -->
+    </div>
+<br>
+<br>
+      <div class="flex-auto">
+        <h3 style="text-align: center;"> <strong>Materias No base</strong></h3>
+      </div>
+      <div class="container">
+        <table mat-table [dataSource]="this.dataSource2" class="w-full" matSort #mitabla2>
+          <ng-container *ngFor="let column of columns2;">
+            <ng-container *ngIf="column.property == 'materia'" [matColumnDef]="column.property">
+              <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+              <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.materia }}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns2;">
+            <ng-container *ngIf="column.property == 'rama'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.rama }}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns2;">
+            <ng-container *ngIf="column.property == 'creditos'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.creditos }}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns2;">
+            <ng-container *ngIf="column.property == 'base'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.base ? 'Si' : 'No' }}</td>
+            </ng-container>
+          </ng-container>
+<!--           <ng-container *ngFor="let column of columns2;">
+            <ng-container *ngIf="column.property == 'nombreDocente'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.nombreDocente }}</td>
+            </ng-container>
+          </ng-container> -->
+          <ng-container *ngFor="let column of columns2;">
+            <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+              <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
+              <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
+                <div class="flex items-center justify-center">
+<!--                   <a *ngIf="!element.relGrupoMateriaPlantillaDocenteId"
+                    (click)="openModalDocenteMateriaGrupo(element)"
+                      matTooltip="Asignación de docente"
+                      class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                      mat-icon-button>
+                      <mat-icon class="icon-sm" svgIcon="mat:person"></mat-icon>
+                    </a> -->
+                    <!-- <a *ngIf="element.relGrupoMateriaPlantillaDocenteId"
+                    (click)="eliminarDocenteGrupo(element.relGrupoMateriaPlantillaDocenteId)"
+                      matTooltip="Eliminar docente"
+                      class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
+                      mat-icon-button>
+                      <mat-icon class="icon-sm" svgIcon="mat:remove_circle_outline"></mat-icon>
+                    </a> -->
+                  <a
+                    (click)="eliminarMateriaGrupo(element.id)"
+                      matTooltip="Eliminar materia del grupo"
+                      class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                      mat-icon-button>
+                      <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                    </a>
+
+                </div>
+              </td>
+            </ng-container>
+          </ng-container>
+          <tr *matHeaderRowDef="visibleColumns2" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: visibleColumns2;"class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+        </table>
+        <div *ngIf="this.materiasgrupoNoBase.length == 0" class=" flex-auto items-center justify-center">
+          <h1 class=" m-10 headline2" style="text-align: center;">No se encontraron materias registradas</h1>
+      </div>
+        <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator> -->
+
+
+
+    </div>
+
+<!--     <div>
+      {{ this.formGrupo.getRawValue() | json }}
+    </div> -->
+  </mat-dialog-content>
+
+<!--   <mat-dialog-actions align="end">
+    <button type="button" mat-button (click)="close(false)">Cancelar</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="formGrupo.invalid">Agregar</button>
+  </mat-dialog-actions> -->
+</form>
