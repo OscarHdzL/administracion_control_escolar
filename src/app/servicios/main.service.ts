@@ -12,7 +12,8 @@ export class MainService {
   // gatewayServiciosEnedPreRegistro  = 'http://10.10.0.175:8428/';
   // gatewayServiciosEnedPreRegistroAdministracion  = 'http://10.10.0.32:9071/';
   gatewayFormularioDinamico = 'http://10.10.0.32:8056/';
-  gatawayArchivos = 'http://10.10.0.32:8065/'
+  //gatawayArchivos = 'http://10.10.0.32:8065/'
+  gatawayArchivos = 'http://198.251.71.105:90/'
   gatewayCargaMasiva = 'http://10.10.0.32:8056/';
   gatewayAspirantes = 'http://10.10.0.32:8056/';
   //periodo= 'http://10.10.0.32:8056/';
