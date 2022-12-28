@@ -3,7 +3,7 @@ import { NgForm, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
-import { Espacio, Materia, Rama, TipoMateria } from 'src/app/modelos/Catalogos';
+import { Deporte, Espacio, Materia, Rama, TipoMateria } from 'src/app/modelos/Catalogos';
 import { Customer } from 'src/app/pages/apps/aio-table/interfaces/customer.model';
 import { SwalServices } from 'src/app/servicios/sweetalert2.services';
 import { VariablesService } from 'src/app/servicios/variableGL.service';
@@ -11,11 +11,11 @@ import { ExprecionesRegulares } from 'src/app/modelos/expresionesRegulares';
 import { CatalogosServices } from 'src/app/servicios/catalogos.service';
 import { PlanEstudiosModel } from 'src/app/modelos/PlanEstudios.model';
 @Component({
-  selector: 'vex-modal-materia',
-  templateUrl: './modal-materia.component.html',
-  styleUrls: ['./modal-materia.component.scss']
+  selector: 'vex-modal-materia-nobase',
+  templateUrl: './modal-materia-nobase.component.html',
+  styleUrls: ['./modal-materia-nobase.component.scss']
 })
-export class ModalMateriaComponent implements OnInit {
+export class ModalMateriaNobaseComponent implements OnInit {
 
   //ViewChild(MatTable) myTable: MatTable<any>;
   public modalFormulario: Materia = { };
@@ -26,10 +26,12 @@ export class ModalMateriaComponent implements OnInit {
   public catPlanes: PlanEstudiosModel []=[];
   public semestres: any [] = [];
   public catTiposMateria: TipoMateria[] = []
+  public catEspecialidad: Deporte[] = []
+
   displayedColumns: string[] = ['opcion', 'acciones'];
 
   constructor(@Inject(MAT_DIALOG_DATA) public objeto: Materia,
-              private dialogRef: MatDialogRef<ModalMateriaComponent>,
+              private dialogRef: MatDialogRef<ModalMateriaNobaseComponent>,
               private fb: UntypedFormBuilder,
               public ex: ExprecionesRegulares,
               private swalService: SwalServices,
@@ -87,7 +89,9 @@ export class ModalMateriaComponent implements OnInit {
     }
 
     this.catTiposMateria = await this.obtenerCatalogoTiposMateria();
-    this.catTiposMateria = this.catTiposMateria.filter(x=> x.tipoMateria.toLowerCase() == 'base')
+    this.catTiposMateria = this.catTiposMateria.filter(x=> x.tipoMateria.toLowerCase() != 'base')
+
+    this.catEspecialidad = await this.obtenerCatalogoEspecialidad();
   }
 
   async changePlan(event){
@@ -146,6 +150,11 @@ export class ModalMateriaComponent implements OnInit {
 
   public async obtenerCatalogoTiposMateria(){
     const respuesta = await this.catalogosServices.consultarTiposMaterias();
+    return respuesta.exito ? respuesta.objeto : [];
+  }
+
+  public async obtenerCatalogoEspecialidad(){
+    const respuesta = await this.catalogosServices.consultarEspecialidad();
     return respuesta.exito ? respuesta.objeto : [];
   }
 }

@@ -91,6 +91,7 @@ export class AltaMateriasGrupoComponent implements OnInit {
     return this.columns2.filter(column => column.visible).map(column => column.property);
   }
 
+
   async ngOnInit() {
 
     this.iniciarForm()
@@ -101,7 +102,8 @@ export class AltaMateriasGrupoComponent implements OnInit {
 
     this.materiasgrupo = await this.obtenerMateriasGrupo(this.grupoModel.id);
 
-    this.materiasgrupoBase = this.materiasgrupo.filter((x)=> x.base == true);
+    //this.materiasgrupoBase = this.materiasgrupo.filter((x)=> x.base == true);
+    this.materiasgrupoBase = this.materiasgrupo;
     this.materiasgrupoNoBase = this.materiasgrupo.filter((x)=> x.base == false);
 
     this.dataSource = new MatTableDataSource<GrupoMateriaPlantillaModel>(this.materiasgrupoBase);

@@ -92,9 +92,18 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
       return this.postAsync(this.gatewayCatalogos + 'api/Docentes/AgregarMateriaDocente', objeto)
     }
 
+    agregarMateriaNobaseDocente(objeto: any){
+      return this.postAsync(this.gatewayCatalogos + 'api/Docentes/AgregarMateriaNoBaseDocente', objeto)
+    }
+
 
     eliminarMateriaDocente(idMateriaDocente){
       return this.deleteAsync(this.gatewayCatalogos + 'api/Docentes/InhabilitarMateriaDocente?idMateriaDocente=' + idMateriaDocente)
+    }
+
+    eliminarMateriaNoBaseDocente(idRelDocenteMateriaNoBasePlantilla){
+      return this.deleteAsync(this.gatewayCatalogos + 'api/Docentes/InhabilitarMateriaNoBaseDocente?idRelDocenteMateriaNoBasePlantilla=' + idRelDocenteMateriaNoBasePlantilla)
+
     }
 
     validarCURP(curp) {
@@ -166,9 +175,33 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
     consultarMaterias(){
       return this.getAsync(this.gatewayCatalogos + 'api/Materia/GetAllMateria');
     }
+    consultarMateriasNobase(){
+      return this.getAsync(this.gatewayCatalogos + 'api/Materia/GetAllMateriaNoBase');
+    }
+
+    consultarMateriasNobaseCicloEscolar(){
+      return this.getAsync(this.gatewayCatalogos + 'api/Materia/GetAllMateriaNoBaseCicloEscolar');
+    }
+
+    agregarMateriaNobaseCicloEscolar(objeto: any){
+      return this.postAsync(this.gatewayCatalogos + 'api/Materia/AltaMateriaNobaseCicloEscolar', objeto)
+    }
+
 
     consultarMateriasByIdDocente(idDocente: number){
       return this.getAsync(this.gatewayCatalogos + 'api/Materia/GetMateriaByIdDocente?idDocente='+ idDocente);
+    }
+
+    consultarMateriasNoBaseByIdDocente(idDocente: number){
+      return this.getAsync(this.gatewayCatalogos + 'api/Materia/GetMateriaNoBaseByIdDocente?idDocente='+ idDocente);
+    }
+
+    consultarTiposMaterias(){
+      return this.getAsync(this.gatewayCatalogos + 'Catalogos/TipoMateria');
+    }
+
+    consultarEspecialidad(){
+      return this.getAsync(this.gatewayCatalogos + 'Catalogos/Deporte');
     }
 
     agregarMateria(objeto: any){

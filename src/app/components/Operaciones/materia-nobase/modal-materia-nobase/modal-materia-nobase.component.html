@@ -1,7 +1,7 @@
 <form #f="ngForm" (ngSubmit)="save(f)" novalidate>
     <div class="flex items-center" mat-dialog-title>
-      <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Agregar Asignatura Base</h2>
-      <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto">Editar Asignatura Base</h2>
+      <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Agregar Asignatura No Base</h2>
+      <h2 *ngIf="this.objeto != 0" class="headline m-0 flex-auto">Editar Asignatura No Base</h2>
 
       <button></button>
       <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
@@ -143,6 +143,20 @@
           <p >{{modalFormulario.estatus}}</p>
         </div>
       </div> -->
+    </mat-dialog-content>
+    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+      <mat-form-field class="flex-auto">
+        <mat-label>Especialidad</mat-label>
+        <mat-select  type="text" id="especialidad" placeholder="Seleccione una opcion"
+        [(ngModel)]="modalFormulario.catDeporteId" name="especialidad" ngModel #inputEspecialidad="ngModel" required  matInput>
+          <mat-option *ngFor="let especialidad of catEspecialidad" [value]="especialidad.id">{{ especialidad.deporte }}</mat-option>
+        </mat-select>
+        <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
+        <div class="row d-flex justify-content-center">
+          <small  *ngIf="inputEspecialidad.invalid && inputEspecialidad.errors?.required && inputEspecialidad.touched">Campo Requerido</small>
+          <small *ngIf="inputEspecialidad.invalid && inputEspecialidad.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
+        </div>
+      </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close type="button">Cancelar</button>

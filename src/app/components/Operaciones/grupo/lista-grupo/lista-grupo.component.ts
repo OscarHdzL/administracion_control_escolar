@@ -87,7 +87,7 @@ export class ListaGrupoComponent implements OnInit {
   openModalMaterias(model: GrupoModel) {
     this.dialog.open(AltaMateriasGrupoComponent, {
       width: '70%',
-      height: '80%',
+      height: '60%',
       autoFocus: false,
       data: { alta: false, grupo: model },
       disableClose: true

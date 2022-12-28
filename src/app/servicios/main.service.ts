@@ -11,10 +11,11 @@ export class MainService {
    url_renapo = 'https://wsrenapo.conade.gob.mx/';
   // gatewayServiciosEnedPreRegistro  = 'http://10.10.0.175:8428/';
   // gatewayServiciosEnedPreRegistroAdministracion  = 'http://10.10.0.32:9071/';
-  gatewayFormularioDinamico = 'http://10.10.0.32:8056/';
+  //gatewayFormularioDinamico = 'http://10.10.0.32:8056/';
+  gatewayFormularioDinamico = 'https://localhost:7243/';
   gatawayArchivos = 'http://10.10.0.32:8065/'
   gatewayCargaMasiva = 'http://10.10.0.32:8056/';
-  gatewayAspirantes = 'http://10.10.0.32:8056/';
+  gatewayAspirantes = 'https://localhost:7243/';
   //periodo= 'http://10.10.0.32:8056/';
   periodo= 'https://localhost:7243/';
   //atewayCatalogos = 'http://10.10.0.32:8056/Servicios/';

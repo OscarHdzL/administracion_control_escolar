@@ -1,3 +1,7 @@
+import { MateriasNobaseDocenteComponent } from './Operaciones/Docentes/materias-nobase-docente/materias-nobase-docente.component';
+import { AgregarMateriaNobaseCicloescolarComponent } from './Operaciones/configuracion-materias-nobase/agregar-materia-nobase-cicloescolar/agregar-materia-nobase-cicloescolar.component';
+import { ConfiguracionMateriasNobaseCicloEscolarComponent } from './Operaciones/configuracion-materias-nobase/configuracion-materias-nobase-cicloescolar.component';
+import { MateriaNobaseComponent } from './Operaciones/materia-nobase/materia-nobase.component';
 import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
 import { GruposDocenteComponent } from './Docentes/grupos-docente/grupos-docente.component';
 import { NgModule } from '@angular/core';
@@ -101,6 +105,7 @@ import { MateriasDocenteComponent } from './Operaciones/Docentes/materias-docent
 import { CalificacionesAlumnosComponent } from './Docentes/calificaciones-alumnos/calificaciones-alumnos.component';
 import { NgxMaskModule } from 'ngx-mask-2';
 import { ModalParcialesPeriodoComponent } from './Operaciones/ciclo-escolar/modal-parciales-periodo/modal-parciales-periodo.component';
+import { ModalMateriaNobaseComponent } from './Operaciones/materia-nobase/modal-materia-nobase/modal-materia-nobase.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -175,7 +180,12 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     GruposDocenteComponent,
     CalificacionesAlumnosComponent,
     MateriasDocenteComponent,
-    ModalParcialesPeriodoComponent
+    ModalParcialesPeriodoComponent,
+    MateriaNobaseComponent,
+    ModalMateriaNobaseComponent,
+    ConfiguracionMateriasNobaseCicloEscolarComponent,
+    AgregarMateriaNobaseCicloescolarComponent,
+    MateriasNobaseDocenteComponent
   ],
   imports: [
     CommonModule,

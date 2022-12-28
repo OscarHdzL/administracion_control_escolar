@@ -46,8 +46,14 @@
             <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
               <div class="flex items-center justify-center">
                 <a (click)="openModalMateriasDocente(element)"
-                    matTooltip="Materias asignadas"
+                    matTooltip="Materias base asignadas"
                     class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10"
+                    mat-icon-button>
+                    <mat-icon class="icon-sm" svgIcon="mat:book"></mat-icon>
+                  </a>
+                  <a (click)="openModalMateriasNobaseDocente(element)"
+                    matTooltip="Materias no base asignadas"
+                    class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-accent bg-accent/10"
                     mat-icon-button>
                     <mat-icon class="icon-sm" svgIcon="mat:book"></mat-icon>
                   </a>

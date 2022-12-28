@@ -246,6 +246,7 @@ tent
   }
 
   public async obtenerHorariosGrupo() {
+    debugger
     const respuesta = await this.catalogosService.consultarHorariosByIdGrupo(
       this.ID_GRUPO
     );
@@ -291,6 +292,7 @@ tent
   }
 
   public async obtenerMateriasGrupo() {
+    debugger
     const respuesta = await this.catalogosService.consultarMateriasGrupoById(
       this.ID_GRUPO
     );

@@ -109,6 +109,42 @@ export class MateriaDocenteModel {
   perfilAcademico: string;
 }
 
+export class MateriaNobaseDocenteModel{
+  idPlantilla: number;
+  idRelMateriaPlantilla: number;
+  idMateria: number;
+  materia: string;
+  base?: any;
+  creditos: number;
+  status: boolean;
+  idRelDocenteMateriaNoBasePlantilla: number;
+  idDocente: number;
+  tieneasignacion: boolean;
+  horarioInicio: string;
+  horarioFin: string;
+  horasNombramiento: string;
+  horasFrentegrupo: string;
+  horasDescargaacademica: string;
+  nombre: string;
+  paterno: string;
+  materno: string;
+  nombreDocente: string;
+  curp: string;
+  activo: number;
+  idEscolaridad?: any;
+  extranjero: boolean;
+  estatus: string;
+  categoriaAcademico: string;
+  departamento: string;
+  perfilAcademico: string;
+  idRelMateriaNobaseCicloEscolar: number;
+  catCicloEscolarId: number;
+  catPeriodoId: number;
+  catSemestreId: number;
+  semestre: string;
+  catDeporteId: number;
+}
+
 
 export class RelDocenteMateriaPlantilla {
   id: number;
@@ -121,6 +157,22 @@ export class RelDocenteMateriaPlantilla {
     this.id = 0;
     this.relDocenteId = null;
     this.relMateriaPlantillaId = null;
+    this.estatus = true;
+    this.inclusion = new Date();
+  }
+}
+
+export class RelDocenteMateriaNoBasePlantilla {
+  id: number;
+  relDocenteId: number;
+  relMateriaNobaseId: number;
+  estatus: boolean;
+  inclusion: Date;
+
+  constructor(){
+    this.id = 0;
+    this.relDocenteId = null;
+    this.relMateriaNobaseId = null;
     this.estatus = true;
     this.inclusion = new Date();
   }

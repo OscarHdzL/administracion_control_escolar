@@ -1,3 +1,4 @@
+import { MateriasNobaseDocenteComponent } from './../materias-nobase-docente/materias-nobase-docente.component';
 import { MateriasDocenteComponent } from './../materias-docente/materias-docente.component';
 import { CatalogosServices } from 'src/app/servicios/catalogos.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -61,7 +62,7 @@ console.log(this.listaDocentes)
   }
 
   irEditarDocente(dato: any) {
-    
+
     this.dataService.setData('docente', dato);
     this.router.navigate(['/components/editar-docentes/docente']);
   }
@@ -81,6 +82,21 @@ console.log(this.listaDocentes)
 
   openModalMateriasDocente(model: DocentesModel) {
     this.dialog.open(MateriasDocenteComponent, {
+      width: '70%',
+      autoFocus: false,
+      data: { alta: true, docente: model },
+      disableClose: true
+    }).afterClosed().subscribe(result => {
+
+      if(result){
+        this.ngOnInit();
+      }
+      console.log(result);
+    });
+  }
+
+  openModalMateriasNobaseDocente(model: DocentesModel) {
+    this.dialog.open(MateriasNobaseDocenteComponent, {
       width: '70%',
       autoFocus: false,
       data: { alta: true, docente: model },

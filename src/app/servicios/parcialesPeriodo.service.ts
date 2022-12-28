@@ -10,15 +10,15 @@ export class PeriodoParcialesService extends MainService {
     super(http);
   }
   public async getId(id:number) : Promise <any> {
-    console.log(this.periodo + 'Servicios/api/ParcialesPeriodo/GetParcialesPeriodo?idPeriodo='+id);
-    return await this.getAsync(this.periodo + 'Servicios/api/ParcialesPeriodo/GetParcialesPeriodo?idPeriodo='+id);
+    console.log(this.periodo + 'api/ParcialesPeriodo/GetParcialesPeriodo?idPeriodo='+id);
+    return await this.getAsync(this.periodo + 'api/ParcialesPeriodo/GetParcialesPeriodo?idPeriodo='+id);
   }
   public post(objeto: any)
   {
-      return this.postAsync(this.periodo + 'Servicios/api/ParcialesPeriodo/ActualizarAperturaParcialPeriodo', objeto);
+      return this.postAsync(this.periodo + 'api/ParcialesPeriodo/ActualizarAperturaParcialPeriodo', objeto);
   }
   public postFin(objeto: any)
   {
-      return this.postAsync(this.periodo + 'Servicios/api/ParcialesPeriodo/FinalizarAperturaParcialPeriodo', objeto);
+      return this.postAsync(this.periodo + 'api/ParcialesPeriodo/FinalizarAperturaParcialPeriodo', objeto);
   }
 }

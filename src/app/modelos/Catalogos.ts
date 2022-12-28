@@ -1,3 +1,10 @@
+export class TipoMateria {
+  id: number;
+  tipoMateria: string;
+  inclusion: Date;
+  catMateria: any[];
+}
+
 export class CicloEscolar{
     id?: number;
     fechaInicio?: Date;
@@ -53,6 +60,8 @@ export class Materia {
     idOferta?: number;
     idPlanEstudio?: number;
     semestre?: string;
+    catTipoMateriaId?: number;
+    catDeporteId?: number;
 
 }
 export class Oferta {
@@ -394,5 +403,50 @@ export class RelContactoDocente {
     this.tipo = null;
     this.contacto = null;
     this.inclusion = new Date();
+  }
+}
+
+
+export class MateriaNoBaseCicloEscolar {
+  idOferta: number;
+  ofertaEducativa: string;
+  idSemestre: number;
+  semestre: string;
+  idMateriaNoBaseCicloEscolar: number;
+  idMateria: number;
+  materia: string;
+  abreviatura: string;
+  catEspaciosAcademicosId: number;
+  catRamaId: number;
+  status: boolean;
+  creditos: number;
+  idPlanEstudios: number;
+  carrera: string;
+  semestres: number;
+  inicio: Date;
+  fin: Date;
+  idPlantilla: number;
+  relMateriaPlantillaId: number;
+  catTipoMateriaId: number;
+  tipoMateria: string;
+  catDeporteId: number;
+  especialidad: string;
+  catCicloEscolarId: number;
+  catPeriodoId: number;
+}
+
+
+export class RelMateriasNobaseCicloEscolar {
+  id: number;
+  relMateriaPlantillaId: number;
+  catCicloEscolarId: number;
+  inclusion: Date;
+  catPeriodoId: number;
+  constructor(){
+    this.id = 0,
+    this.relMateriaPlantillaId = 0,
+    this.catCicloEscolarId = 0,
+    this.inclusion = new Date(),
+    this.catPeriodoId = 0
   }
 }

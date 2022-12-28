@@ -6,31 +6,31 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
 import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
-import { Materia } from 'src/app/modelos/Catalogos';
-import { DocentesModel, MateriaDocenteModel, RelDocenteMateriaPlantilla } from 'src/app/modelos/Docentes.model';
+import { Materia, MateriaNoBaseCicloEscolar } from 'src/app/modelos/Catalogos';
+import { DocentesModel, MateriaDocenteModel, MateriaNobaseDocenteModel, RelDocenteMateriaNoBasePlantilla, RelDocenteMateriaPlantilla } from 'src/app/modelos/Docentes.model';
 import { MateriaModel, vwMateria } from 'src/app/modelos/Materia.model';
 import { CatalogosServices } from 'src/app/servicios/catalogos.service';
 import { VariablesService } from 'src/app/servicios/variableGL.service';
 
-
 @Component({
-  selector: 'vex-materias-docente',
-  templateUrl: './materias-docente.component.html',
-  styleUrls: ['./materias-docente.component.scss']
+  selector: 'app-materias-nobase-docente',
+  templateUrl: './materias-nobase-docente.component.html',
+  styleUrls: ['./materias-nobase-docente.component.scss']
 })
-export class MateriasDocenteComponent implements OnInit {
+export class MateriasNobaseDocenteComponent implements OnInit {
 
-  materias: Materia[]
+  materias: MateriaNoBaseCicloEscolar[] = []
   filteredOptions: Observable<Materia[]>;
   PLACEHOLDER = 'SELECCIONE UNA OPCIÓN;'
+  listaMateriaDocenteExistente: MateriaNobaseDocenteModel[] = [];
 
   formGrupo: FormGroup;
   alta: boolean;
   docenteModel: DocentesModel;
 /* tabla */
 
-  materiasDocente: MateriaDocenteModel[] = [];
-
+  materiasNobaseDocente: MateriaNobaseDocenteModel[] = [];
+  displayBasic = false;
   dataSource: any;
   dataSource2: any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -50,7 +50,7 @@ export class MateriasDocenteComponent implements OnInit {
 
   constructor(
     public matPaginatorIntl: MatPaginatorIntl,
-    private dialogRef: MatDialogRef<MateriasDocenteComponent>,
+    private dialogRef: MatDialogRef<MateriasNobaseDocenteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private catalogosService: CatalogosServices,
@@ -70,14 +70,14 @@ export class MateriasDocenteComponent implements OnInit {
 
   async ngOnInit() {
     this.iniciarForm()
-
-    this.materias = await this.consultarMaterias();
+    debugger
+    this.materias = await this.consultarMateriasNobaseCicloEscolar();
 
     this.materias.length > 0 ? this.PLACEHOLDER = 'SELECCIONE UNA OPCIÓN' : this.PLACEHOLDER = 'NO SE ENCONTRARON MATERIAS';
 
-    this.materiasDocente = await this.obtenerMateriasByIdDocente();
-
-    this.dataSource = new MatTableDataSource<MateriaDocenteModel>(this.materiasDocente);
+    this.materiasNobaseDocente = await this.obtenerMateriasNobaseByIdDocente();
+    debugger
+    this.dataSource = new MatTableDataSource<MateriaNobaseDocenteModel>(this.materiasNobaseDocente);
 
     this.filteredOptions = this.formGrupo.get('materia').valueChanges.pipe(
       startWith(''),
@@ -89,20 +89,20 @@ export class MateriasDocenteComponent implements OnInit {
   }
 
 
-  public async obtenerMateriasByIdDocente(){
-    const respuesta = await this.catalogosService.consultarMateriasByIdDocente(this.docenteModel.id);
+  public async obtenerMateriasNobaseByIdDocente(){
+    const respuesta = await this.catalogosService.consultarMateriasNoBaseByIdDocente(this.docenteModel.id);
     return respuesta.objeto ? respuesta.objeto: [];
   }
 
-  public async consultarMaterias(){
-    const respuesta = await this.catalogosService.consultarMaterias();
+  public async consultarMateriasNobaseCicloEscolar(){
+    const respuesta = await this.catalogosService.consultarMateriasNobaseCicloEscolar();
     return respuesta.objeto ? respuesta.objeto: [];
   }
 
   public actualizarTabla(){
 
 
-    this.dataSource = new MatTableDataSource<MateriaDocenteModel>(this.materiasDocente);
+    this.dataSource = new MatTableDataSource<MateriaNobaseDocenteModel>(this.materiasNobaseDocente);
 
     this.table.renderRows();
     this.table2.renderRows();
@@ -144,37 +144,33 @@ export class MateriasDocenteComponent implements OnInit {
 public async agregarMateria(){
 
 
-/* let materiaDocente: RelDocenteMateriaPlantilla = {
-  id: 0,
-    tblGrupoId: this.docenteModel.id,
-    relMateriaPlantillaId: this.materia.value.relMateriaPlantillaId,
-    inclusion: new Date(),
-    activo : true
-} */
+debugger
+let materiaNobaseDocente = new RelDocenteMateriaNoBasePlantilla();
 
+materiaNobaseDocente.relDocenteId = this.docenteModel.id;
+materiaNobaseDocente.relMateriaNobaseId = this.materia.value.idMateriaNoBaseCicloEscolar;
 
-let materiaDocente = new RelDocenteMateriaPlantilla();
+  console.log(materiaNobaseDocente);
 
-materiaDocente.relDocenteId = this.docenteModel.id;
-materiaDocente.relMateriaPlantillaId = this.materia.value.relMateriaPlantillaId;
-
-  console.log(materiaDocente);
-
-  const respuesta = await this.catalogosService.agregarMateriaDocente(materiaDocente);
+  const respuesta = await this.catalogosService.agregarMateriaNobaseDocente(materiaNobaseDocente);
 
   if(respuesta.exito){
     this.toastService.toastSuccess(respuesta.mensaje);
     this.ngOnInit();
-  }else{
+  } else {
+
+    this.listaMateriaDocenteExistente = respuesta.objeto ? respuesta.objeto : [];
+    this.displayBasic = true;
     this.toastService.toastErr(respuesta.error);
+
   }
 
 }
 
-  public async eliminarmateriaDocente(idmateriaDocente){
+  public async eliminarmateriaDocente(idRelDocenteMateriaNoBasePlantilla){
 
-
-    const respuesta = await this.catalogosService.eliminarMateriaDocente(idmateriaDocente);
+debugger
+    const respuesta = await this.catalogosService.eliminarMateriaNoBaseDocente(idRelDocenteMateriaNoBasePlantilla);
     if(respuesta.exito){
       this.toastService.toastSuccess('Se elimino correctamente')
       this.ngOnInit();
@@ -183,6 +179,10 @@ materiaDocente.relMateriaPlantillaId = this.materia.value.relMateriaPlantillaId;
     }
 
 
+  }
+
+  public cerrarMateriasDocenteEncontradas(){
+    this.displayBasic = false;
   }
 
 

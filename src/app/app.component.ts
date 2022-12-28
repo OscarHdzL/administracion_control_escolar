@@ -428,16 +428,21 @@ export class AppComponent {
 
                   {
                     type: 'link',
-                    label: 'Asignaturas Base',
-                    route: '/components/asignatura'
+                    label: 'Base',
+                    route: '/components/asignatura/base'
                   },
                   {
                     type: 'link',
-                    label: 'Asignaturas Optativas',
-                    route: '/components/asignatura-optativa'
+                    label: 'No base',
+                    route: '/components/asignatura/no-base'
                   }
                 ]
               },
+              {
+                type: 'link',
+                label: 'Configuración materia no base',
+                route: '/components/configuracion-materias-no-base'
+              }
 
             ]
           },

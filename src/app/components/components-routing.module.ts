@@ -1,3 +1,4 @@
+import { ConfiguracionMateriasNobaseCicloEscolarComponent } from './Operaciones/configuracion-materias-nobase/configuracion-materias-nobase-cicloescolar.component';
 import { GruposDocenteComponent } from './Docentes/grupos-docente/grupos-docente.component';
 import { EscalafonAspiranteComponent } from './Aspirantes/escalafon-aspirante/escalafon-aspirante.component';
 import { ValidacionDocumentosPreinscripcionComponent } from './Aspirantes/validacion-documentos-preinscripcion/validacion-documentos-preinscripcion.component';
@@ -26,6 +27,7 @@ import { DeportesEspecialidadComponent } from './Operaciones/deportes-especialid
 import { HorariosComponent } from './Operaciones/horarios/horarios.component';
 import { ListaDocentesComponent } from './Operaciones/Docentes/lista-docentes/lista-docentes.component';
 import { CalendarioGrupoComponent } from './Operaciones/grupo/calendario-grupo/calendario-grupo.component';
+import { MateriaNobaseComponent } from './Operaciones/materia-nobase/materia-nobase.component';
 const routes: Routes = [
   {
     path: 'lista-formulario',
@@ -66,17 +68,17 @@ const routes: Routes = [
     }
   },
   {
-    path: 'asignatura',
+    path: 'asignatura/base',
     component: MateriaComponent,
     data: {
       title: 'asignatura'
     }
   },
   {
-    path: 'asignatura-optativa',
-    component: MateriaOptativaComponent,
+    path: 'asignatura/no-base',
+    component: MateriaNobaseComponent,
     data: {
-      title: 'asignatura-optativa'
+      title: 'asignatura-no-base'
     }
   },
   {
@@ -198,7 +200,16 @@ const routes: Routes = [
     data: {
       title: 'calendario-grupo'
     }
+  },
+  {
+    path: 'configuracion-materias-no-base',
+    component: ConfiguracionMateriasNobaseCicloEscolarComponent,
+    data: {
+      title: 'configuracion-materias-no-base'
+    }
   }
+
+
 ];
 
 @NgModule({

@@ -1,0 +1,93 @@
+<vex-page-layout>
+    <div class="p-gutter m-2">
+      <div class="card overflow-auto mt-2">
+          <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+              <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+                  Lista de Asignaturas No Base
+              </h2>
+              <span class="flex-1"></span>
+              <button (click)="openModalCreate()"
+                      class="ml-4 flex-none"
+                      color="primary"
+                      mat-mini-fab
+                      matTooltip="Agregar Materia"
+                      type="button">
+                  <mat-icon svgIcon="mat:add"></mat-icon>
+              </button>
+          </div>
+          <table [dataSource]="this.dataSource" class="w-full" mat-table matSort>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.property== 'materia'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.materia }}</td>
+                  </ng-container>
+              </ng-container>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.property== 'abreviatura'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.abreviatura }}</td>
+                  </ng-container>
+              </ng-container>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.property== 'semestre'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.semestre }}</td>
+                  </ng-container>
+              </ng-container>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.property== 'espacio'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.espacio }}</td>
+                  </ng-container>
+              </ng-container>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.property== 'rama'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.rama }}</td>
+                  </ng-container>
+              </ng-container>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.property== 'creditos'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.creditos }}</td>
+                  </ng-container>
+              </ng-container>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.property== 'tipoMateria'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.tipoMateria }}</td>
+                  </ng-container>
+              </ng-container>
+
+              <ng-container *ngFor="let column of columns;">
+                  <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                  <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                      <div class="flex">
+                           <a (click)="deleteGrupo(row)"
+                          matTooltip="Eliminar Materia"
+                          class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
+                          mat-icon-button>
+                          <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
+                          </a>
+                      </div>
+                  </td>
+                  </ng-container>
+              </ng-container>
+
+              <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: visibleColumns;"
+                  class="hover:bg-hover trans-ease-out cursor-pointer"
+                  mat-row></tr>
+          </table>
+          <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
+      </div>
+    </div>
+  </vex-page-layout>

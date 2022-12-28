@@ -5,17 +5,18 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
 import { Materia } from 'src/app/modelos/Catalogos';
-import { ModalMateriaComponent } from './modal-materia/modal-materia.component';
+
 import { CatalogosServices } from 'src/app/servicios/catalogos.service';
 import { SwalServices } from 'src/app/servicios/sweetalert2.services';
 import { VariablesService } from 'src/app/servicios/variableGL.service';
 import { ActivatedRoute } from '@angular/router';
+import { ModalMateriaNobaseComponent } from './modal-materia-nobase/modal-materia-nobase.component';
 @Component({
-  selector: 'vex-materia',
-  templateUrl: './materia.component.html',
-  styleUrls: ['./materia.component.scss']
+  selector: 'vex-materia-nobase',
+  templateUrl: './materia-nobase.component.html',
+  styleUrls: ['./materia-nobase.component.scss']
 })
-export class MateriaComponent implements OnInit {
+export class MateriaNobaseComponent implements OnInit {
 
   materias: Materia[] = [];
   dataSource:any;
@@ -101,12 +102,12 @@ export class MateriaComponent implements OnInit {
   }
 
   public async obtenerMaterias(){
-    const respuesta = await this.catalogosServices.consultarMaterias();
+    const respuesta = await this.catalogosServices.consultarMateriasNobase();
     return respuesta.exito ? respuesta.objeto : [];
   }
 
   openModalCreate() {
-    this.dialog.open(ModalMateriaComponent,{
+    this.dialog.open(ModalMateriaNobaseComponent,{
       height: '70%',
       width: '70%',
       autoFocus: false,
@@ -116,14 +117,13 @@ export class MateriaComponent implements OnInit {
        * Customer is the updated  materia (if the user pressed Save - otherwise it's null)
        */
       console.log('se guardo bien');
-
       this.ngOnInit();
     });
   }
 
   openModalUpdate( materia: Materia) {
     console.log('modal editar', materia);
-    this.dialog.open(ModalMateriaComponent, {
+    this.dialog.open(ModalMateriaNobaseComponent, {
       data:  materia,
       height: '70%',
       width: '70%',

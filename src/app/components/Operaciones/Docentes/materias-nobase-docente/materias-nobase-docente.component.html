@@ -6,7 +6,7 @@
   novalidate
 >
   <div mat-dialog-title class="flex items-center justify-between">
-    <div>{{ alta ? "Alta materias" : "Editar materias" }}</div>
+    <div>{{ alta ? "Alta materias no base" : "Editar materias no base" }}</div>
     <button type="button" mat-icon-button (click)="close(false)" tabindex="-1">
       <mat-icon svgIcon="mat:close"></mat-icon>
     </button>
@@ -123,7 +123,7 @@
             <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
               <div class="flex items-center justify-center">
                 <a
-                (click)="eliminarmateriaDocente(element.idRelDocenteMateriaPlantilla)"
+                (click)="eliminarmateriaDocente(element.idRelDocenteMateriaNoBasePlantilla)"
                   matTooltip="Desasignar materia"
                   class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
                   mat-icon-button>
@@ -141,7 +141,7 @@
         ></tr>
       </table>
       <div
-        *ngIf="this.materiasDocente.length == 0"
+        *ngIf="this.materiasNobaseDocente.length == 0"
         class="flex-auto items-center justify-center"
       >
         <h1 class="m-10 headline2" style="text-align: center">
@@ -164,3 +164,33 @@
     </button>
   </mat-dialog-actions> -->
 </form>
+
+
+<p-dialog header="Materia ya asignada" [(visible)]="displayBasic" [modal]="true" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+        <p>La materia ya se encuentra asignada</p>
+        <br>
+
+        <p-table [value]="listaMateriaDocenteExistente" responsiveLayout="scroll" [paginator]="false" [rows]="5" [responsive]="true">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th pSortableColumn="materia">Materia<!-- <p-sortIcon field="materia"></p-sortIcon>  --></th>
+                  <th pSortableColumn="nombreDocente">Docente <!-- <p-sortIcon field="nombreDocente"></p-sortIcon> --></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+              <tr>
+                  <td>{{product.materia}}</td>
+                  <td>{{product.nombreDocente}}</td>
+              </tr>
+          </ng-template>
+      </p-table>
+
+
+        <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="cerrarMateriasDocenteEncontradas()" label="Cerrar" styleClass="p-button-text"></p-button>
+        </ng-template>
+
+
+
+</p-dialog>

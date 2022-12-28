@@ -17,7 +17,7 @@ export class GruposDocenteComponent implements OnInit {
   calificacionesAlumno: CalificacionesAlumnosDocente
 
   datosSesion = {
-    idDocente: 2,
+    idDocente: 14,
     nombre: 'JOSE ALFREDO  TAPIA HERNÁNDEZ'
   }
 
