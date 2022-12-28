@@ -11,10 +11,10 @@ export class ArchivoServices extends MainService {
     }
     //Agregar
     agregar(objeto: any) {
-        return this.postAsync(this.gatawayArchivos + 'AdminArchivos/adArchivos/Agregar/30ce9955-e4d0-4c45-ac38-33a093900ab0', objeto);
+        return this.postAsync(this.gatawayArchivos + 'AdminArchivos/adArchivos/Agregar/8f59966c-c3a8-4c45-8230-d9c227858526', objeto);
     }
     obtenerUrlCompleta(token: string) {
-        return this.gatawayArchivos + 'AdminArchivos/adArchivos/visor/30ce9955-e4d0-4c45-ac38-33a093900ab0/' + token;
+        return this.gatawayArchivos + 'AdminArchivos/adArchivos/visor/8f59966c-c3a8-4c45-8230-d9c227858526/' + token;
     }
   
   }
