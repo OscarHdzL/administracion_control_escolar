@@ -1,6 +1,6 @@
 <form #f="ngForm" (ngSubmit)="save(f)" novalidate>
     <div class="flex items-center" mat-dialog-title>
-        <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Configurar Periodos</h2>
+        <h2 class="headline m-0 flex-auto">Configurar Periodos</h2>
 
       <button></button>
       <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
@@ -10,7 +10,7 @@
     </div>
     <mat-divider class="-mx-6 text-border"></mat-divider>
 
-    <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+<!--     <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
         <mat-form-field class="flex-auto">
           <mat-label>Fecha Inicio</mat-label>
           <input matInput [matDatepicker]="picker1" placeholder="Ej. 10/10/2000"
@@ -46,36 +46,30 @@
         <button *ngIf="tFormulario==false" class="mt-3" (click)="agregarOpcion(false)"  color="primary" mat-icon-button type="button" matTooltip="Agregar Periodo"><mat-icon svgIcon="mat:add"></mat-icon></button>
         <button *ngIf="tFormulario==true" class="mt-3" (click)="agregarOpcion(true)"  color="primary" mat-icon-button type="button" matTooltip="Editar Periodo"><mat-icon svgIcon="mat:edit"></mat-icon></button>
 
-        <!-- <mat-form-field class="flex-auto ml-3">
-            <mat-label>Espacio Academico</mat-label>
-            <mat-select ame="espacio" type="text" id="espacio" placeholder="Ej. Salon" style="width: 50%;"
-            [(ngModel)]="modalFormulario.espacio" name="inputEspacio" ngModel #inputEspacio="ngModel" required  matInput            >
-              <mat-option
-                *ngFor="let oferta of listaTiposRespuesta"
-                [value]="oferta.id"
-              >
-                {{ oferta.espacio }}
-              </mat-option>
-            </mat-select>
-            <mat-icon class="mr-3" matPrefix svgIcon="mat:label"></mat-icon>
-            <div class="row d-flex justify-content-center">
-                <small  *ngIf="inputEspacio.invalid && inputEspacio.errors?.required && inputEspacio.touched">Campo Requerido</small>
-                <small *ngIf="inputEspacio.invalid && inputEspacio.errors?.pattern" class="form-text text-muted text-danger">Introduce caracteres validos</small>
-            </div>
-          </mat-form-field> -->
-          
-    </mat-dialog-content>
+
+    </mat-dialog-content> -->
+
+    <div class=" px-6 h-16 border-b sticky left-0 flex items-center">
+      <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
+        Lista de Periodos
+      </h2>
+      <span class="flex-1"></span>
+      <button class="ml-4 flex-none" (click)="openModalPeriodo(null)" color="primary" mat-mini-fab
+        matTooltip="Agregar Periodo" type="button">
+        <mat-icon svgIcon="mat:add"></mat-icon>
+      </button>
+    </div>
     <table [dataSource]="this.dataSource" class="w-full" mat-table matSort>
         <ng-container *ngFor="let column of columns;">
           <ng-container *ngIf="column.property== 'fechaI'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.inicio }}</td>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.inicio | date:'yyyy-MM-dd' }}</td>
           </ng-container>
         </ng-container>
         <ng-container *ngFor="let column of columns;">
           <ng-container *ngIf="column.property== 'fechaF'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fin }}</td>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fin | date:'yyyy-MM-dd'}}</td>
           </ng-container>
         </ng-container>
         <ng-container *ngFor="let column of columns;">
@@ -88,32 +82,23 @@
           <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
             <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
-              <!--*ngIf="row.estatus == 'Vigente'"-->
-              <div class="flex" *ngIf="row.vigente == true">
+              <div class="flex">
                 <!--{{row.vigente}}-->
-                <a (click)="openParcialModalCreate(row)" matTooltip="Cambiar estatus"
-                  class="w-10 h-10 leading-none flex items-center justify-center  hover:bg-hover text-teal bg-primary/10"
-                  mat-icon-button>
-                  <mat-icon class="icon-sm" svgIcon="mat:lock"></mat-icon>
-                </a>
-                <a (click)="openCicliModalCreate(1,row)" matTooltip="Editar Periodo"
+                <a *ngIf="row.vigente == true" (click)="finalizarPeriodo(row)" matTooltip="Finalizar periodo"
+                class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
+                mat-icon-button>
+                <mat-icon class="icon-sm" svgIcon="mat:lock_open"></mat-icon>
+              </a>
+                <a *ngIf="row.vigente == true" (click)="openParcialModalCreate(row)" matTooltip="Parciales del periodo"
+                class="w-10 h-10 leading-none flex items-center justify-center ml-2  hover:bg-hover text-teal bg-primary/10"
+                mat-icon-button>
+                <mat-icon class="icon-sm" svgIcon="mat:list"></mat-icon>
+              </a>
+                <a (click)="openModalPeriodo(row)" matTooltip="Editar Periodo"
                   class="w-10 h-10 leading-none flex items-center justify-center ml-2  hover:bg-hover text-primary bg-primary/10"
                   mat-icon-button>
                   <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
                 </a>
-              </div>
-              <div class="flex" *ngIf="row.vigente == false">
-                <a *ngIf="row.vigente == true" (click)="openParcialModalCreate(row)" matTooltip="Cambiar estatus"
-                  class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
-                  mat-icon-button>
-                  <mat-icon class="icon-sm" svgIcon="mat:lock_open"></mat-icon>
-                </a>
-                <a (click)="openCicliModalCreate(2,row)" matTooltip="Editar Periodo"
-                  class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-primary bg-primary/10"
-                  mat-icon-button>
-                  <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
-                </a>
-                
               </div>
             </td>
           </ng-container>

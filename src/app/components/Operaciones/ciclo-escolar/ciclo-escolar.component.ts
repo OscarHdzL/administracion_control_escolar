@@ -12,6 +12,7 @@ import { VariablesService } from 'src/app/servicios/variableGL.service';
 import { CatalogosServices } from 'src/app/servicios/catalogos.service';
 import { ThisReceiver } from '@angular/compiler';
 
+
 @Component({
   selector: 'vex-ciclo-escolar',
   templateUrl: './ciclo-escolar.component.html',
@@ -93,7 +94,7 @@ export class CicloEscolarComponent implements OnInit {
     }
 
     console.log(this.ciclos);
-    
+
     this.dataSource = new MatTableDataSource<CicloEscolar>(this.ciclos);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -109,7 +110,8 @@ export class CicloEscolarComponent implements OnInit {
       height: '50%',
       width: '70%',
       autoFocus: false,
-      data: 0
+      data: 0,
+      disableClose: true
    }).afterClosed().subscribe((  espacio: any) => {
       /**
        * Customer is the updated   espacio (if the user pressed Save - otherwise it's null)
@@ -126,7 +128,8 @@ export class CicloEscolarComponent implements OnInit {
       data:   espacio,
       height: '90%',
       width: '95%',
-      autoFocus: false
+      autoFocus: false,
+      disableClose: true
     }).afterClosed().subscribe(updatedCustomer => {
       /**
        * Customer is the updated   espacio (if the user pressed Save - otherwise it's null)
@@ -140,12 +143,14 @@ export class CicloEscolarComponent implements OnInit {
       height: '90%',
       width: '95%',
       autoFocus: false,
-      data: objeto
+      data: objeto,
+      disableClose: true
    }).afterClosed().subscribe(( materia: any) => {
       console.log('se guardo bien');
       this.ngOnInit();
     });
   }
+
 
 }
 

@@ -15,7 +15,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
   selector: 'vex-modal-parciales-periodo',
   templateUrl: './modal-parciales-periodo.component.html',
   styleUrls: ['./modal-parciales-periodo.component.scss'],
-  animations: [
+  /* animations: [
     trigger(
       'enterAnimation', [
         transition(':enter', [
@@ -28,7 +28,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
         ])
       ]
     )
-  ]
+  ] */
 })
 export class ModalParcialesPeriodoComponent implements OnInit {
 public listado:any=[];
@@ -45,7 +45,8 @@ public finalizado:boolean=false;
   ) { }
 
   async ngOnInit() {
-    this.listado = await this.parciales.getId(this.objeto);
+    debugger
+    this.listado = await this.obtenerParcialesPeriodo(this.objeto)
     console.log(this.listado);
     if(this.listado.exito){
       this.listado= this.listado.objeto;
@@ -54,12 +55,22 @@ public finalizado:boolean=false;
     console.log(this.listado)
     this.filtroArray()
     console.log(this.listado)
-    
+
   }
+
+
+  public async obtenerParcialesPeriodo(idPeriodo: number ){
+    const respuesta = await this.parciales.getId(idPeriodo);
+    return respuesta.exito ? respuesta.objeto : [];
+  }
+
+
+
+
   filtroArray(){
     let fin=0;
     for (let i = 0; i < this.listado.length; i++) {
-      
+
       if (this.listado[i].finalizado ===true) {
         fin = 1+fin;
       }
@@ -81,11 +92,11 @@ public finalizado:boolean=false;
       this.listado[2].finalizado=false;
     }
     if (this.bloqueos===3) {
-      this.finalizado=true; 
+      this.finalizado=true;
     }
   }
   async onToggle(tipo,event,item){
-  
+
     console.log(item);
     this.formulario.id=item.idPeriodoParcial;
     this.formulario.catParcialId=item.idParcial;
@@ -110,15 +121,15 @@ public finalizado:boolean=false;
     else{
        res= await this.parciales.postFin(this.formulario);
     }
-    
+
     console.log(res);
-    
+
     res.exito==true?this.toast.toastSuccess(res.mensaje):this.toast.toastErr(res.mensaje);
     this.ngOnInit();
   }
   async finalizar(item:any){
     Swal.fire({
-      title: '¿Seguro que quiere finalizar este proceso?',
+      title: '¿Seguro que quiere finalizar el parcial?. Ya no se podrá deshacer el cambio',
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: 'Si',

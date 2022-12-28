@@ -29,6 +29,18 @@ export class Periodo{
   periodo?: any;
   estatus?:any;
   tblGrupos?:any;
+  periodobit?: boolean
+
+
+  constructor(){
+    this.id = 0;
+    this.inicio = null;
+    this.fin = null;
+    this.vigente = true;
+    this.catCicloEscolarId = 0;
+    this.periodo = null;
+    this.periodobit = false;
+  }
 }
 export class Espacio{
     id?: number;

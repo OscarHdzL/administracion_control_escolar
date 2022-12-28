@@ -1,6 +1,6 @@
 <section>
   <div class="flex items-center " mat-dialog-title>
-    <h2 *ngIf="this.objeto == 0" class="headline m-0 flex-auto">Parciales de periodo</h2>
+    <h2 class="headline m-0 flex-auto">Parciales del periodo</h2>
 
     <button></button>
     <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
@@ -9,9 +9,9 @@
     </button>
   </div>
   <mat-divider class="-mx-6 text-border mb-4"></mat-divider>
-  <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4 justify-center">
-    <div class="flex flex-col">
-      <div class="overflow-x-auto sm:-mx-6 lg:-mx-8" *ngIf="finalizado==false" [@enterAnimation]>
+  <mat-dialog-content class="flex flex-auto">
+   <!--  <div class="flex flex-col">
+      <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-4 inline-block min-w-full sm:px-6 lg:px-8">
           <div class="overflow-hidden">
             <table class="min-w-full text-center">
@@ -39,21 +39,20 @@
                     <label for="" >
                       <div class="flex-auto">
                         <mat-slide-toggle *ngIf="item.finalizado ==false" color="primary" [checked]="item.abierto" (change)="onToggle(1,$event,item)" ></mat-slide-toggle>
-                        <!--
-                        <div class="row d-flex justify-content-center">
-                          <p >{{modalFormulario2.periodo==true?"Par":"Non"}}</p>
-                        </div>
-                        -->
+
                       </div>
                     </label>
                   </td>
                   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    <label for=""  [@enterAnimation]>
+                    <label for="" >
                         <a *ngIf="item.finalizado ==false"  (click)="finalizar(item)" matTooltip="Cambiar estatus"
                             class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
                             mat-icon-button>
                             <mat-icon mat-icon class="icon-sm" svgIcon="mat:lock_open"></mat-icon>
                         </a>
+                        <span *ngIf="item.finalizado == true"                     >
+                        Finalizado
+                    </span>
                     </label>
                   </td>
                 </tr>
@@ -63,13 +62,32 @@
           </div>
         </div>
       </div>
-      <div *ngIf="finalizado==true" [@enterAnimation]
-                      class="mb-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                      <!--
-                      <strong class="font-bold">Tabla vacia !</strong>
-                      -->
-                      <span class="block sm:inline">El Proceso ha finalizado.</span>
-                    </div>
-    </div>
+    </div> -->
+
+    <p-table [value]="this.listado" responsiveLayout="scroll" [paginator]="false" [rows]="3" [responsive]="true">
+      <ng-template pTemplate="header">
+          <tr>
+              <th pSortableColumn="parcial">Parcial <!-- <p-sortIcon field="grupo"></p-sortIcon> --></th>
+              <th pSortableColumn="abiero">Abierto<!-- <p-sortIcon field="materia"></p-sortIcon>  --></th>
+              <th pSortableColumn="finalizado">Finalizado <!-- <p-sortIcon field="nombreDocente"></p-sortIcon> --></th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+          <tr>
+              <td>{{product.parcial}}</td>
+              <td>
+                <mat-slide-toggle *ngIf="!product.finalizado" color="primary" [checked]="product.abierto" (change)="onToggle(1,$event,product)" ></mat-slide-toggle>
+              </td>
+              <td>
+                <a *ngIf="!product.finalizado"  (click)="finalizar(product)" matTooltip="Cambiar estatus"
+                            class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
+                            mat-icon-button>
+                            <mat-icon mat-icon class="icon-sm" svgIcon="mat:lock_open"></mat-icon>
+                        </a>
+              </td>
+          </tr>
+      </ng-template>
+  </p-table>
+
   </mat-dialog-content>
 </section>

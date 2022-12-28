@@ -83,7 +83,8 @@ export class ConfiguracionMateriasNobaseCicloEscolarComponent implements OnInit 
       height: '40%',
       width: '70%',
       autoFocus: false,
-      data: 0
+      data: 0,
+      disableClose: true
    }).afterClosed().subscribe(( materia: any) => {
       /**
        * Customer is the updated  materia (if the user pressed Save - otherwise it's null)

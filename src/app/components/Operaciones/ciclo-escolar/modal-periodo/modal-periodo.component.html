@@ -1,0 +1,57 @@
+<form #f="ngForm" (ngSubmit)="save(f)" novalidate>
+  <div class="flex items-center " mat-dialog-title>
+      <h2 *ngIf="this.periodoModel.id == 0" class="headline m-0 flex-auto">Agregar Periodo</h2>
+      <h2 *ngIf="this.periodoModel.id != 0" class="headline m-0 flex-auto">Editar Periodo</h2>
+
+    <button></button>
+    <!-- <mat-icon  svgIcon="mat:help" matTooltip="El grupo de opciones funciona como un alias o una etiqueta para una lista de opciones."></mat-icon> -->
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border mb-4"></mat-divider>
+
+  <mat-dialog-content class="flex flex-col lg:flex-row sm:gap-4">
+      <mat-form-field class="flex-auto">
+        <mat-label>Fecha Inicio</mat-label>
+        <input matInput [matDatepicker]="picker1"
+                  [(ngModel)]="periodoModel.inicio" name="inputNombre" ngModel #inputNombre="ngModel" required>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+          <div class="row d-flex justify-content-center">
+              <small  *ngIf="inputNombre.invalid && inputNombre.errors?.required && inputNombre.touched">Campo Requerido</small>
+          </div>
+        </mat-form-field>
+
+      <mat-form-field class="flex-auto">
+        <mat-label>Fecha Fin</mat-label>
+        <input matInput [matDatepicker]="picker2"
+                  [(ngModel)]="periodoModel.fin" name="inputNombre2" ngModel #inputNombre2="ngModel" required>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+          <div class="row d-flex justify-content-center">
+              <small  *ngIf="inputNombre2.invalid && inputNombre2.errors?.required && inputNombre2.touched">Campo Requerido</small>
+          </div>
+      </mat-form-field>
+<!--       <div class="flex-auto">
+        <mat-slide-toggle color="primary" [checked]="periodoModel.vigente" (change)="onToggle($event)" >Estatus</mat-slide-toggle>
+        <div class="row d-flex justify-content-center">
+          <p >{{periodoModel.vigente==true?"Vigente":"Programado"}}</p>
+        </div>
+      </div> -->
+      <div class="flex-auto">
+        <mat-slide-toggle color="primary" [checked]="periodoModel.periodobit" (change)="onToggle($event)" >Periodo</mat-slide-toggle>
+        <div class="row d-flex justify-content-center">
+          <p >{{this.periodoModel.periodobit==true?"Par":"Non"}}</p>
+        </div>
+      </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button *ngIf="this.objeto == 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Guardar</button>
+    <button *ngIf="this.objeto != 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Actualizar</button>
+  </mat-dialog-actions>
+</form>
+
+
+

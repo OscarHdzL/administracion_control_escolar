@@ -1,3 +1,4 @@
+import { ModalPeriodoComponent } from './../modal-periodo/modal-periodo.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -7,7 +8,7 @@ import { Customer } from 'src/app/pages/apps/aio-table/interfaces/customer.model
 import { SwalServices } from 'src/app/servicios/sweetalert2.services';
 import { VariablesService } from 'src/app/servicios/variableGL.service';
 import { ExprecionesRegulares } from 'src/app/modelos/expresionesRegulares';
-import { Periodo,PeriodoEscolar } from 'src/app/modelos/Catalogos';
+import { Periodo, PeriodoEscolar, CicloEscolar } from 'src/app/modelos/Catalogos';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { formatDate } from '@angular/common';
@@ -15,6 +16,9 @@ import { PeriodoService } from '../../../../servicios/periodo.service';
 import { ModalCicloEscolarComponent } from '../modal-ciclo-escolar/modal-ciclo-escolar.component';
 import { ModalParcialesPeriodoComponent } from '../modal-parciales-periodo/modal-parciales-periodo.component';
 //import { ConsoleReporter } from 'jasmine';
+
+import Swal from "sweetalert2/dist/sweetalert2.js";
+
 
 @Component({
   selector: 'vex-modal-configurar-periodo-escolar',
@@ -49,22 +53,22 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
               private dialog: MatDialog,
               private servicioPeriodo :PeriodoService,
               public matPaginatorIntl: MatPaginatorIntl) {
-                this.periodos.push({
+               /*  this.periodos.push({
                   id: 0,
                   inicio: "fechaInicio",
                   fin: "fechaFin",
                   estatus: "Vigente"
-                });
+                }); */
   }
   get visibleColumns() {
     return this.columns.filter(column => column.visible).map(column => column.property);
   }
 
   async ngOnInit() {
-    console.log(this.periodos);
-    
+    console.log(this.objeto);
+
     if(this.objeto == 0){
-      
+
       this.dataSource = new MatTableDataSource<PeriodoEscolar>(this.periodos);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -80,11 +84,11 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
       //this.modalFormulario.id = this.objeto.id;
       this.periodos=res.objeto;
       console.log(this.periodos);
-      for (let index = 0; index < this.periodos.length; index++) {
+ /*      for (let index = 0; index < this.periodos.length; index++) {
         this.periodos[index].inicio=this.periodos[index].inicio.substring(0, 10);
         this.periodos[index].fin=this.periodos[index].inicio.substring(0, 10);
       }
-      console.log('reversed:', this.periodos.reverse());
+      console.log('reversed:', this.periodos.reverse()); */
       this.dataSource = new MatTableDataSource<PeriodoEscolar>(this.periodos);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -106,7 +110,7 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
   }
   async periodoParciales(row: any){
     console.log(row);
-      
+
     /*
     console.log(row);
     this.modalFormulario=row;
@@ -125,7 +129,7 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
     this.tFormulario=true;
     this.toastService.toatsWarning("Edite el regisgtro en el formulario");
   }
-  
+
   onToggle(event,tipo){
     if(tipo==1)
     {
@@ -139,9 +143,9 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
       console.log(this.modalFormulario.periodo);
     }
     console.log(event.checked);
-    
+
     return;
-    
+
     if (event.checked) {
       this.modalFormulario.estatus = "Vigente";
     } else {
@@ -176,17 +180,17 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
     var b = s.split(/\D/);
     return b.reverse().join('-');
   }
-  
+
   async agregarOpcion(tipo:boolean)
   {
-    
+
     let res;
     this.modalFormulario.inicio = this.acomodarFecha(formatDate(this.modalFormulario.inicio,'dd/MM/yyyy','en-US'));
     this.modalFormulario.fin = this.acomodarFecha(formatDate(this.modalFormulario.fin,'dd/MM/yyyy','en-US'));
     this.modalFormulario.catCicloEscolarId=this.modalFormulario.catCicloEscolarId;
     this.modalFormulario.catCicloEscolarId=this.objeto.id;
     this.modalFormulario.periodo=this.modalFormulario.periodo===true?"Non":"Par";
-    
+
     if(tipo==false)
     {
       this.modalFormulario.id=0;
@@ -198,21 +202,21 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
       console.log(this.modalFormulario);
       this.tFormulario=false;
       res=await this.servicioPeriodo.put(this.modalFormulario);
-      
+
     }
-    
+
     if (res.exito) {
       this.modalFormulario={};
       this.toastService.toastSuccess(res.mensaje);
       this.ngOnInit();
     }else{
       this.toastService.toastErr(res.mensaje);
-      
+
     }
-    
+
     //console.log(res);
-    
-    
+
+
   }
   openCicliModalCreate(tipo:number,row:any) {
     let objeto = {tipo,row}
@@ -220,7 +224,8 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
       height: '50%',
       width: '60%',
       autoFocus: false,
-      data: objeto
+      data: objeto,
+      disableClose: true
    }).afterClosed().subscribe(( materia: any) => {
       console.log('se guardo bien');
       this.ngOnInit();
@@ -231,13 +236,61 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
     let objeto = row.id
     this.dialog.open(ModalParcialesPeriodoComponent,{
       height: '50%',
-      width: '60%',
+      width: '30%',
       autoFocus: false,
-      data: objeto
+      data: objeto,
+      disableClose: true
    }).afterClosed().subscribe(( materia: any) => {
       console.log('se guardo bien');
       this.ngOnInit();
     });
+  }
+
+
+  openModalPeriodo(periodo:any) {
+
+    console.log(periodo)
+
+
+    let objeto = {
+      modelPeriodo: periodo ? periodo :  new Periodo(),
+      CicloEscolarId : this.objeto.id
+    }
+    this.dialog.open(ModalPeriodoComponent,{
+      height: '40%',
+      width: '60%',
+      autoFocus: false,
+      data: objeto,
+      disableClose: true
+   }).afterClosed().subscribe(( materia: any) => {
+      console.log('se guardo bien');
+      this.ngOnInit();
+    });
+  }
+
+
+  async finalizarPeriodo(item:any){
+    Swal.fire({
+      title: '¿Seguro que quiere finalizar el periodo?. Ya no se podrá deshacer el cambio',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Si',
+      denyButtonText: 'No',
+      customClass: {
+        actions: 'my-actions',
+        cancelButton: 'order-1 right-gap',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.toastService.toastSuccess("Se finalizó periodo");
+
+      } else if (result.isDenied) {
+
+      }
+    })
   }
 
 }

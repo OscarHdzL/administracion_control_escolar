@@ -1,3 +1,4 @@
+import { ModalPeriodoComponent } from './Operaciones/ciclo-escolar/modal-periodo/modal-periodo.component';
 import { MateriasNobaseDocenteComponent } from './Operaciones/Docentes/materias-nobase-docente/materias-nobase-docente.component';
 import { AgregarMateriaNobaseCicloescolarComponent } from './Operaciones/configuracion-materias-nobase/agregar-materia-nobase-cicloescolar/agregar-materia-nobase-cicloescolar.component';
 import { ConfiguracionMateriasNobaseCicloEscolarComponent } from './Operaciones/configuracion-materias-nobase/configuracion-materias-nobase-cicloescolar.component';
@@ -185,7 +186,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     ModalMateriaNobaseComponent,
     ConfiguracionMateriasNobaseCicloEscolarComponent,
     AgregarMateriaNobaseCicloescolarComponent,
-    MateriasNobaseDocenteComponent
+    MateriasNobaseDocenteComponent,
+    ModalPeriodoComponent
   ],
   imports: [
     CommonModule,
