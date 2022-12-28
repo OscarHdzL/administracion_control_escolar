@@ -1,25 +1,10 @@
 <vex-page-layout>
-  <!--     <vex-page-layout-header class="pb-16 flex flex-col items-start justify-center">
-            <div class="w-full flex flex-col sm:flex-row justify-between">
-                <h1 class="title mt-0 mb-1">Administrador de Formularios</h1>
-            </div>
-            <div class="w-full flex flex-col sm:flex-row justify-between">
-                <vex-breadcrumbs [crumbs]="['Administrador de Formularios', 'Lista de Opciones']"></vex-breadcrumbs>
-            </div>
-        </vex-page-layout-header> -->
   <div class="p-gutter m-2">
     <div class="card overflow-auto mt-2">
       <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
         <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
           Lista de Ciclos Escolares
         </h2>
-        <!--  <div class="bg-foreground rounded-full border px-4 max-w-[300px] flex-auto flex items-center border border-gray-300">
-                    <mat-icon class="icon-sm text-secondary" svgIcon="mat:search"></mat-icon>
-                    <input
-                        class="px-4 py-2 border-0 outline-none w-full bg-transparent"
-                        placeholder="Buscar..."
-                        type="search">
-                </div> -->
         <span class="flex-1"></span>
         <button (click)="openModalCreate()" class="ml-4 flex-none" color="primary" mat-mini-fab
           matTooltip="Agregar Ciclo" type="button">
