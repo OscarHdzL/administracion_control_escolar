@@ -30,4 +30,9 @@ export class PeriodoService extends MainService {
   public async Delate(id: number) : Promise <any> {
     return await this.deleteAsync(this.periodo + 'api/Periodo/Pendiente'+ id);
   }
+
+  public finalizarPeriodo(objeto: any)
+  {
+      return this.postAsync(this.periodo + 'api/Periodo/FinalizarPeriodo', objeto);
+  }
 }

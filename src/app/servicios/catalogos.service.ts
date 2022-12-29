@@ -139,6 +139,11 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
     eliminarRama(id: number){
       return this.deleteAsync(this.gatewayCatalogos + 'api/Rama/DeleteRama?id=' + id)
     }
+
+
+    consultarSemestres(){
+      return this.getAsync(this.gatewayCatalogos + 'api/Semestre/GetAllSemestre')
+    }
     //Espacios Academicos
     consultarEspacios(){
       return this.getAsync(this.gatewayCatalogos + 'api/EspaciosAcademicos/GetAllEspaciosAcademicos');
@@ -289,7 +294,7 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
 
     public consultarGrupoById(idGrupo: number)
     {
-        return this.getAsync(this.gatewayCatalogos + 'api/Grupo/GetGrupoById' + idGrupo);
+        return this.getAsync(this.gatewayCatalogos + 'api/Grupo/GetGrupoById?idGrupo=' + idGrupo);
     }
 
 
@@ -307,6 +312,19 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
     consultarMateriasNoBaseByIdPlantilla(idPlantilla: number)
     {
         return this.getAsync(this.gatewayCatalogos + 'api/Materia/GetMateriasNobaseByIdPlantilla?idPlantilla=' + idPlantilla);
+    }
+
+
+    consultarMateriasNoBaseDocenteByIdSemestre(idSemestre: number)
+    {
+        return this.getAsync(this.gatewayCatalogos + 'api/Materia/GetMateriasNobaseSemestreById?idSemestre=' + idSemestre);
+    }
+
+
+
+    consultarHorariosMateriasNoBaseByIdSemestre(idSemestre: number)
+    {
+        return this.getAsync(this.gatewayCatalogos + 'api/Horario/GetHorariosMateriaNobaseBySemestre?idSemestre=' + idSemestre);
     }
 
 
@@ -365,6 +383,17 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
     }
 
 
+    insertarHorarioDocenteMateriaNoBase(objeto: any)
+    {
+        return this.postAsync(this.gatewayCatalogos + 'api/Horario/AgregarHorarioDocenteMateriaNobase', objeto);
+    }
+
+    eliminarHorarioDocenteMateriaNoBase(idHorarioDocenteMateriaNobase: number)
+    {
+        return this.deleteAsync(this.gatewayCatalogos + 'api/Horario/EliminarHorarioDocenteMateriaNobase?idHorarioDocenteMateriaNobase=' + idHorarioDocenteMateriaNobase);
+    }
+
+
     EliminarHorarioDocente
 
     eliminarDocenteGrupoMateria(idGrupoDocente: any)
@@ -372,4 +401,24 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
         return this.deleteAsync(this.gatewayCatalogos + 'api/Grupo/InhabilitarGrupoDocente?idGrupoDocente=' + idGrupoDocente);
     }
 
+    //periodoReinscripcion
+    consultarPeriodosReinscripcion() {
+      return this.getAsync(this.gatewayCatalogos + 'api/Reinscripcion/GetAllPeriodosReinscripcion');
+    }
+
+    consultarCitasPeriodoReinscripcion(idPeriodoReinscripcion) {
+      return this.getAsync(this.gatewayCatalogos + 'api/Reinscripcion/GetCitasPeriodosReinscripcion?idPeriodoReinscripcion='+ idPeriodoReinscripcion);
+    }
+
+    agregarPeriodoReinscripcion(objeto: any){
+      return this.postAsync(this.gatewayCatalogos + 'api/Reinscripcion/AltaPeriodoReinscripcion', objeto)
+    }
+
+    actualizarPeriodoReinscripcion(objeto: any){
+      return this.putAsync(this.gatewayCatalogos + 'api/Reinscripcion/ActualizarPeriodoReinscripcion', objeto)
+    }
+
+    generarCitasPeriodoReinscripcion(objeto: any){
+      return this.postAsync(this.gatewayCatalogos + 'api/Reinscripcion/GenerarCitasPeriodoReinscripcion', objeto)
+    }
 }

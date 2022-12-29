@@ -126,7 +126,7 @@ export class CicloEscolarComponent implements OnInit {
     console.log('editar',  espacio);
     this.dialog.open(ModalConfigurarPeriodoEscolarComponent, {
       data:   espacio,
-      height: '90%',
+      height: '50%',
       width: '95%',
       autoFocus: false,
       disableClose: true

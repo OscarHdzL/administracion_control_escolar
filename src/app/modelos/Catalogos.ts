@@ -462,3 +462,47 @@ export class RelMateriasNobaseCicloEscolar {
     this.catPeriodoId = 0
   }
 }
+
+
+
+export class PeriodoReinscripcionModel {
+  id: number;
+  catPeriodoId: number;
+  descripcion: string;
+  fechaInicio: string;
+  fechaFin: string;
+  horaInicio: string;
+  horaFin: string;
+  procesado: boolean;
+  inclusion: Date;
+
+  constructor(){
+    this.id = 0
+    this.catPeriodoId = 0
+    this.descripcion = null
+    this.fechaInicio = new Date().toString()
+    this.fechaFin = new Date().toString()
+    this.horaInicio = ''
+    this.horaFin = ''
+    this.procesado = false
+    this.inclusion = new Date()
+  }
+
+}
+
+export class CitasPeriodoReinscripcion {
+  id: number;
+  relAlumnoId: number;
+  nombreAlumno: string;
+  relPlantillaId: number;
+  tblGrupoId?: any;
+  grupo?: any;
+  catDeporteId?: any;
+  deporte?: any;
+  catPeriodoId: number;
+  fechaInicio: Date;
+  fechaFin: Date;
+  finalizadoPorAlumno: boolean;
+  inclusion: Date;
+  tblPeriodoReinscripcionId: number;
+}

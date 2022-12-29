@@ -9,7 +9,7 @@
     </button>
   </div>
   <mat-divider class="-mx-6 text-border mb-4"></mat-divider>
-  <mat-dialog-content class="flex flex-auto">
+  <mat-dialog-content class="flex justify-center">
    <!--  <div class="flex flex-col">
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-4 inline-block min-w-full sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@
       </div>
     </div> -->
 
-    <p-table [value]="this.listado" responsiveLayout="scroll" [paginator]="false" [rows]="3" [responsive]="true">
+    <p-table [value]="this.listado" [tableStyle]="{'min-width': '50rem'}">
       <ng-template pTemplate="header">
           <tr>
               <th pSortableColumn="parcial">Parcial <!-- <p-sortIcon field="grupo"></p-sortIcon> --></th>

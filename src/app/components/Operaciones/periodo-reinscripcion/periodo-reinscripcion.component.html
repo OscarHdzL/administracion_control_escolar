@@ -3,10 +3,10 @@
     <div class="card overflow-auto mt-2">
       <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
         <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
-          Grupos
+          Periodos reinscripción
         </h2>
         <span class="flex-1"></span>
-        <button (click)="openModalGrupo(null)"
+        <button (click)="openModalPeriodoReinscripcion(null)"
           class="ml-4 flex-none"
           color="primary"
           mat-mini-fab
@@ -20,21 +20,33 @@
           <ng-container *ngFor="let column of columns;">
           </ng-container>
           <ng-container *ngFor="let column of columns;">
-            <ng-container *ngIf="column.property == 'grupo'" [matColumnDef]="column.property">
+            <ng-container *ngIf="column.property == 'descripcion'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.grupo }}</td>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.descripcion }}</td>
             </ng-container>
           </ng-container>
           <ng-container *ngFor="let column of columns;">
-            <ng-container *ngIf="column.property == 'deporte'" [matColumnDef]="column.property">
+            <ng-container *ngIf="column.property == 'fechaInicio'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.deporte }}</td>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fechaInicio | date: 'yyyy-MM-dd'}}</td>
             </ng-container>
           </ng-container>
           <ng-container *ngFor="let column of columns;">
-            <ng-container *ngIf="column.property == 'aforomax'" [matColumnDef]="column.property">
+            <ng-container *ngIf="column.property == 'fechaFin'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.aforomax }}</td>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fechaFin | date: 'yyyy-MM-dd'}}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns;">
+            <ng-container *ngIf="column.property == 'horaInicio'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.horaInicio }}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngFor="let column of columns;">
+            <ng-container *ngIf="column.property == 'horaFin'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase" mat-header-cell > {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.horaFin }}</td>
             </ng-container>
           </ng-container>
           <ng-container *ngFor="let column of columns;">
@@ -42,25 +54,24 @@
               <th *matHeaderCellDef class="uppercase" mat-header-cell style="text-align: center;" > {{ column.label }}</th>
               <td *matCellDef="let element" [ngClass]="column.cssClasses" mat-cell>
                 <div class="flex items-center justify-center">
-                    <a (click)="openModalMaterias(element)"
-                    matTooltip="Materias base"
+                    <a *ngIf="!element.procesado" (click)="generarCitasReinscripcion(element)"
+                    matTooltip="Generar citas"
                     class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 ml-4"
                     mat-icon-button>
-                    <mat-icon class="icon-sm" svgIcon="mat:collections_bookmark"></mat-icon>
+                    <mat-icon class="icon-sm" svgIcon="mat:schedule"></mat-icon>
                   </a>
-                  <a [routerLink]="['../calendario-grupo', element.id]"
-                  matTooltip="Calendario"
+                  <a  (click)="openModalCitasPeriodoReinscripcion(element.id)"
+                  matTooltip="Ver citas generadas"
                   class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 ml-4"
                   mat-icon-button>
-                  <mat-icon class="icon-sm" svgIcon="mat:calendar_today"></mat-icon>
+                  <mat-icon class="icon-sm" svgIcon="mat:list"></mat-icon>
                 </a>
-                    <a
-                    (click)="eliminarGrupo(element.id)"
-                      matTooltip="Eliminar grupo"
-                      class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-warn bg-primary/10 ml-4"
-                      mat-icon-button>
-                      <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
-                    </a>
+                  <a *ngIf="!element.procesado" (click)="openModalPeriodoReinscripcion(element)"
+                    matTooltip="Editar"
+                    class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary/10 ml-4"
+                    mat-icon-button>
+                    <mat-icon class="icon-sm" svgIcon="mat:edit"></mat-icon>
+                  </a>
                 </div>
               </td>
             </ng-container>

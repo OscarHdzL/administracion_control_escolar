@@ -1,3 +1,5 @@
+import { PeriodoReinscripcionComponent } from './Operaciones/periodo-reinscripcion/periodo-reinscripcion.component';
+import { CalendarioMateriasNobaseComponent } from './Operaciones/calendario-materias-nobase/calendario-materias-nobase.component';
 import { ConfiguracionMateriasNobaseCicloEscolarComponent } from './Operaciones/configuracion-materias-nobase/configuracion-materias-nobase-cicloescolar.component';
 import { GruposDocenteComponent } from './Docentes/grupos-docente/grupos-docente.component';
 import { EscalafonAspiranteComponent } from './Aspirantes/escalafon-aspirante/escalafon-aspirante.component';
@@ -207,7 +209,23 @@ const routes: Routes = [
     data: {
       title: 'configuracion-materias-no-base'
     }
+  },
+  {
+    path: 'calendario-materias-no-base',
+    component: CalendarioMateriasNobaseComponent,
+    data: {
+      title: 'calendario-materias-no-base'
+    }
   }
+  ,
+  {
+    path: 'periodo-reinscripcion',
+    component: PeriodoReinscripcionComponent,
+    data: {
+      title: 'periodo_reinscripcion'
+    }
+  }
+
 
 
 ];

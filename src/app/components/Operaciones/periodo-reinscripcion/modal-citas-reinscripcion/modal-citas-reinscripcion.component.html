@@ -1,0 +1,43 @@
+
+  <div class="flex items-center" mat-dialog-title>
+      <h2 class="headline m-0 flex-auto">Citas generadas</h2>
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <table [dataSource]="this.dataSource" class="w-full" mat-table matSort>
+    <ng-container *ngFor="let column of columns;">
+      <ng-container *ngIf="column.property== 'nombreAlumno'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.nombreAlumno }}</td>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngFor="let column of columns;">
+        <ng-container *ngIf="column.property== 'fechaInicio'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fechaInicio | date:'short' }}</td>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngFor="let column of columns;">
+        <ng-container *ngIf="column.property== 'fechaFin'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.fechaFin | date:'short'}}</td>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngFor="let column of columns;">
+        <ng-container *ngIf="column.property== 'finalizadoPorAlumno'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.finalizadoPorAlumno ? 'Si' : 'No' }}</td>
+        </ng-container>
+      </ng-container>
+
+
+      <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: visibleColumns;" class="hover:bg-hover trans-ease-out cursor-pointer" mat-row>
+      </tr>
+    </table>
+    <mat-paginator #paginator [pageSizeOptions]="[5,20,40,80,100]"></mat-paginator>
+

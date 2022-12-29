@@ -1,0 +1,53 @@
+<form role="form" autocomplete="off" [formGroup]="formPeriodoReinscripcion" novalidate>guardar
+  <div mat-dialog-title class="flex items-center justify-between">
+    <div>{{ this.PeriodoReinscripcionModel.id == 0  ? 'Alta PeriodoReinscripcion' : 'Editar PeriodoReinscripcion' }}</div>
+    <button type="button" mat-icon-button (click)="close(false)" tabindex="-1">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <div class="mt-4 flex flex-col gap-2">
+
+      <div class="flex flex-col sm:flex-row sm:gap-1">
+        <mat-form-field class="vex-flex-form-field flex-auto">
+          <mat-label>Descripción</mat-label>
+          <textarea type="text" matInput formControlName="descripcion" maxlength="150"></textarea>
+          <mat-error *ngIf="this.descripcion.hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:gap-4">
+
+        <mat-form-field class="vex-flex-form-field flex-auto">
+          <mat-label>Fecha Inicio</mat-label>
+          <input type="date" matInput formControlName="fechaInicio" >
+          <mat-error *ngIf="this.fechaInicio.hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field flex-auto">
+          <mat-label>Fecha Fin</mat-label>
+          <input type="date" matInput formControlName="fechaFin" >
+          <mat-error *ngIf="this.fechaFin.hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field flex-auto">
+          <mat-label>Hora inicio</mat-label>
+          <input type="time" step='1' matInput formControlName="horaInicio" >
+          <mat-error *ngIf="this.horaInicio.hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="vex-flex-form-field flex-auto">
+          <mat-label>Hora fin</mat-label>
+          <input type="time" step='1' matInput formControlName="horaFin" >
+          <mat-error *ngIf="this.horaFin.hasError('required')"> El campo es requerido</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <!-- <button type="button" mat-button (click)="close(false)">Cancelar</button> -->
+    <button type="button" mat-button (click)="close(false)" >Cancelar</button>
+    <button type="submit" *ngIf="this.PeriodoReinscripcionModel.id == 0" mat-flat-button color="primary" (click)="guardarPeriodoReinscripcion()" [disabled]="formPeriodoReinscripcion.invalid">Agregar</button>
+    <button type="submit" mat-flat-button color="primary" *ngIf="this.PeriodoReinscripcionModel.id > 0" (click)="guardarPeriodoReinscripcion()" [disabled]="formPeriodoReinscripcion.invalid">Actualizar</button>
+  </mat-dialog-actions>
+</form>

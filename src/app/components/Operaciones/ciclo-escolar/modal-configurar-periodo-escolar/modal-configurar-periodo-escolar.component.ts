@@ -235,8 +235,8 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
     console.log(row)
     let objeto = row.id
     this.dialog.open(ModalParcialesPeriodoComponent,{
-      height: '50%',
-      width: '30%',
+      height: '40%',
+      width: '45%',
       autoFocus: false,
       data: objeto,
       disableClose: true
@@ -282,10 +282,20 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
         confirmButton: 'order-2',
         denyButton: 'order-3',
       }
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
 
-        this.toastService.toastSuccess("Se finalizó periodo");
+
+        const respuesta = await this.servicioPeriodo.finalizarPeriodo(item);
+
+        if(respuesta.exito){
+          this.toastService.toastSuccess("Se finalizó periodo");
+          this.ngOnInit();
+        } else {
+          this.toastService.toastErr(respuesta.error);
+        }
+
+
 
       } else if (result.isDenied) {
 

@@ -1,3 +1,6 @@
+import { ModalCitasReinscripcionComponent } from './Operaciones/periodo-reinscripcion/modal-citas-reinscripcion/modal-citas-reinscripcion.component';
+import { PeriodoReinscripcionComponent } from './Operaciones/periodo-reinscripcion/periodo-reinscripcion.component';
+import { CalendarioMateriasNobaseComponent } from './Operaciones/calendario-materias-nobase/calendario-materias-nobase.component';
 import { ModalPeriodoComponent } from './Operaciones/ciclo-escolar/modal-periodo/modal-periodo.component';
 import { MateriasNobaseDocenteComponent } from './Operaciones/Docentes/materias-nobase-docente/materias-nobase-docente.component';
 import { AgregarMateriaNobaseCicloescolarComponent } from './Operaciones/configuracion-materias-nobase/agregar-materia-nobase-cicloescolar/agregar-materia-nobase-cicloescolar.component';
@@ -107,6 +110,7 @@ import { CalificacionesAlumnosComponent } from './Docentes/calificaciones-alumno
 import { NgxMaskModule } from 'ngx-mask-2';
 import { ModalParcialesPeriodoComponent } from './Operaciones/ciclo-escolar/modal-parciales-periodo/modal-parciales-periodo.component';
 import { ModalMateriaNobaseComponent } from './Operaciones/materia-nobase/modal-materia-nobase/modal-materia-nobase.component';
+import { ModalPeriodoReinscripcionComponent } from './Operaciones/periodo-reinscripcion/modal-periodo-reinscripcion/modal-periodo-reinscripcion.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -187,7 +191,11 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     ConfiguracionMateriasNobaseCicloEscolarComponent,
     AgregarMateriaNobaseCicloescolarComponent,
     MateriasNobaseDocenteComponent,
-    ModalPeriodoComponent
+    ModalPeriodoComponent,
+    CalendarioMateriasNobaseComponent,
+    PeriodoReinscripcionComponent,
+    ModalPeriodoReinscripcionComponent,
+    ModalCitasReinscripcionComponent
   ],
   imports: [
     CommonModule,

@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
   OnInit,
@@ -32,28 +33,33 @@ import {
 } from "src/app/modelos/Grupo.model";
 import { CatalogosServices } from "src/app/servicios/catalogos.service";
 import { VariablesService } from "src/app/servicios/variableGL.service";
-import { AltaDocenteMateriaGrupoComponent } from "../alta-materias-grupo/alta-docente-materia-grupo/alta-docente-materia-grupo.component";
+
 import { Location } from '@angular/common';
-import { HorarioMateriaNobaseSemestre } from "src/app/modelos/Materia.model";
+import { AltaDocenteMateriaGrupoComponent } from "../grupo/alta-materias-grupo/alta-docente-materia-grupo/alta-docente-materia-grupo.component";
+import { HorarioDocenteMateriaNoBase, HorarioMateriaNobaseSemestre, MateriasNoBasebySemestre } from 'src/app/modelos/Materia.model';
 
 
 @Component({
-  selector: "vex-calendario-grupo",
-  templateUrl: "./calendario-grupo.component.html",
-  styleUrls: ["./calendario-grupo.component.scss"],
+  selector: 'app-calendario-materias-nobase',
+  templateUrl: './calendario-materias-nobase.component.html',
+  styleUrls: ['./calendario-materias-nobase.component.scss'],
   providers: [MessageService, ConfirmationService],
 })
-export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
-
+export class CalendarioMateriasNobaseComponent implements OnInit {
+  formSemestre: FormGroup
+  IDSEMESTRE: number
+  listaSemestres = []
+  PLACEHOLDER = "Seleccione una opción"
   displayBasic = false;
   listaEvento: any[] = [];
   ID_GRUPO = 3;
-  GRUPO : GrupoModel;
   @ViewChild("mycalendar_") calendarComponent: FullCalendarComponent;
   @ViewChild("listBox") listBox: Listbox;
   events: any[];
   options: CalendarOptions;
   activeState: boolean[] = [true, false, false];
+
+listaMateriasSemestre : MateriasNoBasebySemestre[] = []
 
   listaHorariosExistentes: HorarioMateriaDocente[] = [];
 
@@ -123,7 +129,8 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
     private catalogosService: CatalogosServices,
     private toastService:VariablesService,
     private router: ActivatedRoute,
-    private _location: Location
+    private _location: Location,
+    private formBuilder: FormBuilder,
   ) {
 
 
@@ -197,7 +204,7 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
       /* eventReceive: (eventReceiveEvent) => {
         console.log("EVENT RECEIVE !!!");
       }, */
-      eventReceive: this.funcionReceive.bind(this),
+      eventReceive: this.funcionReceiveMateria.bind(this),
       //EVENTO QUE SE EJECUTA
 
       /*
@@ -225,8 +232,41 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
         this.openModalDocenteMateriaGrupo(eventClick)
       }, */
 
-      eventClick: this.openModalDocenteMateriaGrupo.bind(this),
+      //eventClick: this.openModalDocenteMateriaGrupo.bind(this),
+      eventClick: this.confirm.bind(this),
     };
+  }
+
+
+
+  async ngOnInit() {
+    console.log("ON INIT");
+    //this.eventsSubscription = this.eventos.subscribe(() => this.ngOnInit());
+    console.log(this.listaEvento);
+
+    this.iniciarForm();
+    await this.obtenerSemestres()
+  }
+
+  public iniciarForm() {
+    this.formSemestre = this.formBuilder.group({
+      semestre: [null, [Validators.required]]
+    })
+    this.onChangeSemestre();
+  }
+
+  get semestre() { return this.formSemestre.get('semestre') }
+
+
+  public onChangeSemestre(){
+    this.semestre.valueChanges.subscribe(async idSemestre=>{
+      debugger
+      if(idSemestre){
+        this.IDSEMESTRE = idSemestre;
+        await this.obtenerMateriasDocenteBySemestre(this.IDSEMESTRE);
+        await this.obtenerHorariosSemestre(this.IDSEMESTRE)
+      }
+    });
   }
 
   public randomInteger(min, max) {
@@ -237,29 +277,22 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
     this._location.back();
   }
 
-  async ngOnInit() {
-    await this.obtenerGrupo();
-
-    console.log("ON INIT");
-    console.log(this.GRUPO);
-    //this.eventsSubscription = this.eventos.subscribe(() => this.ngOnInit());
-    console.log(this.listaEvento);
-
-    await this.obtenerMateriasGrupo();
-    await this.obtenerHorariosGrupo();
+  public async obtenerSemestres(){
+    const respuesta = await this.catalogosService.consultarSemestres();
+    this.listaSemestres = respuesta.exito ? respuesta.objeto : [];
   }
 
 
   public async obtenerHorariosSemestre(idSemestre) {
-    const respuestaNobase = await this.catalogosService.consultarHorariosMateriasNoBaseByIdSemestre(
+    const respuesta = await this.catalogosService.consultarHorariosMateriasNoBaseByIdSemestre(
       idSemestre
     );
-    let horariosNobase: HorarioMateriaNobaseSemestre[] = respuestaNobase.objeto
-      ? respuestaNobase.objeto
+    let horarios: HorarioMateriaNobaseSemestre[] = respuesta.objeto
+      ? respuesta.objeto
       : [];
     let listaEventosCalendario = [];
 
-    horariosNobase.forEach((element) => {
+    horarios.forEach((element) => {
 
       listaEventosCalendario.push({
         title: element.materia + " - " + element.nombreDocente,
@@ -275,7 +308,17 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
           optativa: false,
 
           //SE USARIA PARA BORRAR EL HORARIO
-          horarioNobaseId: element.id,
+          horarioId: element.id,
+
+          //SE USARIA PARA OBTNER LOS DOCENTES QUE ESTEN LIGADOS A relMateriaPlantillaId
+/*           relMateriaPlantillaId: element.relMateriaPlantillaId,
+
+          //SE USARIA PARA GUARDAR EN rel_grupo_materia_plantilla_docente
+          relGrupoMateriaPlantillaId: element.relGrupoMateriaPlantillaId,
+          relGrupoMateriaPlantillaDocenteId:
+            element.relGrupoMateriaPlantillaDocenteId,
+
+          grupo: element.grupo.toUpperCase(), */
           materia: element.materia.toUpperCase(),
           nombreDocente: element.nombreDocente.toUpperCase()
         },
@@ -284,56 +327,14 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
     this.options.events = listaEventosCalendario;
   }
 
-  public async obtenerGrupo(){
-    const respuesta = await this.catalogosService.consultarGrupoById(this.ID_GRUPO)
-    this.GRUPO = respuesta.exito ? respuesta.objeto[0] : new GrupoModel();
-  }
-
-  public async obtenerHorariosGrupo() {
-    debugger
+ /*  public async obtenerHorariosGrupo() {
     const respuesta = await this.catalogosService.consultarHorariosByIdGrupo(
       this.ID_GRUPO
     );
     let horarios: HorarioMateriaDocente[] = respuesta.objeto
       ? respuesta.objeto
       : [];
-
-    /* NO BASE */
-    debugger
-    const respuestaNobase = await this.catalogosService.consultarHorariosMateriasNoBaseByIdSemestre(
-      this.GRUPO.catSemestreId
-    );
-    let horariosNobase: HorarioMateriaNobaseSemestre[] = respuestaNobase.objeto
-      ? respuestaNobase.objeto
-      : [];
-
-
-      let listaEventosCalendario = [];
-
-      //SE INSERTAN PRIMERO LOS HORARIOS DE LAS MATERIAS NO BASE
-      horariosNobase.forEach((element) => {
-        listaEventosCalendario.push({
-          title: element.materia + " - " + element.nombreDocente,
-          start: this.establecerHorario(element.dia, element.horaInicio),
-          end: this.establecerHorario(element.dia, element.horaFin),
-          duration: "01:00",
-          durationEditable: false,
-          id: 1,
-          backgroundColor: "#33B2FF",
-          icon: "asterisk",
-          extendedProps: {
-            img: 'fa-dot-circle-o',
-            optativa: false,
-
-            //SE USARIA PARA BORRAR EL HORARIO
-            horarioNobaseId: element.id,
-            materia: element.materia.toUpperCase(),
-            nombreDocente: element.nombreDocente.toUpperCase()
-          },
-        });
-      });
-
-
+    let listaEventosCalendario = [];
 
     horarios.forEach((element) => {
 
@@ -367,107 +368,88 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
         },
       });
     });
-    debugger
     this.options.events = listaEventosCalendario;
+  } */
+
+
+public async obtenerMateriasDocenteBySemestre(idSemestre) {
+  debugger
+  const respuesta = await this.catalogosService.consultarMateriasNoBaseDocenteByIdSemestre(idSemestre);
+  this.listaMateriasSemestre = respuesta.exito ? respuesta.objeto : [];
+
+  //Se limpia lista de draggable
+  this.listaEvento = [];
+
+  //Se agrega Seccion/Titulo
+  this.listaEvento.push({
+    label: "Materias del semestre",
+    value: "a",
+    items: [],
+  });
+
+  for (let i = 0; i < this.listaMateriasSemestre.length; i++) {
+
+    this.listaEvento[0].items.push({
+      id: i + 1,
+      label: (
+        this.listaMateriasSemestre[i].materia  +
+        (this.listaMateriasSemestre[i].nombreDocente
+          ? " - " + this.listaMateriasSemestre[i].nombreDocente
+          : "")
+      ).toUpperCase(),
+      value: (
+        this.listaMateriasSemestre[i].materia +
+        (this.listaMateriasSemestre[i].nombreDocente
+          ? " - " + this.listaMateriasSemestre[i].nombreDocente
+          : "")
+      ).toUpperCase(),
+      optativa: true,
+      //fondo: color,
+      fondo: this.listaPaletaColores[this.randomInteger(0,this.listaPaletaColores.length - 1)],
+
+      //SE USARIA PARA GUARDAR EN rel_grupo_materia_plantilla_docente
+     /*  relGrupoMateriaPlantillaId: listaMateriaGrupo[i].id,
+      relGrupoMateriaPlantillaDocenteId:
+        listaMateriaGrupo[i].relGrupoMateriaPlantillaDocenteId,
+
+      grupo: listaMateriaGrupo[i].grupo, */
+
+      relDocenteMateriaNobasePlantillaId: this.listaMateriasSemestre[i].relDocenteMateriaNobasePlantillaId,
+      materia: this.listaMateriasSemestre[i].materia,
+      nombreDocente: this.listaMateriasSemestre[i].nombreDocente? this.listaMateriasSemestre[i].nombreDocente: '',
+    });
   }
 
-  public async obtenerMateriasGrupo() {
-    debugger
-    const respuesta = await this.catalogosService.consultarMateriasGrupoById(
-      this.ID_GRUPO
-    );
-    let listaMateriaGrupo: GrupoMateriaPlantillaModel[] = respuesta.objeto
-      ? respuesta.objeto
-      : [];
+  setTimeout(() => {
+    console.log("inicia timeout");
+    this.listaEvento.forEach((y) => {
+      y.items.forEach((x) => {
+        let draggableEl = document.getElementById("mydraggable" + x.id);
 
-    this.listaEvento = [];
-
-    this.listaEvento.push({
-      label: "Materias del Grupo: " + listaMateriaGrupo[0].grupo,
-      value: "a",
-      items: [],
-    });
-    for (let i = 0; i < listaMateriaGrupo.length; i++) {
-      var simbolos, color;
-      simbolos = "0123456789ABCDEF";
-      color = "#";
-
-      for (var x = 0; x < 6; x++) {
-        color = color + simbolos[Math.floor(Math.random() * 16)];
-      }
-
-      this.listaEvento[0].items.push({
-        id: i + 1,
-        label: (
-          listaMateriaGrupo[i].materia  +
-          (listaMateriaGrupo[i].nombreDocente
-            ? " - " + listaMateriaGrupo[i].nombreDocente
-            : "")
-        ).toUpperCase(),
-        value: (
-          listaMateriaGrupo[i].materia +
-          (listaMateriaGrupo[i].nombreDocente
-            ? " - " + listaMateriaGrupo[i].nombreDocente
-            : "")
-        ).toUpperCase(),
-        optativa: true,
-        //fondo: color,
-        fondo: this.listaPaletaColores[this.randomInteger(0,this.listaPaletaColores.length - 1)],
-
-        //SE USARIA PARA OBTNER LOS DOCENTES QUE ESTEN LIGADOS A relMateriaPlantillaId
-        relMateriaPlantillaId: listaMateriaGrupo[i].relMateriaPlantillaId,
-
-        //SE USARIA PARA GUARDAR EN rel_grupo_materia_plantilla_docente
-        relGrupoMateriaPlantillaId: listaMateriaGrupo[i].id,
-        relGrupoMateriaPlantillaDocenteId:
-          listaMateriaGrupo[i].relGrupoMateriaPlantillaDocenteId,
-
-        grupo: listaMateriaGrupo[i].grupo,
-        materia: listaMateriaGrupo[i].materia,
-        nombreDocente: listaMateriaGrupo[i].nombreDocente? listaMateriaGrupo[i].nombreDocente: '',
-      });
-    }
-
-    console.log("termina for");
-
-    /* SE CONVIERTE A DRAGGABLE */
-
-    setTimeout(() => {
-      console.log("inicia timeout");
-      this.listaEvento.forEach((y) => {
-        y.items.forEach((x) => {
-          let draggableEl = document.getElementById("mydraggable" + x.id);
-
-          new Draggable(draggableEl, {
-            eventData: {
-              title: x.label,
-              duration: "01:00",
-              durationEditable: false,
-              backgroundColor: x.fondo,
-              extendedProps: {
-                optativa: x.optativa ? x.optativa : false,
-
-
-                //SE USARIA PARA OBTNER LOS DOCENTES QUE ESTEN LIGADOS A relMateriaPlantillaId
-                relMateriaPlantillaId: x.relMateriaPlantillaId,
-
-                //SE USARIA PARA GUARDAR EN rel_grupo_materia_plantilla_docente
-                relGrupoMateriaPlantillaId: x.relGrupoMateriaPlantillaId,
-                relGrupoMateriaPlantillaDocenteId:
-                  x.relGrupoMateriaPlantillaDocenteId,
-
-                grupo: y.grupo,
-                materia: x.materia,
-                nombreDocente: x.nombreDocente
-              },
+        new Draggable(draggableEl, {
+          eventData: {
+            title: x.label,
+            duration: "01:00",
+            durationEditable: false,
+            backgroundColor: x.fondo,
+            extendedProps: {
+              optativa: x.optativa ? x.optativa : false,
+              relDocenteMateriaNobasePlantillaId: x.relDocenteMateriaNobasePlantillaId,
+              materia: x.materia,
+              nombreDocente: x.nombreDocente
             },
-          });
+          },
         });
       });
-    }, 1500);
-  }
+    });
+  }, 1500);
+
+}
+
+
 
   confirm(evento) {
+debugger
     /* this.confirmationService.confirm({
           message:'¿Quiere eliminar el evento?',
           accept: () => {
@@ -485,12 +467,13 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
       accept: async () => {
         //confirm action
 
-        const respuesta = await this.catalogosService.eliminarHorarioDocente(evento.event.extendedProps.horarioId);
+        debugger
+        const respuesta = await this.catalogosService.eliminarHorarioDocenteMateriaNoBase(evento.event.extendedProps.horarioId);
         if(respuesta.exito){
           this.toastService.toastSuccess(respuesta.mensaje);
           evento.event.remove();
-          await this.obtenerMateriasGrupo();
-          await this.obtenerHorariosGrupo();
+         /*  await this.obtenerMateriasGrupo();
+          await this.obtenerHorariosGrupo(); */
         } else {
           this.toastService.toastErr(respuesta.error);
         }
@@ -510,15 +493,8 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
 
   convertirADraggable() {}
 
-  openModalDocenteMateriaGrupo(model: any) {
-
-
-    //SOLO DETECTARIA LAS MATERIAS NO BASE, SI EXISTE ID, NO HACE NADA
-    if(model.event.extendedProps.horarioNobaseId){
-      alert('mATERIA NO BASE')
-      return;
-    }
-
+/*   openModalDocenteMateriaGrupo(model: any) {
+    ;
     //GrupoMateriaPlantillaModel
     console.log(model.event.extendedProps);
 
@@ -558,10 +534,11 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
           this.limpiarCalendario(); //SE BORRAN LOS EVENTOS
           await this.obtenerMateriasGrupo();
           await this.obtenerHorariosGrupo();
+
         }
         console.log(result);
       });
-  }
+  } */
 
   public obtenerHoraCadena(fecha: Date): string {
     let horas =
@@ -684,7 +661,7 @@ switch(dia){
     }
   }
 
-  public async funcionReceive(evento) {
+  /* public async funcionReceive(evento) {
 
 
     if(this.eventoIntercalado(evento)){
@@ -726,60 +703,51 @@ switch(dia){
       evento.revert();
     }
   }
+  } */
+
+  public async funcionReceiveMateria(evento) {
+
+debugger
+    if(this.eventoIntercalado(evento)){
+      this.toastService.toatsWarning('No se pueden intercarlar horarios')
+      evento.revert();
+      return ;
+    }
+
+   if(evento.event.extendedProps.relDocenteMateriaNobasePlantillaId){
+    let mod = new HorarioDocenteMateriaNoBase();
+
+    let fechaInicio: Date = evento.event.start;
+    let fechaFin: Date = evento.event.end;
+
+    let horaInicio: string = this.obtenerHoraCadena(fechaInicio);
+    let horaFin: string = this.obtenerHoraCadena(fechaFin);
+    let dia = fechaFin.getDay();
+
+
+    mod.relDocenteMateriaNobasePlantillaId = evento.event.extendedProps.relDocenteMateriaNobasePlantillaId;
+    mod.horaInicio = horaInicio;
+    mod.horaFin = horaFin;
+    mod.dia = dia;
+
+    const respuesta = await this.catalogosService.insertarHorarioDocenteMateriaNoBase(mod);
+    if(respuesta.exito){
+      this.toastService.toastSuccess(respuesta.mensaje);
+
+      await this.obtenerMateriasDocenteBySemestre(this.IDSEMESTRE);
+      await this.obtenerHorariosSemestre(this.IDSEMESTRE);
+      evento.revert();
+    } else {
 
 
 
-
-  // console.log("funcionReceive");
-  // if (this.eventoExisteEnDia(evento)) {
-  //   evento.revert();
-  //   //alert("El evento ya existe en el dia");
-  //   this.messageService.add({
-  //     severity: "warn",
-  //     summary: "Tab Closed",
-  //     detail: "El evento ya existe en el dia",
-  //   });
-  //   return;
-  // }
-  // if (this.eventoRepetido(evento)) {
-  //   /* alert("Evento repetido"); */
-  //   this.messageService.add({
-  //     severity: "warn",
-  //     summary: "Tab Closed",
-  //     detail: "Evento repetido",
-  //   });
-  //   evento.revert();
-  //   return;
-  // } else {
-  //   if (this.eventoIntercalado(evento)) {
-  //     //        alert('evento intercalado');
-  //     this.messageService.add({
-  //       severity: "info",
-  //       summary: "Tab Closed",
-  //       detail: "Evento intercalado",
-  //     });
-  //     if (!this.eventoOptativo(evento)) {
-  //       evento.revert();
-  //       //alert("El evento no es optativo");
-  //       this.messageService.add({
-  //         severity: "warn",
-  //         summary: "Tab Closed",
-  //         detail: "El evento no es optativo",
-  //       });
-  //       return;
-  //     } else {
-  //       //alert("Evento optativo");
-  //       this.messageService.add({
-  //         severity: "info",
-  //         summary: "Tab Closed",
-  //         detail: "Evento optativo",
-  //       });
-  //       return;
-  //     }
-  //   }
-  // }
+      this.listaHorariosExistentes = respuesta.objeto ? respuesta.objeto : [];
+      this.displayBasic = true;
+      this.toastService.toastErr(respuesta.error);
+      evento.revert();
+    }
   }
-
+  }
 
   public cerrarHorariosEncontradas(){
     this.displayBasic = false;
@@ -1013,8 +981,8 @@ switch(dia){
       calendario.getApi().removeAllEvents();
       this.listBox._options = [];
 
-      //await this.obtenerMateriasGrupo();
-      await this.obtenerHorariosGrupo();
+
+      await this.obtenerHorariosSemestre(this.IDSEMESTRE);
 
   }
 }

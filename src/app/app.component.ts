@@ -422,28 +422,38 @@ export class AppComponent {
                 route: '/components/deportes-especialidad'
               },
               {
+                type: 'link',
+                label: 'Asignaturas base',
+                route: '/components/asignatura/base'
+              },
+              {
                 type: 'dropdown',
-                label: 'Asignaturas',
+                label: 'Asignaturas no base',
                 children: [
 
                   {
                     type: 'link',
-                    label: 'Base',
-                    route: '/components/asignatura/base'
+                    label: 'Catálogo',
+                    route: '/components/asignatura/no-base'
                   },
                   {
                     type: 'link',
-                    label: 'No base',
-                    route: '/components/asignatura/no-base'
+                    label: 'Configuración',
+                    route: '/components/configuracion-materias-no-base'
+                  },
+                  {
+                    type: 'link',
+                    label: 'Calendario',
+                    route: '/components/calendario-materias-no-base'
                   }
                 ]
-              },
+              }
+              ,
               {
                 type: 'link',
-                label: 'Configuración materia no base',
-                route: '/components/configuracion-materias-no-base'
+                label: 'Periodo reinscripción',
+                route: '/components/periodo-reinscripcion'
               }
-
             ]
           },
           {
@@ -493,37 +503,6 @@ export class AppComponent {
           }
         ]
       }
- /*      ,
-      {
-        type: 'subheading',
-        label: 'Convocatoria',
-        children: [
-          {
-            type: 'dropdown',
-            label: 'Preregistro',
-            icon: 'mat:bubble_chart',
-            children: [
-              {
-                type: 'link',
-                label: 'Aspirante',
-                route: '/no-auth/preregistro-aspirante'
-              }
-            ]
-          },
-          {
-            type: 'dropdown',
-            label: 'Formulario',
-            icon: 'mat:bubble_chart',
-            children: [
-              {
-                type: 'link',
-                label: 'Aspirante',
-                route: '/no-auth/formulario'
-              }
-            ]
-          }
-        ]
-      } */
     ];
   }
 }
