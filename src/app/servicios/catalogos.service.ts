@@ -421,4 +421,14 @@ consultarUbicacionGeograficaById(idUbicacionGeografica: number) {
     generarCitasPeriodoReinscripcion(objeto: any){
       return this.postAsync(this.gatewayCatalogos + 'api/Reinscripcion/GenerarCitasPeriodoReinscripcion', objeto)
     }
+
+    consultarAlumnosNuevoIngreso() {
+      return this.getAsync(this.gatewayCatalogos + 'api/Alumno/GetAllAlumnoNuevoIngreso');
+    }
+
+    inscribirAlumnosNuevoIngreso(objeto) {
+      return this.postAsync(this.gatewayCatalogos + 'api/Alumno/InscribirAlumnosNuevos',objeto);
+    }
+
+
 }

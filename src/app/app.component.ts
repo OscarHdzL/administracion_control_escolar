@@ -453,6 +453,11 @@ export class AppComponent {
                 type: 'link',
                 label: 'Periodo reinscripción',
                 route: '/components/periodo-reinscripcion'
+              },
+              {
+                type: 'link',
+                label: 'Inscripción alumnos',
+                route: '/components/incripcion-nuevo-ingreso'
               }
             ]
           },

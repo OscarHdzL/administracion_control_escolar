@@ -3,7 +3,7 @@
       <div class="card overflow-auto mt-2">
           <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
               <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l hidden sm:block flex-none">
-                  Lista de Asignaturas No Base
+                  Lista de Asignaturas No Base en el ciclo escolar
               </h2>
               <span class="flex-1"></span>
               <button (click)="openModalCreate()"
@@ -87,6 +87,14 @@
                   class="hover:bg-hover trans-ease-out cursor-pointer"
                   mat-row></tr>
           </table>
+          <div
+          *ngIf="this.materias.length == 0"
+          class="flex-auto items-center justify-center"
+        >
+          <h1 class="m-10 headline2" style="text-align: center">
+            No se encontraron materias registrados
+          </h1>
+        </div>
           <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
       </div>
     </div>

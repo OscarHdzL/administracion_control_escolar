@@ -111,6 +111,7 @@ import { NgxMaskModule } from 'ngx-mask-2';
 import { ModalParcialesPeriodoComponent } from './Operaciones/ciclo-escolar/modal-parciales-periodo/modal-parciales-periodo.component';
 import { ModalMateriaNobaseComponent } from './Operaciones/materia-nobase/modal-materia-nobase/modal-materia-nobase.component';
 import { ModalPeriodoReinscripcionComponent } from './Operaciones/periodo-reinscripcion/modal-periodo-reinscripcion/modal-periodo-reinscripcion.component';
+import { InscripcionNuevoIngresoComponent } from './Operaciones/inscripcion-nuevo-ingreso/inscripcion-nuevo-ingreso.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -195,7 +196,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     CalendarioMateriasNobaseComponent,
     PeriodoReinscripcionComponent,
     ModalPeriodoReinscripcionComponent,
-    ModalCitasReinscripcionComponent
+    ModalCitasReinscripcionComponent,
+    InscripcionNuevoIngresoComponent
   ],
   imports: [
     CommonModule,

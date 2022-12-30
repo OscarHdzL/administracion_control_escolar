@@ -1,3 +1,4 @@
+import { InscripcionNuevoIngresoComponent } from './Operaciones/inscripcion-nuevo-ingreso/inscripcion-nuevo-ingreso.component';
 import { PeriodoReinscripcionComponent } from './Operaciones/periodo-reinscripcion/periodo-reinscripcion.component';
 import { CalendarioMateriasNobaseComponent } from './Operaciones/calendario-materias-nobase/calendario-materias-nobase.component';
 import { ConfiguracionMateriasNobaseCicloEscolarComponent } from './Operaciones/configuracion-materias-nobase/configuracion-materias-nobase-cicloescolar.component';
@@ -223,6 +224,13 @@ const routes: Routes = [
     component: PeriodoReinscripcionComponent,
     data: {
       title: 'periodo_reinscripcion'
+    }
+  },
+  {
+    path: 'incripcion-nuevo-ingreso',
+    component: InscripcionNuevoIngresoComponent,
+    data: {
+      title: 'incripcion-nuevo-ingreso'
     }
   }
 

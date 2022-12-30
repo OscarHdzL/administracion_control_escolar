@@ -48,8 +48,8 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">Cancelar</button>
-    <button *ngIf="this.objeto == 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Guardar</button>
-    <button *ngIf="this.objeto != 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Actualizar</button>
+    <button *ngIf="this.periodoModel.id == 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Guardar</button>
+    <button *ngIf="this.periodoModel.id != 0" color="primary" mat-flat-button type="submit" [disabled]="f.invalid ">Actualizar</button>
   </mat-dialog-actions>
 </form>
 

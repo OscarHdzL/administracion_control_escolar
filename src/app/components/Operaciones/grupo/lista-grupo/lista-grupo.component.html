@@ -68,6 +68,14 @@
           <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
           <tr *matRowDef="let row; columns: visibleColumns;"class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
         </table>
+        <div
+        *ngIf="this.grupos.length == 0"
+        class="flex-auto items-center justify-center"
+      >
+        <h1 class="m-10 headline2" style="text-align: center">
+          No se encontraron grupos registrados
+        </h1>
+      </div>
         <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
 
       </div>

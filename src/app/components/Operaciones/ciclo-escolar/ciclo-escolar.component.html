@@ -6,7 +6,7 @@
           Lista de Ciclos Escolares
         </h2>
         <span class="flex-1"></span>
-        <button (click)="openModalCreate()" class="ml-4 flex-none" color="primary" mat-mini-fab
+        <button (click)="openModalCreate(null)" class="ml-4 flex-none" color="primary" mat-mini-fab
           matTooltip="Agregar Ciclo" type="button">
           <mat-icon svgIcon="mat:add"></mat-icon>
         </button>
@@ -25,9 +25,9 @@
           </ng-container>
         </ng-container>
         <ng-container *ngFor="let column of columns;">
-          <ng-container *ngIf="column.property== 'estatus'" [matColumnDef]="column.property">
+          <ng-container *ngIf="column.property== 'estatusCicloEscolar'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.estatus }}</td>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row.estatusCicloEscolar }}</td>
           </ng-container>
         </ng-container>
 
@@ -35,7 +35,7 @@
           <ng-container *ngIf="column.type === 'button'" [matColumnDef]="column.property">
             <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
             <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
-              <div class="flex" *ngIf="row.estatus == 'Finalizado'">
+              <div class="flex" *ngIf="row.estatusCicloEscolar == 'Finalizado'">
 
                 <a (click)="deleteCiclo(row)" matTooltip="Eliminar   Ciclo"
                   class="w-10 h-10 leading-none flex items-center justify-center ml-2 hover:bg-hover text-warn bg-primary/10"
@@ -43,7 +43,7 @@
                   <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
                 </a>
               </div>
-              <div class="flex" *ngIf="row.estatus == 'Vigente'">
+              <div class="flex" *ngIf="row.estatusCicloEscolar == 'Vigente'">
                 <a (click)="vigente(row)" matTooltip="Finalizar Ciclo"
                   class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
                   mat-icon-button>
@@ -61,7 +61,7 @@
                   <mat-icon class="icon-sm" svgIcon="mat:delete"></mat-icon>
                 </a>
               </div>
-              <div class="flex" *ngIf="row.estatus == 'Programado'">
+              <div class="flex" *ngIf="row.estatusCicloEscolar == 'Programado'">
                 <a (click)="programado(row)" matTooltip="Hacer Ciclo Vigente"
                   class="w-10 h-10 leading-none flex items-center justify-center hover:bg-hover text-teal bg-primary/10"
                   mat-icon-button>

@@ -31,7 +31,7 @@ export class CicloEscolarComponent implements OnInit {
   columns: TableColumn<any>[] = [
     { label: 'Fecha Inicio', property: 'fechaI', type: 'text', visible: true, cssClasses: ['font-medium'] },
     { label: 'Fecha Fin', property: 'fechaF', type: 'text', visible: true, cssClasses: ['font-medium'] },
-    { label: 'Estatus', property: 'estatus', type: 'text', visible: true, cssClasses: ['font-medium'] },
+    { label: 'Estatus', property: 'estatusCicloEscolar', type: 'text', visible: true, cssClasses: ['font-medium'] },
     { label: 'Acciones', property: 'actions', type: 'button', visible: true }
   ];
 
@@ -81,17 +81,9 @@ export class CicloEscolarComponent implements OnInit {
   async ngOnInit() {
     this.ciclos = [];
     let res = await this.catalogosServices.consultarCiclos();
-    console.log('todos los  ciclos',res);
-    for (let i = 0; i < res.objeto.length; i++) {
-      this.ciclos.push({
-        id: res.objeto[i].id,
-        inicio: res.objeto[i].inicio,
-        fin: res.objeto[i].fin,
-        catEstatusCicloEscolarId: res.objeto[i].catEstatusCicloEscolarId
-      });
-      let resEstatus = await this.catalogosServices.consultarEstatusCicloId(this.ciclos[i].catEstatusCicloEscolarId);
-      this.ciclos[i].estatus = resEstatus.objeto[0].estatus;
-    }
+
+    this.ciclos = res.exito ? res.objeto: [];
+
 
     console.log(this.ciclos);
 
@@ -105,12 +97,15 @@ export class CicloEscolarComponent implements OnInit {
 
   }
 
-  openModalCreate() {
+  openModalCreate(model) {
+
+    let obj = model != null ? model : new CicloEscolar();
+
     this.dialog.open(ModalCicloEscolarComponent,{
-      height: '50%',
+      height: '40%',
       width: '70%',
       autoFocus: false,
-      data: 0,
+      data: obj ,
       disableClose: true
    }).afterClosed().subscribe((  espacio: any) => {
       /**
@@ -137,20 +132,6 @@ export class CicloEscolarComponent implements OnInit {
       this.ngOnInit();
     });
   }
-  openCicliModalCreate(tipo:number,row:any) {
-    let objeto = {tipo,row}
-    this.dialog.open(ModalCicloEscolarComponent,{
-      height: '90%',
-      width: '95%',
-      autoFocus: false,
-      data: objeto,
-      disableClose: true
-   }).afterClosed().subscribe(( materia: any) => {
-      console.log('se guardo bien');
-      this.ngOnInit();
-    });
-  }
-
 
 }
 

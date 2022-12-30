@@ -65,10 +65,8 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log(this.objeto);
-
-    if(this.objeto == 0){
-
+debugger
+      this.periodos = await this.obtenerPeriodosCicloEscolar(this.objeto.id);
       this.dataSource = new MatTableDataSource<PeriodoEscolar>(this.periodos);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -76,30 +74,15 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
       this.matPaginatorIntl.itemsPerPageLabel = "Periodos por página";
       this.matPaginatorIntl.previousPageLabel  = 'Anterior página';
       this.matPaginatorIntl.nextPageLabel = 'Siguiente página';
-    }
-    else{
-      //this.opciones = this.modalFormulario.tblOpcionesPregunta;
-      //console.log('datos ya en el modal en formulario',this.modalFormulario);
-      let res = await this.servicioPeriodo.getIdList(this.objeto.id);
-      //this.modalFormulario.id = this.objeto.id;
-      this.periodos=res.objeto;
-      console.log(this.periodos);
- /*      for (let index = 0; index < this.periodos.length; index++) {
-        this.periodos[index].inicio=this.periodos[index].inicio.substring(0, 10);
-        this.periodos[index].fin=this.periodos[index].inicio.substring(0, 10);
-      }
-      console.log('reversed:', this.periodos.reverse()); */
-      this.dataSource = new MatTableDataSource<PeriodoEscolar>(this.periodos);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      console.log(this.dataSource);
-      this.matPaginatorIntl.itemsPerPageLabel = "Periodos por página";
-      this.matPaginatorIntl.previousPageLabel  = 'Anterior página';
-      this.matPaginatorIntl.nextPageLabel = 'Siguiente página';
-      //this.modalFormulario.periodo = this.modalFormulario.periodo==="par"?true:false;
-    }
-    this.tFormulario=false;
+
   }
+
+
+  public async obtenerPeriodosCicloEscolar(idCicloEscolar){
+    const respuesta = await this.servicioPeriodo.getIdList(idCicloEscolar);
+    return respuesta.exito ? respuesta.objeto : [];
+  }
+
   async deleteGrupo(row: any){
     /*
     console.log(row);
@@ -153,28 +136,6 @@ export class ModalConfigurarPeriodoEscolarComponent implements OnInit {
     }
   }
   async save(f: NgForm) {
-    if(this.objeto == 0){
-      // console.log('Agregar', this.modalFormulario);
-      // let res = await this.grupoOpcionesServices.agregarGrupo(this.modalFormulario);
-      // console.log(res);
-      // if(res.exito==true){
-      //   this.swalService.alertaPersonalizado(res.exito,res.mensaje);
-      //   this.dialogRef.close();
-      // }else{
-      //   this.toastService.toastErr(res.mensaje);
-      // }
-    }
-    else{
-      // console.log('Editar', this.modalFormulario);
-      // let res = await this.grupoOpcionesServices.actualizarGrupo(this.modalFormulario);
-      // console.log(res);
-      // if(res.exito==true){
-      //   this.swalService.alertaPersonalizado(res.exito,res.mensaje);
-      //   this.dialogRef.close();
-      // }else{
-      //   this.toastService.toastErr(res.mensaje);
-      // }
-    }
   }
   acomodarFecha(s){
     var b = s.split(/\D/);

@@ -109,6 +109,14 @@
                     class="hover:bg-hover trans-ease-out cursor-pointer"
                     mat-row></tr>
             </table>
+            <div
+        *ngIf="this.materias.length == 0"
+        class="flex-auto items-center justify-center"
+      >
+        <h1 class="m-10 headline2" style="text-align: center">
+          No se encontraron materias registrados
+        </h1>
+      </div>
             <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
         </div>
       </div>

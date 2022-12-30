@@ -7,12 +7,20 @@ export class TipoMateria {
 
 export class CicloEscolar{
     id?: number;
-    fechaInicio?: Date;
-    fechaFin?: Date;
     inicio?: string;
     fin?: string;
     catEstatusCicloEscolarId?: number;
-    estatus?: string;
+    estatusCicloEscolar?: string;
+    estatusBit?: boolean
+    constructor(){
+      this.id = 0;
+      this.inicio = null;
+      this.fin = null;
+      this.catEstatusCicloEscolarId = 0;
+      this.estatusCicloEscolar = null;
+      this.estatusBit = false;
+    }
+
 }
 export class PeriodoEscolar{
     id?: number;
@@ -505,4 +513,20 @@ export class CitasPeriodoReinscripcion {
   finalizadoPorAlumno: boolean;
   inclusion: Date;
   tblPeriodoReinscripcionId: number;
+}
+
+export class AlumnoNuevoIngreso {
+  idRelAlumno: number;
+  idAlumno: number;
+  matricula: string;
+  rfc: string;
+  idPersonaF: number;
+  nombre: string;
+  paterno: string;
+  materno: string;
+  nombreAlumno: string;
+  catDeporteId: number;
+  deporte: string;
+  actualCatSemestreId?: any;
+  catEstatusAlumnoId: number;
 }

@@ -18,47 +18,41 @@ import { PeriodoService } from 'src/app/servicios/periodo.service';
 export class ModalCicloEscolarComponent implements OnInit {
 
   //ViewChild(MatTable) myTable: MatTable<any>;
-  public modalFormulario2: Periodo = {};
+  public modalFormulario2: CicloEscolar = {};
   form: UntypedFormGroup;
   mode: 'create' | 'update' = 'create';
 
   displayedColumns: string[] = ['opcion', 'acciones'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public objeto: any,
+  constructor(@Inject(MAT_DIALOG_DATA) public objeto: CicloEscolar,
               private dialogRef: MatDialogRef<ModalCicloEscolarComponent>,
               public ex: ExprecionesRegulares,
               private swalService: SwalServices,
               private toastService:VariablesService,
               private catalogosServices: CatalogosServices,
               private servicioPeriodo :PeriodoService) {
+
+                this.modalFormulario2 = objeto;
   }
 
   async ngOnInit() {
-    
-    console.log('datos ya en el modal',this.objeto);
-    if(this.objeto == 0){
 
-    }
-    else{
-      
-      console.log(this.objeto.row.id);
-      let res =await this.servicioPeriodo.getId(this.objeto.row.id);
-      if (res.exito) {
-        this.modalFormulario2 = res.objeto[0];
-        delete this.modalFormulario2.tblGrupos;
-      }
-      console.log('datos ya en el modal en formulario',this.modalFormulario2);
-    }
+
   }
+
+
+
   onToggle(event){
+    debugger
     console.log(event.checked);
+    this.modalFormulario2.estatusBit = event.checked
     if (event.checked) {
-      this.modalFormulario2.estatus = "Vigente";
-      this.modalFormulario2.catCicloEscolarId = 1;
+      this.modalFormulario2.estatusCicloEscolar = "Vigente";
+      this.modalFormulario2.catEstatusCicloEscolarId = 1;
     }
     else {
-      this.modalFormulario2.estatus = "Programado";
-      this.modalFormulario2.catCicloEscolarId = 3;
+      this.modalFormulario2.estatusCicloEscolar = "Programado";
+      this.modalFormulario2.catEstatusCicloEscolarId = 3;
     }
   }
   acomodarFecha(s){
@@ -67,13 +61,11 @@ export class ModalCicloEscolarComponent implements OnInit {
   }
   async save(f: NgForm) {
 
+    debugger
     this.modalFormulario2.inicio = this.acomodarFecha(formatDate(this.modalFormulario2.inicio,'dd/MM/yyyy','en-US'));
     this.modalFormulario2.fin = this.acomodarFecha(formatDate(this.modalFormulario2.fin,'dd/MM/yyyy','en-US'));
-    this.modalFormulario2.periodo=this.modalFormulario2.periodo===true?"Non":"Par";
-    delete this.modalFormulario2.tblGrupos;
-    //this.modalFormulario2.catCicloEscolarId=row.catCicloEscolarId;
     console.log(this.modalFormulario2);
-    let res = await this.servicioPeriodo.put(this.modalFormulario2);
+    let res = await this.catalogosServices.agregarCiclo(this.modalFormulario2);
     if (res.exito) {
       this.toastService.toastSuccess(res.mensaje);
       console.log(res);
@@ -83,10 +75,10 @@ export class ModalCicloEscolarComponent implements OnInit {
     {
       this.toastService.toastErr(res.mensaje);
       this.modalFormulario2 ={};
-      
+
     }
-    
-    
+
+
   }
 
 }

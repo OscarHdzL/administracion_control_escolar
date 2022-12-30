@@ -515,7 +515,6 @@ export class CalendarioGrupoComponent implements OnInit, AfterViewInit {
 
     //SOLO DETECTARIA LAS MATERIAS NO BASE, SI EXISTE ID, NO HACE NADA
     if(model.event.extendedProps.horarioNobaseId){
-      alert('mATERIA NO BASE')
       return;
     }
 
